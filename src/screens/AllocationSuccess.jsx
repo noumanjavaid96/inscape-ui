@@ -1,71 +1,39 @@
-import StatusBar from '../components/StatusBar';
-
 export default function AllocationSuccess({ onNavigate }) {
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: 'inherit', overflow: 'hidden', background: '#050505' }}>
-      <div style={{ position: 'absolute', top: 120, left: -40, right: -40, height: 340, background: 'radial-gradient(50% 50% at 50% 50%, rgba(255,128,0,0.18), rgba(255,128,0,0) 70%)', zIndex: 0 }} />
-      <StatusBar />
-
-      <div style={{ position: 'absolute', top: 46, left: 0, right: 0, bottom: 0, zIndex: 10, display: 'flex', flexDirection: 'column', padding: '0 24px' }}>
-        {/* Success icon */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 48 }}>
-          <div style={{ width: 86, height: 86, borderRadius: '50%', background: 'rgba(255,128,0,0.12)', border: '1px solid rgba(255,128,0,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 40px rgba(255,128,0,0.25)' }}>
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
-              <path d="M5 12.5l4.5 4.5L19 7" stroke="#FF8000" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <div style={{ font: '600 26px Inter', color: '#fff', marginTop: 22 }}>Allocation confirmed</div>
-          <div style={{ font: '400 14px/1.5 Inter', color: '#A3A3A3', marginTop: 7, textAlign: 'center' }}>
-            You're now participating in<br/><span style={{ color: '#fff' }}>Range Rover Sport</span>.
-          </div>
+    <div style={{ background: '#050505', minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(50% 50% at 50% 40%, rgba(91,208,138,0.07), transparent)', pointerEvents: 'none' }} />
+      <div style={{ width: '100%', maxWidth: 460, textAlign: 'center', position: 'relative' }}>
+        <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'rgba(91,208,138,0.1)', border: '1px solid rgba(91,208,138,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+          <svg width="38" height="38" viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L19 7" stroke="#5BD08A" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </div>
 
-        {/* Receipt */}
-        <div style={{ marginTop: 30, background: '#0d0f12', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 18, overflow: 'hidden' }}>
-          <div style={{ padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: 13 }}>
+        <h1 style={{ font: "700 36px/1.05 'Cormorant Garamond',serif", color: '#fff', margin: '0 0 10px' }}>Allocated!</h1>
+        <p style={{ font: '400 15px Inter', color: '#A3A3A3', margin: '0 0 32px' }}>Your credits are in. Good luck with the draw.</p>
+
+        <div style={{ background: '#0a0c0f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: '24px 28px', marginBottom: 20, textAlign: 'left' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {[
-              { label: 'Credits allocated', value: '2 credits', valueColor: '#FF8000' },
-              { label: 'New balance', value: '122 credits', valueColor: '#fff' },
-              { label: 'Date', value: '26 Jun 2026, 21:04', valueColor: '#A3A3A3' },
+              { label: 'Campaign', value: 'Range Rover Sport' },
+              { label: 'Allocations', value: '1 credit' },
+              { label: 'Reference', value: 'INS-ALLOC-7F3A9C' },
+              { label: 'Draw date', value: 'Nov 15, 2026' },
             ].map(r => (
-              <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span style={{ font: '400 13px Inter', color: '#707070' }}>{r.label}</span>
-                <span style={{ font: r.valueColor === '#FF8000' ? '700 15px Inter' : '600 14px Inter', color: r.valueColor }}>{r.value}</span>
+                <span style={{ font: r.label === 'Reference' ? '600 12px Inter' : '500 13px Inter', color: r.label === 'Reference' ? '#FF8000' : '#fff', fontFamily: r.label === 'Reference' ? 'monospace' : 'inherit' }}>{r.value}</span>
               </div>
             ))}
           </div>
-          <div style={{ borderTop: '1px dashed rgba(255,255,255,0.12)', padding: '13px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#0a0c0e' }}>
-            <span style={{ font: '400 12px Inter', color: '#707070' }}>Reference</span>
-            <span style={{ font: "600 12px 'JetBrains Mono', monospace", color: '#A3A3A3', letterSpacing: '.04em' }}>INS-ALLOC-7F3A9C</span>
+          <div style={{ height: 1, borderTop: '1px dashed rgba(255,255,255,0.1)', margin: '16px 0' }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M13 3 4 14h6l-1 7 9-11h-6z" stroke="#47C7FC" strokeWidth="1.7" strokeLinejoin="round"/></svg>
+            <span style={{ font: '500 13px Inter', color: '#47C7FC' }}>+10 Momentum earned</span>
           </div>
         </div>
 
-        {/* Momentum earned */}
-        <div style={{ marginTop: 14, display: 'flex', alignItems: 'center', gap: 11, background: 'rgba(71,199,252,0.07)', border: '1px solid rgba(71,199,252,0.28)', borderRadius: 14, padding: '13px 15px' }}>
-          <span style={{ width: 30, height: 30, borderRadius: '50%', background: 'rgba(71,199,252,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-              <path d="M13 3 4 14h6l-1 7 9-11h-6z" stroke="#47C7FC" strokeWidth="1.7" strokeLinejoin="round"/>
-            </svg>
-          </span>
-          <div>
-            <div style={{ font: '600 13px Inter', color: '#fff' }}>Monthly Momentum +10</div>
-            <div style={{ font: '400 11.5px Inter', color: '#A3A3A3' }}>Two campaigns joined this month</div>
-          </div>
-        </div>
-
-        <div style={{ marginTop: 'auto', paddingBottom: 26 }}>
-          <button onClick={() => onNavigate('dashboard')} style={{
-            height: 54, borderRadius: 14, background: '#FF8000', width: '100%',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            font: '600 16px Inter', color: '#050505', border: 'none', cursor: 'pointer',
-          }}>View my participation</button>
-          <div style={{ textAlign: 'center', font: '500 14px Inter', color: '#A3A3A3', marginTop: 15, cursor: 'pointer' }}
-            onClick={() => onNavigate('campaigns')}>
-            Back to campaigns
-          </div>
-        </div>
+        <button onClick={() => onNavigate('my-campaigns')} style={{ width: '100%', height: 52, borderRadius: 14, background: '#FF8000', border: 'none', cursor: 'pointer', font: '600 16px Inter', color: '#050505', boxShadow: '0 8px 24px rgba(255,128,0,0.35)', marginBottom: 10 }}>View my entries →</button>
+        <button onClick={() => onNavigate('campaigns')} style={{ width: '100%', height: 46, borderRadius: 14, background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', cursor: 'pointer', font: '500 14px Inter', color: '#A3A3A3' }}>Browse more campaigns</button>
       </div>
-      <div style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)', width: 124, height: 5, borderRadius: 3, background: 'rgba(255,255,255,0.28)', zIndex: 25 }} />
     </div>
   );
 }

@@ -1,96 +1,90 @@
-import StatusBar from '../components/StatusBar';
-import TabBar from '../components/TabBar';
+import { useState } from 'react';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 
-const campaigns = [
-  {
-    id: 1, status: 'LIVE', statusColor: '#FF8000', statusBorder: 'rgba(255,128,0,0.4)',
-    timeLeft: '2d 14h left', timeColor: '#fff',
-    gradient: 'radial-gradient(120% 90% at 30% 15%, #20242a 0%, #0c0e11 72%)',
-    category: 'Vehicles', prize: '£92,000', title: 'Range Rover Sport', cr: 1,
-    imgLabel: 'IMAGE · Range Rover hero',
-  },
-  {
-    id: 2, status: 'CLOSING SOON', statusColor: '#F0B43C', statusBorder: 'rgba(240,180,60,0.4)',
-    timeLeft: '9h 40m left', timeColor: '#F0B43C',
-    gradient: 'radial-gradient(120% 90% at 70% 15%, #23211c 0%, #0c0e11 72%)',
-    category: 'Travel', prize: '£18,500', title: '7 Nights, Maldives', cr: 2,
-    imgLabel: 'IMAGE · Maldives villa',
-  },
+const ALL_CAMPAIGNS = [
+  { id: 1, status: 'LIVE', statusColor: '#FF8000', timeLeft: '2d 14h', category: 'Vehicles', prize: '£92,000', title: 'Range Rover Sport', cr: 1, entries: '4,821', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.12)' },
+  { id: 2, status: 'CLOSING SOON', statusColor: '#F0B43C', timeLeft: '9h 40m', category: 'Travel', prize: '£18,500', title: '7 Nights, Maldives', cr: 1, entries: '2,104', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.12)' },
+  { id: 3, status: 'LIVE', statusColor: '#FF8000', timeLeft: '5d 2h', category: 'Tech', prize: '£3,499', title: 'MacBook Pro M4', cr: 1, entries: '1,338', gradient: 'linear-gradient(135deg,#141820,#0a0c10)', glow: 'rgba(71,199,252,0.1)' },
+  { id: 4, status: 'UPCOMING', statusColor: '#47C7FC', timeLeft: 'Starts in 3d', category: 'Travel', prize: '£12,000', title: 'Swiss Alps Retreat', cr: 1, entries: '—', gradient: 'linear-gradient(135deg,#141c20,#0a0e10)', glow: 'rgba(71,199,252,0.1)' },
 ];
 
 const FILTERS = ['All', 'Travel', 'Vehicles', 'Tech', 'Cash'];
-const TABS = ['Live', 'Upcoming', 'Closed'];
+const STATUS_TABS = ['Live', 'Upcoming', 'Closed'];
 
 export default function Campaigns({ onNavigate }) {
+  const [filter, setFilter] = useState('All');
+  const [statusTab, setStatusTab] = useState('Live');
+  const { isMobile, isDesktop } = useBreakpoint();
+
+  const filtered = ALL_CAMPAIGNS.filter(c => filter === 'All' || c.category === filter);
+
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: 'inherit', overflow: 'hidden', background: '#050505' }}>
-      <StatusBar />
+    <div style={{ background: '#050505', minHeight: '100vh' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
 
-      <div style={{ position: 'absolute', top: 46, left: 0, right: 0, bottom: 78, overflowY: 'auto', zIndex: 10, scrollbarWidth: 'none' }}>
-        <div style={{ padding: '8px 20px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div style={{ font: '700 28px/1 Inter', color: '#fff', letterSpacing: '-.02em' }}>Campaigns</div>
-            <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#111418', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none">
-                <circle cx="11" cy="11" r="6.5" stroke="#fff" strokeWidth="1.7"/>
-                <path d="M16 16l4 4" stroke="#fff" strokeWidth="1.7" strokeLinecap="round"/>
-              </svg>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
+          <div>
+            <h1 style={{ font: '700 32px/1 Inter', color: '#fff', margin: 0, letterSpacing: '-.02em' }}>Campaigns</h1>
+            <p style={{ font: '400 14px Inter', color: '#707070', margin: '6px 0 0' }}>{filtered.length} campaigns available</p>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{ width: 42, height: 42, borderRadius: '50%', background: '#111418', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#fff" strokeWidth="1.7"/><path d="M16 16l4 4" stroke="#fff" strokeWidth="1.7" strokeLinecap="round"/></svg>
             </div>
-          </div>
-
-          {/* Category filters */}
-          <div style={{ display: 'flex', gap: 8, marginTop: 16, overflowX: 'auto', scrollbarWidth: 'none' }}>
-            {FILTERS.map((f, i) => (
-              <div key={f} style={{
-                font: `${i === 0 ? 600 : 500} 12px Inter`,
-                color: i === 0 ? '#050505' : '#A3A3A3',
-                background: i === 0 ? '#FF8000' : '#111418',
-                border: i === 0 ? 'none' : '1px solid rgba(255,255,255,0.08)',
-                borderRadius: 9, padding: '8px 13px', whiteSpace: 'nowrap', cursor: 'pointer',
-              }}>{f}</div>
-            ))}
-          </div>
-
-          {/* Live/Upcoming/Closed toggle */}
-          <div style={{ display: 'flex', marginTop: 14, background: '#0d0f12', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 11, padding: 4 }}>
-            {TABS.map((t, i) => (
-              <div key={t} style={{
-                flex: 1, textAlign: 'center',
-                font: `${i === 0 ? 600 : 500} 12px Inter`,
-                color: i === 0 ? '#fff' : '#707070',
-                background: i === 0 ? '#22262c' : 'transparent',
-                borderRadius: 8, padding: '8px 0', cursor: 'pointer',
-              }}>{t}</div>
-            ))}
           </div>
         </div>
 
-        <div style={{ padding: '16px 20px 30px', display: 'flex', flexDirection: 'column', gap: 14 }}>
-          {campaigns.map(c => (
-            <div key={c.id} onClick={() => onNavigate('campaign-detail')}
-              style={{ background: '#0d0f12', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 18, overflow: 'hidden', cursor: 'pointer' }}>
-              <div style={{ height: 150, background: c.gradient, position: 'relative' }}>
-                <span style={{ position: 'absolute', left: 12, top: 12, display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(5,5,5,0.55)', border: `1px solid ${c.statusBorder}`, borderRadius: 8, padding: '5px 9px' }}>
-                  {c.status === 'LIVE' && <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#FF8000', animation: 'livePulse 2s ease-in-out infinite' }} />}
-                  <span style={{ font: '600 10px Inter', letterSpacing: '.06em', color: c.statusColor }}>{c.status}</span>
-                </span>
-                <span style={{ position: 'absolute', right: 12, top: 12, font: '600 11px Inter', color: c.timeColor, background: 'rgba(5,5,5,0.55)', borderRadius: 8, padding: '5px 9px' }}>{c.timeLeft}</span>
-                <span style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 54, background: 'linear-gradient(0deg,rgba(5,5,5,0.85),transparent)' }} />
-                <span style={{ position: 'absolute', left: 12, bottom: 9, font: "500 9px 'JetBrains Mono', monospace", letterSpacing: '.05em', color: '#5a6068' }}>{c.imgLabel}</span>
+        {/* Filters */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
+          {FILTERS.map(f => (
+            <button key={f} onClick={() => setFilter(f)} style={{
+              font: `${filter === f ? 600 : 500} 13px Inter`,
+              color: filter === f ? '#050505' : '#A3A3A3',
+              background: filter === f ? '#FF8000' : '#111418',
+              border: filter === f ? 'none' : '1px solid rgba(255,255,255,0.08)',
+              borderRadius: 10, padding: '9px 16px', whiteSpace: 'nowrap', cursor: 'pointer',
+              transition: 'all 0.15s',
+            }}>{f}</button>
+          ))}
+        </div>
+
+        {/* Status tabs */}
+        <div style={{ display: 'flex', marginBottom: 28, background: '#0d0f12', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 13, padding: 4, maxWidth: 320 }}>
+          {STATUS_TABS.map(t => (
+            <button key={t} onClick={() => setStatusTab(t)} style={{
+              flex: 1, font: `${statusTab === t ? 600 : 500} 13px Inter`,
+              color: statusTab === t ? '#fff' : '#707070',
+              background: statusTab === t ? '#22262c' : 'transparent',
+              border: 'none', borderRadius: 10, padding: '9px 0', cursor: 'pointer',
+              transition: 'all 0.15s',
+            }}>{t}</button>
+          ))}
+        </div>
+
+        {/* Campaign grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? 'repeat(3,1fr)' : isMobile ? '1fr' : 'repeat(2,1fr)', gap: 20 }}>
+          {filtered.map(c => (
+            <div key={c.id} onClick={() => onNavigate('campaign-detail')} style={{ background: '#0d0f12', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s ease, border-color 0.2s, box-shadow 0.2s' }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.boxShadow = `0 16px 40px ${c.glow}`; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.boxShadow = 'none'; }}
+            >
+              <div style={{ height: 160, background: c.gradient, position: 'relative' }}>
+                <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(5,5,5,0.65)', border: `1px solid ${c.statusColor}40`, borderRadius: 8, padding: '4px 10px' }}>
+                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: c.statusColor, animation: c.status === 'LIVE' ? 'livePulse 2s ease-in-out infinite' : 'none' }} />
+                  <span style={{ font: '600 10px Inter', color: c.statusColor, letterSpacing: '.07em' }}>{c.status}</span>
+                </div>
+                <div style={{ position: 'absolute', right: 12, top: 12, font: '500 11px Inter', color: '#A3A3A3', background: 'rgba(5,5,5,0.65)', borderRadius: 7, padding: '4px 9px' }}>{c.timeLeft} left</div>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(13,15,18,0.7),transparent 60%)' }} />
               </div>
-              <div style={{ padding: '14px 15px 15px' }}>
-                <div style={{ font: '500 11px Inter', color: '#707070' }}>{c.category} · Prize value {c.prize}</div>
-                <div style={{ font: "600 23px/1.05 'Cormorant Garamond',serif", color: '#fff', marginTop: 4 }}>{c.title}</div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 14, paddingTop: 13, borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-                    <span style={{ width: 16, height: 16, borderRadius: '50%', border: '1.5px solid #FF8000' }} />
-                    <span style={{ font: '600 13px Inter', color: '#fff' }}>{c.cr} <span style={{ color: '#707070', fontWeight: 500 }}>credit / allocation</span></span>
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, font: '600 13px Inter', color: '#FF8000' }}>
+              <div style={{ padding: '16px 18px 18px' }}>
+                <div style={{ font: '400 11px Inter', color: '#707070' }}>{c.category} · Prize value {c.prize}</div>
+                <div style={{ font: "700 22px/1.05 'Cormorant Garamond',serif", color: '#fff', marginTop: 5 }}>{c.title}</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 14, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.07)' }}>
+                  <div style={{ font: '500 12px Inter', color: '#707070' }}>{c.entries} entries</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, font: '600 13px Inter', color: '#FF8000' }}>
                     Allocate
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                      <path d="M9 5l7 7-7 7" stroke="#FF8000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#FF8000" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                   </div>
                 </div>
               </div>
@@ -98,8 +92,6 @@ export default function Campaigns({ onNavigate }) {
           ))}
         </div>
       </div>
-
-      <TabBar active="campaigns" onNavigate={onNavigate} />
     </div>
   );
 }

@@ -1,42 +1,44 @@
-import StatusBar from '../components/StatusBar';
-import TabBar from '../components/TabBar';
+import { useBreakpoint } from '../hooks/useBreakpoint';
 
-const active = [
-  { title: 'Range Rover Sport', category: 'Vehicles', prize: '£92,000', yours: 2, cr: 1, closes: '2d 14h', status: 'LIVE', statusColor: '#FF8000', gradient: 'radial-gradient(120% 90% at 30% 15%, #20242a, #0c0e11)' },
-  { title: '7 Nights, Maldives', category: 'Travel', prize: '£18,500', yours: 4, cr: 2, closes: '9h 40m', status: 'CLOSING SOON', statusColor: '#F0B43C', gradient: 'radial-gradient(120% 90% at 70% 15%, #23211c, #0c0e11)' },
+const ACTIVE = [
+  { title: 'Range Rover Sport', category: 'Vehicles', prize: '£92,000', yours: 2, cr: 1, closes: '2d 14h', status: 'LIVE', statusColor: '#FF8000', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)' },
+  { title: '7 Nights, Maldives', category: 'Travel', prize: '£18,500', yours: 4, cr: 2, closes: '9h 40m', status: 'CLOSING SOON', statusColor: '#F0B43C', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)' },
 ];
-const past = [
-  { title: 'Tesla Model 3', category: 'Vehicles', prize: '£42,000', yours: 1, result: 'Did not win', closes: 'Ended May 15' },
-  { title: 'NYC Weekend Break', category: 'Travel', prize: '£3,200', yours: 3, result: 'Did not win', closes: 'Ended Apr 28' },
+const PAST = [
+  { title: 'Tesla Model 3', category: 'Vehicles', prize: '£42,000', yours: 1, result: 'Did not win', date: 'Ended May 15' },
+  { title: 'NYC Weekend Break', category: 'Travel', prize: '£3,200', yours: 3, result: 'Did not win', date: 'Ended Apr 28' },
 ];
 
 export default function MyCampaigns({ onNavigate }) {
+  const { isMobile, isDesktop } = useBreakpoint();
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%', borderRadius: 'inherit', overflow: 'hidden', background: '#050505' }}>
-      <StatusBar />
-
-      <div style={{ position: 'absolute', top: 46, left: 0, right: 0, bottom: 78, overflowY: 'auto', zIndex: 10, scrollbarWidth: 'none' }}>
-        <div style={{ padding: '14px 20px 0' }}>
-          <div style={{ font: '700 28px/1 Inter', color: '#fff', letterSpacing: '-.02em' }}>My Campaigns</div>
-          <div style={{ font: '400 13px Inter', color: '#A3A3A3', marginTop: 5 }}>Your active and past participations.</div>
-        </div>
+    <div style={{ background: '#050505', minHeight: '100vh' }}>
+      <div style={{ maxWidth: 900, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
+        <h1 style={{ font: '700 32px/1 Inter', color: '#fff', margin: '0 0 6px', letterSpacing: '-.02em' }}>My Campaigns</h1>
+        <p style={{ font: '400 14px Inter', color: '#707070', margin: '0 0 32px' }}>Your active and past participations.</p>
 
         {/* Active */}
-        <div style={{ padding: '18px 20px 0' }}>
-          <div style={{ font: '600 12px Inter', letterSpacing: '.1em', textTransform: 'uppercase', color: '#FF8000', marginBottom: 12 }}>Active · {active.length}</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            {active.map(c => (
-              <div key={c.title} onClick={() => onNavigate('campaign-detail')} style={{ background: '#0d0f12', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 18, overflow: 'hidden', cursor: 'pointer' }}>
-                <div style={{ height: 100, background: c.gradient, position: 'relative' }}>
-                  <span style={{ position: 'absolute', left: 12, top: 12, font: '600 9px Inter', letterSpacing: '.06em', color: c.statusColor, background: 'rgba(5,5,5,0.6)', border: `1px solid ${c.statusColor}40`, borderRadius: 6, padding: '3px 7px' }}>{c.status}</span>
-                  <span style={{ position: 'absolute', right: 12, top: 12, font: '600 10px Inter', color: c.statusColor, background: 'rgba(5,5,5,0.6)', borderRadius: 6, padding: '3px 7px' }}>{c.closes} left</span>
+        <div style={{ marginBottom: 36 }}>
+          <div style={{ font: '600 11px Inter', letterSpacing: '.12em', textTransform: 'uppercase', color: '#FF8000', marginBottom: 14 }}>Active · {ACTIVE.length}</div>
+          <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? 'repeat(2,1fr)' : '1fr', gap: 16 }}>
+            {ACTIVE.map(c => (
+              <div key={c.title} onClick={() => onNavigate('campaign-detail')} style={{ background: '#0a0c0f', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s, border-color 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
+              >
+                <div style={{ height: 110, background: c.gradient, position: 'relative' }}>
+                  <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(5,5,5,0.65)', border: `1px solid ${c.statusColor}40`, borderRadius: 8, padding: '4px 9px' }}>
+                    <span style={{ width: 5, height: 5, borderRadius: '50%', background: c.statusColor, animation: c.status === 'LIVE' ? 'livePulse 2s ease-in-out infinite' : 'none' }} />
+                    <span style={{ font: '600 9px Inter', color: c.statusColor, letterSpacing: '.08em' }}>{c.status}</span>
+                  </div>
+                  <div style={{ position: 'absolute', right: 12, top: 12, font: '500 11px Inter', color: c.statusColor, background: 'rgba(5,5,5,0.65)', borderRadius: 7, padding: '4px 8px' }}>{c.closes} left</div>
                 </div>
-                <div style={{ padding: '12px 14px' }}>
-                  <div style={{ font: '500 10px Inter', color: '#707070' }}>{c.category} · {c.prize}</div>
-                  <div style={{ font: "600 20px/1.05 'Cormorant Garamond',serif", color: '#fff', marginTop: 2 }}>{c.title}</div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 10, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-                    <div style={{ font: '600 12px Inter', color: '#A3A3A3' }}>Your allocations: <span style={{ color: '#FF8000' }}>{c.yours}</span></div>
-                    <div style={{ font: '500 11px Inter', color: '#707070' }}>{c.cr} cr each</div>
+                <div style={{ padding: '14px 16px 16px' }}>
+                  <div style={{ font: '400 11px Inter', color: '#707070' }}>{c.category} · {c.prize}</div>
+                  <div style={{ font: "600 20px/1.05 'Cormorant Garamond',serif", color: '#fff', marginTop: 3 }}>{c.title}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                    <span style={{ font: '600 13px Inter', color: '#A3A3A3' }}>Your allocations: <span style={{ color: '#FF8000' }}>{c.yours}</span></span>
+                    <span style={{ font: '500 12px Inter', color: '#707070' }}>{c.cr} cr each</span>
                   </div>
                 </div>
               </div>
@@ -45,24 +47,22 @@ export default function MyCampaigns({ onNavigate }) {
         </div>
 
         {/* Past */}
-        <div style={{ padding: '22px 20px 30px' }}>
-          <div style={{ font: '600 12px Inter', letterSpacing: '.1em', textTransform: 'uppercase', color: '#707070', marginBottom: 12 }}>Past · {past.length}</div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            {past.map(c => (
-              <div key={c.title} style={{ background: '#0d0f12', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 14, padding: '13px 14px', display: 'flex', alignItems: 'center', gap: 12 }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: '#111418', flexShrink: 0 }} />
+        <div>
+          <div style={{ font: '600 11px Inter', letterSpacing: '.12em', textTransform: 'uppercase', color: '#707070', marginBottom: 14 }}>Past · {PAST.length}</div>
+          <div style={{ background: '#0a0c0f', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 18, overflow: 'hidden' }}>
+            {PAST.map((c, i) => (
+              <div key={c.title} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '16px 20px', borderBottom: i < PAST.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none' }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: '#15181d', flexShrink: 0 }} />
                 <div style={{ flex: 1 }}>
-                  <div style={{ font: "600 14px/1 'Cormorant Garamond',serif", color: '#A3A3A3' }}>{c.title}</div>
-                  <div style={{ font: '400 11px Inter', color: '#4a4f57', marginTop: 3 }}>{c.closes} · {c.yours} allocations</div>
+                  <div style={{ font: '500 14px Inter', color: '#A3A3A3' }}>{c.title}</div>
+                  <div style={{ font: '400 12px Inter', color: '#4a4f57', marginTop: 2 }}>{c.date} · {c.yours} allocation{c.yours > 1 ? 's' : ''}</div>
                 </div>
-                <div style={{ font: '500 11px Inter', color: '#4a4f57' }}>{c.result}</div>
+                <span style={{ font: '500 12px Inter', color: '#4a4f57' }}>{c.result}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
-
-      <TabBar active="campaigns" onNavigate={onNavigate} />
     </div>
   );
 }
