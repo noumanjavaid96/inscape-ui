@@ -11,5 +11,5 @@ export const PARTNER_OFFERS = [
   { slug: 'carhartt', brand: 'Carhartt', category: 'Workwear', offer: '15% off', detail: 'Exclusive member savings on workwear.', type: 'Tracked link', accent: '#47C7FC' },
   { slug: 'lavazza', brand: 'Lavazza', category: 'Lifestyle', offer: '20% off', detail: 'Members-only pricing on premium coffee.', type: 'Promo code', accent: '#FF8000' },
   { slug: 'bowers-wilkins', brand: 'Bowers & Wilkins', category: 'Audio', offer: 'Exclusive pricing', detail: 'Member rates on premium audio.', type: 'Tracked link', accent: '#47C7FC' },
-  { slug: 'lg', brand: 'LG', category: 'Electronics', offer: 'Members-only deals', detail: 'Exclusive electronics offers for members.', type: 'Tracked link', accent: '#47C7FC' },
+  { slug: 'lg', brand: 'LG', category: 'Electronics', offer: 'Members-only pricing', detail: 'Exclusive electronics offers for members.', type: 'Tracked link', accent: '#47C7FC' },
 ];

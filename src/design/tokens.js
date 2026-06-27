@@ -56,6 +56,32 @@ export const tokens = deepFreeze({
     accentBorder: 'rgba(255,128,0,0.3)',
   },
 
+  // Light "editorial premium" palette — warm cream/white surfaces, ink type,
+  // orange reserved for primary actions. Used by the public landing. Accent and
+  // semantic hues are shared with `colors`.
+  light: {
+    page: '#FFFFFF',
+    canvas: '#FAF8F4',   // warm cream backdrop
+    panel: '#FFFFFF',
+    soft: '#F4F1EB',     // soft chip / inset surface
+    softer: '#FBFAF7',
+    ink: '#15120E',      // near-black warm ink — headings
+    body: '#56514A',     // body copy
+    dim: '#8C867D',      // muted captions
+    faint: '#B6B0A6',    // faintest labels
+    line: 'rgba(20,17,12,0.10)',
+    lineSoft: 'rgba(20,17,12,0.06)',
+    charcoal: '#16140F',     // dark editorial band
+    charcoalSoft: '#211E18',
+    glass: 'rgba(255,255,255,0.82)',
+    glassBorder: 'rgba(255,255,255,0.9)',
+    accentSoft: 'rgba(255,128,0,0.10)',
+    accentBorder: 'rgba(255,128,0,0.28)',
+    cardShadow: '0 18px 44px rgba(20,17,12,0.10)',
+    cardShadowHover: '0 30px 70px rgba(20,17,12,0.16)',
+    floatShadow: '0 24px 60px rgba(20,17,12,0.16)',
+  },
+
   radius: {
     sm: 8,
     md: 12,
