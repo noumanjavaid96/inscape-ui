@@ -5,6 +5,7 @@ import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import CampaignCard from '../components/campaign/CampaignCard';
 import PartnerStrip from '../components/brand/PartnerStrip';
+import PartnerOffers from '../components/brand/PartnerOffers';
 import IntroSplash from '../components/cinematic/IntroSplash';
 import VideoBackdrop from '../components/cinematic/VideoBackdrop';
 import FloatingEmbers from '../components/cinematic/FloatingEmbers';
@@ -19,6 +20,7 @@ import { CAMPAIGNS as ALL_CAMPAIGNS, PAST_WINNERS } from '../data/campaigns';
 const { colors, font, radius } = tokens;
 
 const CAMPAIGNS = ALL_CAMPAIGNS.slice(0, 3);
+const FEATURED = ALL_CAMPAIGNS[0];
 const WINNERS = PAST_WINNERS.slice(0, 3);
 
 // The core message: one membership, three concrete benefits.
@@ -40,15 +42,15 @@ const STEPS = [
 ];
 
 const PLANS = [
-  { name: 'Entry', price: '£14.99', credits: 40, features: ['40 monthly credits', 'Campaign access', 'Momentum tracking'], highlight: false },
-  { name: 'Premium', price: '£19.99', credits: 120, features: ['120 monthly credits', 'Priority campaign access', 'Momentum bonuses', 'Exclusive member offers', 'Referral rewards'], highlight: true },
-  { name: 'Elite', price: '£24.99', credits: 250, features: ['250 monthly credits', 'Early campaign access', 'Max Momentum tier', 'Partner offer upgrades', 'Dedicated support'], highlight: false },
+  { name: 'Entry', price: '$14.99', credits: 40, features: ['40 monthly credits', 'Campaign access', 'Momentum tracking'], highlight: false },
+  { name: 'Premium', price: '$19.99', credits: 120, features: ['120 monthly credits', 'Priority campaign access', 'Momentum bonuses', 'Exclusive member offers', 'Referral rewards'], highlight: true },
+  { name: 'Elite', price: '$24.99', credits: 250, features: ['250 monthly credits', 'Early campaign access', 'Max Momentum tier', 'Partner offer upgrades', 'Dedicated support'], highlight: false },
 ];
 
 const STATS = [
   { value: '50,000+', label: 'Active members' },
   { value: '1,200+', label: 'Live campaigns' },
-  { value: '£20M+', label: 'Member value unlocked' },
+  { value: '$20M+', label: 'Member value unlocked' },
   { value: '4.8/5', label: 'Member satisfaction' },
 ];
 
@@ -154,7 +156,7 @@ export default function PublicHome({ onNavigate }) {
             {/* Left column */}
             <div>
               <FadeIn start={introDone} delay={200} duration={900}>
-                <div style={{ marginBottom: 26 }}><Eyebrow label="UK'S LEADING MEMBERSHIP PLATFORM" pulse /></div>
+                <div style={{ marginBottom: 26 }}><Eyebrow label="USA'S LEADING MEMBERSHIP PLATFORM" pulse /></div>
               </FadeIn>
 
               <AnimatedHeading
@@ -178,7 +180,7 @@ export default function PublicHome({ onNavigate }) {
 
               <FadeIn start={introDone} delay={900} duration={1000}>
                 <p style={{ font: `400 18px/1.65 ${font.family}`, color: colors.textMuted, marginTop: 20, maxWidth: 470 }}>
-                  Win extraordinary prizes, unlock offers from leading brands and enjoy real member benefits — all from one membership, starting at <strong style={{ color: colors.text }}>£14.99/mo</strong>. Or start free with 3 Credits.
+                  Win extraordinary prizes, unlock offers from leading brands and enjoy real member benefits — all from one membership, starting at <strong style={{ color: colors.text }}>$14.99/mo</strong>. Or start free with 3 Credits.
                 </p>
               </FadeIn>
 
@@ -204,19 +206,28 @@ export default function PublicHome({ onNavigate }) {
               <FadeIn start={introDone} delay={1500} duration={900}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 28 }}>
                   <div style={{ display: 'flex' }}>
-                    {[colors.accent, colors.warning, colors.info, colors.success, colors.accent].map((c, i) => (
-                      <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: c, border: `2px solid ${colors.bg}`, marginLeft: i === 0 ? 0 : -8, opacity: 0.85 }} />
+                    {[12, 32, 45, 5, 23].map((n, i) => (
+                      <img
+                        key={n}
+                        src={`https://i.pravatar.cc/64?img=${n}`}
+                        alt=""
+                        style={{ width: 30, height: 30, borderRadius: '50%', objectFit: 'cover', border: `2px solid ${colors.bg}`, marginLeft: i === 0 ? 0 : -10 }}
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      />
                     ))}
                   </div>
-                  <span style={{ font: `400 13px ${font.family}`, color: colors.textDim }}>Trusted by <strong style={{ color: colors.textMuted }}>50,000+</strong> members across the UK</span>
+                  <span style={{ font: `400 13px ${font.family}`, color: colors.textDim }}>Trusted by <strong style={{ color: colors.textMuted }}>50,000+</strong> members across the US</span>
                 </div>
               </FadeIn>
             </div>
 
-            {/* Right column — glass tag */}
-            <FadeIn start={introDone} delay={1400} duration={1000} className="hero-tag" style={{ justifySelf: 'end' }}>
-              <div className="liquid-glass" style={{ borderRadius: radius.lg, padding: '16px 22px' }}>
-                <span style={{ font: `300 clamp(18px,2vw,24px) ${font.family}`, color: colors.text, letterSpacing: '.01em' }}>
+            {/* Right column — featured campaign */}
+            <FadeIn start={introDone} delay={1400} duration={1000} className="hero-tag" style={{ justifySelf: 'end', width: '100%', maxWidth: 380 }}>
+              <div style={{ transform: 'rotate(1deg)', boxShadow: `0 24px 60px ${FEATURED.glow}` }}>
+                <CampaignCard campaign={FEATURED} size="md" onClick={() => onNavigate('signup')} />
+              </div>
+              <div className="liquid-glass" style={{ borderRadius: radius.lg, padding: '12px 18px', marginTop: 14, textAlign: 'center' }}>
+                <span style={{ font: `300 clamp(16px,1.6vw,20px) ${font.family}`, color: colors.text, letterSpacing: '.01em' }}>
                   Premium. Exclusive. <span style={{ fontFamily: font.display, fontStyle: 'italic', color: colors.accent }}>Yours.</span>
                 </span>
               </div>
@@ -261,6 +272,33 @@ export default function PublicHome({ onNavigate }) {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* PARTNER OFFERS & DISCOUNTS */}
+      <section id="offers" style={{ padding: '90px clamp(20px, 5vw, 80px)', borderTop: `1px solid ${colors.borderFaint}`, background: 'radial-gradient(70% 60% at 80% 10%, rgba(71,199,252,0.05), transparent)' }}>
+        <div className="section-inner">
+          <Reveal>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 36, flexWrap: 'wrap', gap: 16 }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                  <Icon name="gift" size={18} color={colors.accent} />
+                  <span style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent }}>OUR PARTNERS &amp; DISCOUNTS</span>
+                </div>
+                <h2 style={{ font: `600 38px/1 ${font.display}`, color: colors.text, margin: '0 0 8px' }}>Membership that pays for itself</h2>
+                <p style={{ font: `400 15px/1.6 ${font.family}`, color: colors.textDim, maxWidth: 460, margin: 0 }}>
+                  Members unlock exclusive offers and discounts from leading brands — real savings, every month, on top of the campaigns.
+                </p>
+              </div>
+              <Button onClick={() => onNavigate('signup')} variant="ghost" size="md" style={{ border: `1px solid ${colors.accentBorder}`, color: colors.accent }}>
+                Browse all offers
+                <Icon name="arrowRight" size={15} color={colors.accent} />
+              </Button>
+            </div>
+          </Reveal>
+          <Reveal delay={120}>
+            <PartnerOffers limit={8} />
+          </Reveal>
         </div>
       </section>
 
@@ -460,7 +498,7 @@ export default function PublicHome({ onNavigate }) {
             <div style={{ font: `400 12px ${font.family}`, color: colors.textGhost }}>© 2026 InScape. All rights reserved.</div>
           </div>
           <div style={{ marginTop: 20, font: `400 11px/1.6 ${font.family}`, color: colors.textGhost, maxWidth: 600 }}>
-            InScape is a skill-based membership platform. No purchase necessary. Open to UK residents 18+. See Official Rules for full eligibility and selection procedures.
+            InScape is a skill-based membership platform. No purchase necessary. Open to US residents 18+. See Official Rules for full eligibility and selection procedures.
           </div>
         </div>
       </footer>

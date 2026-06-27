@@ -10,7 +10,7 @@ import { findCampaign } from '../data/campaigns';
 
 const { colors, font, radius } = tokens;
 
-const ELIGIBILITY = ['UK residents 18+', 'Minimum 1 Credit', 'No purchase necessary', 'Official Rules apply'];
+const ELIGIBILITY = ['US residents 18+', 'Minimum 1 Credit', 'No purchase necessary', 'Official Rules apply'];
 
 export default function CampaignDetail({ onNavigate, params = {} }) {
   const { isMobile, isDesktop } = useBreakpoint();
@@ -113,7 +113,7 @@ export default function CampaignDetail({ onNavigate, params = {} }) {
                   Join Campaign
                 </Button>
                 <p style={{ font: `400 11px/1.6 ${font.family}`, color: colors.textGhost, textAlign: 'center', margin: 0 }}>
-                  By joining you agree to the Official Rules. UK residents 18+ only.
+                  By joining you agree to the Official Rules. US residents 18+ only.
                 </p>
                 <div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${colors.borderFaint}` }}>
                   <div style={{ font: `600 11px ${font.family}`, color: colors.textFaint, letterSpacing: '.08em', marginBottom: 10 }}>DRAW DETAILS</div>

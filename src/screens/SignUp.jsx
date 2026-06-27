@@ -9,7 +9,7 @@ import Icon from '../components/ui/Icon';
 const { colors, font, radius } = tokens;
 
 const CONSENTS = [
-  { key: 'age', label: 'I confirm I am 18 years of age or older and a UK resident.' },
+  { key: 'age', label: 'I confirm I am 18 years of age or older and a US resident.' },
   { key: 'rules', label: 'I have read and agree to the Official Rules governing campaign draws.' },
   { key: 'terms', label: 'I agree to the Terms of Service and Privacy Policy.' },
 ];

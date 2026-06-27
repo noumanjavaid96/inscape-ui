@@ -7,13 +7,13 @@ import CampaignCard from '../components/campaign/CampaignCard';
 const { colors, font, radius } = tokens;
 
 const ACTIVE = [
-  { title: 'Range Rover Sport', category: 'Vehicles', prize: '£92,000', allocations: 2, timeLeft: '2d 14h', status: 'LIVE', statusColor: colors.accent, gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.12)' },
-  { title: '7 Nights, Maldives', category: 'Travel', prize: '£18,500', allocations: 4, timeLeft: '9h 40m', status: 'CLOSING SOON', statusColor: colors.warning, gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.12)' },
+  { title: 'Range Rover Sport', category: 'Vehicles', prize: '$92,000', allocations: 2, timeLeft: '2d 14h', status: 'LIVE', statusColor: colors.accent, gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.12)' },
+  { title: '7 Nights, Maldives', category: 'Travel', prize: '$18,500', allocations: 4, timeLeft: '9h 40m', status: 'CLOSING SOON', statusColor: colors.warning, gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.12)' },
 ];
 
 const PAST = [
-  { title: 'Tesla Model 3', category: 'Vehicles', prize: '£42,000', yours: 1, result: 'Did not win', date: 'Ended May 15' },
-  { title: 'NYC Weekend Break', category: 'Travel', prize: '£3,200', yours: 3, result: 'Did not win', date: 'Ended Apr 28' },
+  { title: 'Tesla Model 3', category: 'Vehicles', prize: '$42,000', yours: 1, result: 'Did not win', date: 'Ended May 15' },
+  { title: 'NYC Weekend Break', category: 'Travel', prize: '$3,200', yours: 3, result: 'Did not win', date: 'Ended Apr 28' },
 ];
 
 export default function MyCampaigns({ onNavigate }) {

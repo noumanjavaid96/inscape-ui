@@ -10,11 +10,11 @@ import PageHeader from '../components/layout/PageHeader';
 const { colors, font, radius } = tokens;
 
 const PACKAGES = [
-  { name: 'Bronze', price: '£2', credits: 1, badge: null },
-  { name: 'Silver', price: '£9', credits: 5, badge: null },
-  { name: 'Gold', price: '£17', credits: 10, badge: null },
-  { name: 'Platinum', price: '£30', credits: 30, badge: 'Best value' },
-  { name: 'Diamond', price: '£200', credits: 300, badge: null },
+  { name: 'Bronze', price: '$2', credits: 1, badge: null },
+  { name: 'Silver', price: '$9', credits: 5, badge: null },
+  { name: 'Gold', price: '$17', credits: 10, badge: null },
+  { name: 'Platinum', price: '$30', credits: 30, badge: 'Best value' },
+  { name: 'Diamond', price: '$200', credits: 300, badge: null },
 ];
 
 export default function Boost({ onNavigate }) {

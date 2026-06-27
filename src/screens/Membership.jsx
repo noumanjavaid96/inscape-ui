@@ -7,9 +7,9 @@ import Icon from '../components/ui/Icon';
 const { colors, font, radius } = tokens;
 
 const PLANS = [
-  { name: 'Entry', price: { monthly: '£14.99', annual: '£149.99' }, credits: 40, features: ['40 monthly credits', 'Campaign access', 'Momentum tracking', 'Email support'], highlight: false },
-  { name: 'Premium', price: { monthly: '£19.99', annual: '£199.99' }, credits: 120, features: ['120 monthly credits', 'Priority access', 'Momentum bonuses', 'Exclusive member offers', 'Referral rewards', 'Live chat support'], highlight: true },
-  { name: 'Elite', price: { monthly: '£24.99', annual: '£249.99' }, credits: 250, features: ['250 monthly credits', 'Early campaign access', 'Max Momentum tier', 'Partner offer upgrades', 'Dedicated support', 'Annual prize draws'], highlight: false },
+  { name: 'Entry', price: { monthly: '$14.99', annual: '$149.99' }, credits: 40, features: ['40 monthly credits', 'Campaign access', 'Momentum tracking', 'Email support'], highlight: false },
+  { name: 'Premium', price: { monthly: '$19.99', annual: '$199.99' }, credits: 120, features: ['120 monthly credits', 'Priority access', 'Momentum bonuses', 'Exclusive member offers', 'Referral rewards', 'Live chat support'], highlight: true },
+  { name: 'Elite', price: { monthly: '$24.99', annual: '$249.99' }, credits: 250, features: ['250 monthly credits', 'Early campaign access', 'Max Momentum tier', 'Partner offer upgrades', 'Dedicated support', 'Annual prize draws'], highlight: false },
 ];
 
 export default function Membership({ onNavigate }) {

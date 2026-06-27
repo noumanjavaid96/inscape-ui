@@ -1,63 +1,51 @@
+import { useState } from 'react';
 import tokens from '../design/tokens';
 import { useBreakpoint } from '../hooks/useBreakpoint';
-import Button from '../components/ui/Button';
-import Badge from '../components/ui/Badge';
-import Icon from '../components/ui/Icon';
 import PageHeader from '../components/layout/PageHeader';
+import PartnerOffers from '../components/brand/PartnerOffers';
+import { PARTNER_OFFERS } from '../data/offers';
 
-const { colors, font, radius } = tokens;
+const { colors, font } = tokens;
 
-const OFFERS = [
-  { brand: 'Voyage Privé', category: 'Travel', title: 'Members-only luxury travel rates', body: 'Exclusive access to 5-star hotels and private villa packages at up to 70% off. Tracked link — no code needed.', code: null, badge: null, accent: colors.info },
-  { brand: 'Helios Tech', category: 'Electronics', title: '20% off premium audio and displays', body: 'Members receive an exclusive 20% discount across the full Helios range. Use at checkout online or in store.', code: 'INSCAPE20', badge: 'MEMBER EXCLUSIVE', accent: colors.accent },
-];
+const CATEGORIES = ['All', ...Array.from(new Set(PARTNER_OFFERS.map((o) => o.category)))];
 
 export default function Offers() {
+  const [category, setCategory] = useState('All');
   const { isMobile, isDesktop } = useBreakpoint();
+  const filtered = category === 'All' ? PARTNER_OFFERS : PARTNER_OFFERS.filter((o) => o.category === category);
 
   return (
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
-      <div style={{ maxWidth: 860, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
+      <div style={{ maxWidth: 1100, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
 
-        <PageHeader title="Partner Offers" subtitle="Exclusive offers for InScape members." />
+        <PageHeader title="Partner Offers" subtitle={`${filtered.length} exclusive member offers — real savings, every month.`} />
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {OFFERS.map(o => (
-            <div
-              key={o.brand}
-              style={{ background: colors.bg2, border: `1px solid ${colors.border}`, borderRadius: radius.xl, overflow: 'hidden', transition: 'border-color 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.borderColor = colors.borderStrong}
-              onMouseLeave={e => e.currentTarget.style.borderColor = colors.border}
+        {/* Category filter */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 24, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
+          {CATEGORIES.map((c) => (
+            <button
+              key={c}
+              onClick={() => setCategory(c)}
+              style={{
+                font: `${category === c ? 600 : 500} 13px ${font.family}`,
+                color: category === c ? colors.bg : colors.textMuted,
+                background: category === c ? colors.accent : colors.bg4,
+                border: `1px solid ${category === c ? 'transparent' : colors.border}`,
+                borderRadius: 10, padding: '9px 16px', whiteSpace: 'nowrap', cursor: 'pointer', transition: 'all 0.15s',
+              }}
             >
-              <div style={{ height: 8, background: `linear-gradient(90deg,${o.accent}40,transparent)` }} />
-              <div style={{ padding: '22px 24px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-                  <span style={{ font: `600 11px ${font.family}`, letterSpacing: '.08em', color: o.accent, textTransform: 'uppercase' }}>{o.category}</span>
-                  {o.badge && <Badge label={o.badge} color="orange" size="sm" />}
-                </div>
-                <div style={{ font: `600 13px ${font.family}`, color: colors.textDim }}>{o.brand}</div>
-                <h2 style={{ font: `600 18px/1.2 ${font.family}`, color: colors.text, margin: '4px 0 12px' }}>{o.title}</h2>
-                <p style={{ font: `400 14px/1.65 ${font.family}`, color: colors.textMuted, margin: '0 0 18px' }}>{o.body}</p>
-                {o.code ? (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, borderRadius: radius.sm, padding: '10px 16px' }}>
-                      <span style={{ font: `600 16px ${font.family}`, color: colors.accent, letterSpacing: '.05em' }}>{o.code}</span>
-                    </div>
-                    <Button size="md">Copy code</Button>
-                  </div>
-                ) : (
-                  <button style={{ height: 42, padding: '0 22px', borderRadius: radius.sm, background: 'rgba(71,199,252,0.1)', border: `1px solid ${colors.info}4d`, cursor: 'pointer', font: `600 13px ${font.family}`, color: colors.info, display: 'inline-flex', alignItems: 'center', gap: 8 }}>
-                    Open offer
-                    <Icon name="arrowRight" size={14} color={colors.info} />
-                  </button>
-                )}
-              </div>
-            </div>
+              {c}
+            </button>
           ))}
         </div>
 
+        <PartnerOffers
+          offers={filtered}
+          columns={isDesktop ? 'repeat(3,1fr)' : isMobile ? '1fr' : 'repeat(2,1fr)'}
+        />
+
         <p style={{ font: `400 12px/1.6 ${font.family}`, color: colors.textGhost, marginTop: 24 }}>
-          Partner offers are provided by third-party brands. InScape is not responsible for offer availability or terms. Offers are exclusive to current InScape members.
+          Partner offers are provided by third-party brands and are exclusive to current InScape members. InScape is not responsible for offer availability or terms.
         </p>
       </div>
     </div>

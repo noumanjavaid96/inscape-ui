@@ -79,7 +79,7 @@ export default function Allocate({ onNavigate, params = {} }) {
           </Button>
 
           <p style={{ font: `400 11px/1.6 ${font.family}`, color: colors.textGhost, textAlign: 'center', margin: 0 }}>
-            By confirming you agree to the Official Rules. No purchase necessary. UK residents 18+.
+            By confirming you agree to the Official Rules. No purchase necessary. US residents 18+.
           </p>
         </Card>
       </div>
