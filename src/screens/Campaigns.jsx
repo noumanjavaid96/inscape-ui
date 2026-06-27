@@ -1,11 +1,17 @@
 import { useState } from 'react';
+import tokens from '../design/tokens';
 import { useBreakpoint } from '../hooks/useBreakpoint';
+import Icon from '../components/ui/Icon';
+import PageHeader from '../components/layout/PageHeader';
+import CampaignCard from '../components/campaign/CampaignCard';
+
+const { colors, font } = tokens;
 
 const ALL_CAMPAIGNS = [
-  { id: 1, status: 'LIVE', statusColor: '#FF8000', timeLeft: '2d 14h', category: 'Vehicles', prize: '£92,000', title: 'Range Rover Sport', cr: 1, entries: '4,821', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.12)' },
-  { id: 2, status: 'CLOSING SOON', statusColor: '#F0B43C', timeLeft: '9h 40m', category: 'Travel', prize: '£18,500', title: '7 Nights, Maldives', cr: 1, entries: '2,104', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.12)' },
-  { id: 3, status: 'LIVE', statusColor: '#FF8000', timeLeft: '5d 2h', category: 'Tech', prize: '£3,499', title: 'MacBook Pro M4', cr: 1, entries: '1,338', gradient: 'linear-gradient(135deg,#141820,#0a0c10)', glow: 'rgba(71,199,252,0.1)' },
-  { id: 4, status: 'UPCOMING', statusColor: '#47C7FC', timeLeft: 'Starts in 3d', category: 'Travel', prize: '£12,000', title: 'Swiss Alps Retreat', cr: 1, entries: '—', gradient: 'linear-gradient(135deg,#141c20,#0a0e10)', glow: 'rgba(71,199,252,0.1)' },
+  { id: 1, status: 'LIVE', statusColor: colors.accent, timeLeft: '2d 14h', category: 'Vehicles', prize: '£92,000', title: 'Range Rover Sport', entries: '4,821', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.12)' },
+  { id: 2, status: 'CLOSING SOON', statusColor: colors.warning, timeLeft: '9h 40m', category: 'Travel', prize: '£18,500', title: '7 Nights, Maldives', entries: '2,104', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.12)' },
+  { id: 3, status: 'LIVE', statusColor: colors.accent, timeLeft: '5d 2h', category: 'Tech', prize: '£3,499', title: 'MacBook Pro M4', entries: '1,338', gradient: 'linear-gradient(135deg,#141820,#0a0c10)', glow: 'rgba(71,199,252,0.1)' },
+  { id: 4, status: 'UPCOMING', statusColor: colors.info, timeLeft: 'Starts in 3d', category: 'Travel', prize: '£12,000', title: 'Swiss Alps Retreat', entries: '—', gradient: 'linear-gradient(135deg,#141c20,#0a0e10)', glow: 'rgba(71,199,252,0.1)' },
 ];
 
 const FILTERS = ['All', 'Travel', 'Vehicles', 'Tech', 'Cash'];
@@ -15,80 +21,76 @@ export default function Campaigns({ onNavigate }) {
   const [filter, setFilter] = useState('All');
   const [statusTab, setStatusTab] = useState('Live');
   const { isMobile, isDesktop } = useBreakpoint();
-
   const filtered = ALL_CAMPAIGNS.filter(c => filter === 'All' || c.category === filter);
 
   return (
-    <div style={{ background: '#050505', minHeight: '100vh' }}>
+    <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
 
-        {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
-          <div>
-            <h1 style={{ font: '700 32px/1 Inter', color: '#fff', margin: 0, letterSpacing: '-.02em' }}>Campaigns</h1>
-            <p style={{ font: '400 14px Inter', color: '#707070', margin: '6px 0 0' }}>{filtered.length} campaigns available</p>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={{ width: 42, height: 42, borderRadius: '50%', background: '#111418', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <svg width="19" height="19" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="#fff" strokeWidth="1.7"/><path d="M16 16l4 4" stroke="#fff" strokeWidth="1.7" strokeLinecap="round"/></svg>
+        <PageHeader
+          title="Campaigns"
+          subtitle={`${filtered.length} campaigns available`}
+          actions={
+            <div style={{ width: 42, height: 42, borderRadius: '50%', background: colors.bg4, border: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+              <Icon name="search" size={19} color={colors.text} />
             </div>
-          </div>
-        </div>
+          }
+        />
 
-        {/* Filters */}
+        {/* Category filters */}
         <div style={{ display: 'flex', gap: 8, marginBottom: 16, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
           {FILTERS.map(f => (
-            <button key={f} onClick={() => setFilter(f)} style={{
-              font: `${filter === f ? 600 : 500} 13px Inter`,
-              color: filter === f ? '#050505' : '#A3A3A3',
-              background: filter === f ? '#FF8000' : '#111418',
-              border: filter === f ? 'none' : '1px solid rgba(255,255,255,0.08)',
-              borderRadius: 10, padding: '9px 16px', whiteSpace: 'nowrap', cursor: 'pointer',
-              transition: 'all 0.15s',
-            }}>{f}</button>
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              style={{
+                font: `${filter === f ? 600 : 500} 13px ${font.family}`,
+                color: filter === f ? colors.bg : colors.textMuted,
+                background: filter === f ? colors.accent : colors.bg4,
+                border: `1px solid ${filter === f ? 'transparent' : colors.border}`,
+                borderRadius: 10,
+                padding: '9px 16px',
+                whiteSpace: 'nowrap',
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+              }}
+            >
+              {f}
+            </button>
           ))}
         </div>
 
         {/* Status tabs */}
-        <div style={{ display: 'flex', marginBottom: 28, background: '#0d0f12', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 13, padding: 4, maxWidth: 320 }}>
+        <div style={{ display: 'flex', marginBottom: 28, background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: 13, padding: 4, maxWidth: 300 }}>
           {STATUS_TABS.map(t => (
-            <button key={t} onClick={() => setStatusTab(t)} style={{
-              flex: 1, font: `${statusTab === t ? 600 : 500} 13px Inter`,
-              color: statusTab === t ? '#fff' : '#707070',
-              background: statusTab === t ? '#22262c' : 'transparent',
-              border: 'none', borderRadius: 10, padding: '9px 0', cursor: 'pointer',
-              transition: 'all 0.15s',
-            }}>{t}</button>
+            <button
+              key={t}
+              onClick={() => setStatusTab(t)}
+              style={{
+                flex: 1,
+                font: `${statusTab === t ? 600 : 500} 13px ${font.family}`,
+                color: statusTab === t ? colors.text : colors.textDim,
+                background: statusTab === t ? '#22262c' : 'transparent',
+                border: 'none',
+                borderRadius: 10,
+                padding: '9px 0',
+                cursor: 'pointer',
+                transition: 'all 0.15s',
+              }}
+            >
+              {t}
+            </button>
           ))}
         </div>
 
-        {/* Campaign grid */}
         <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? 'repeat(3,1fr)' : isMobile ? '1fr' : 'repeat(2,1fr)', gap: 20 }}>
           {filtered.map(c => (
-            <div key={c.id} onClick={() => onNavigate('campaign-detail')} style={{ background: '#0d0f12', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, overflow: 'hidden', cursor: 'pointer', transition: 'transform 0.2s ease, border-color 0.2s, box-shadow 0.2s' }}
-              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.boxShadow = `0 16px 40px ${c.glow}`; }}
-              onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.boxShadow = 'none'; }}
-            >
-              <div style={{ height: 160, background: c.gradient, position: 'relative' }}>
-                <div style={{ position: 'absolute', top: 12, left: 12, display: 'flex', alignItems: 'center', gap: 5, background: 'rgba(5,5,5,0.65)', border: `1px solid ${c.statusColor}40`, borderRadius: 8, padding: '4px 10px' }}>
-                  <span style={{ width: 5, height: 5, borderRadius: '50%', background: c.statusColor, animation: c.status === 'LIVE' ? 'livePulse 2s ease-in-out infinite' : 'none' }} />
-                  <span style={{ font: '600 10px Inter', color: c.statusColor, letterSpacing: '.07em' }}>{c.status}</span>
-                </div>
-                <div style={{ position: 'absolute', right: 12, top: 12, font: '500 11px Inter', color: '#A3A3A3', background: 'rgba(5,5,5,0.65)', borderRadius: 7, padding: '4px 9px' }}>{c.timeLeft} left</div>
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(13,15,18,0.7),transparent 60%)' }} />
-              </div>
-              <div style={{ padding: '16px 18px 18px' }}>
-                <div style={{ font: '400 11px Inter', color: '#707070' }}>{c.category} · Prize value {c.prize}</div>
-                <div style={{ font: "700 22px/1.05 'Cormorant Garamond',serif", color: '#fff', marginTop: 5 }}>{c.title}</div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 14, paddingTop: 12, borderTop: '1px solid rgba(255,255,255,0.07)' }}>
-                  <div style={{ font: '500 12px Inter', color: '#707070' }}>{c.entries} entries</div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 5, font: '600 13px Inter', color: '#FF8000' }}>
-                    Allocate
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="#FF8000" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <CampaignCard
+              key={c.id}
+              campaign={c}
+              size="md"
+              onClick={() => onNavigate('campaign-detail')}
+            />
           ))}
         </div>
       </div>
