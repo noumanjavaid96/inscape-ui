@@ -5,8 +5,21 @@ import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import CampaignCard from '../components/campaign/CampaignCard';
 import PartnerStrip from '../components/brand/PartnerStrip';
+import IntroSplash from '../components/cinematic/IntroSplash';
+import VideoBackdrop from '../components/cinematic/VideoBackdrop';
+import FloatingEmbers from '../components/cinematic/FloatingEmbers';
+import FilmGrain from '../components/cinematic/FilmGrain';
+import CursorGlow from '../components/cinematic/CursorGlow';
+import AnimatedHeading from '../components/cinematic/AnimatedHeading';
+import MagneticButton from '../components/cinematic/MagneticButton';
+import FadeIn from '../components/cinematic/FadeIn';
+import Reveal from '../components/cinematic/Reveal';
 
 const { colors, font, radius } = tokens;
+
+// Drop the generated InScape hero clip URL here to activate the video backdrop.
+// While empty, VideoBackdrop renders a cinematic animated-gradient fallback.
+const HERO_VIDEO_SRC = '';
 
 const CAMPAIGNS = [
   { title: 'Range Rover Sport', category: 'Vehicles', prize: '£92,000', timeLeft: '2d 14h', participants: '4,821', status: 'LIVE', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.15)' },
@@ -37,7 +50,7 @@ function NavBar({ onNavigate, scrolled }) {
   return (
     <nav style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, height: 64,
-      background: scrolled ? 'rgba(5,5,5,0.92)' : 'transparent',
+      background: scrolled ? 'rgba(5,5,5,0.82)' : 'transparent',
       backdropFilter: scrolled ? 'blur(20px)' : 'none',
       borderBottom: `1px solid ${scrolled ? colors.borderFaint : 'transparent'}`,
       transition: 'all 0.3s ease',
@@ -73,15 +86,17 @@ function NavBar({ onNavigate, scrolled }) {
 
 function Eyebrow({ label, pulse = false }) {
   return (
-    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, borderRadius: radius.full, padding: '6px 14px' }}>
+    <div className="liquid-glass" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, borderRadius: radius.full, padding: '7px 15px' }}>
       <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.accent, animation: pulse ? 'livePulse 2s ease-in-out infinite' : 'none' }} />
-      <span style={{ font: `600 11px ${font.family}`, letterSpacing: '.12em', color: colors.accent }}>{label}</span>
+      <span style={{ font: `600 11px ${font.family}`, letterSpacing: '.12em', color: colors.text }}>{label}</span>
     </div>
   );
 }
 
 export default function PublicHome({ onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
+
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handler);
@@ -95,98 +110,143 @@ export default function PublicHome({ onNavigate }) {
           .desktop-nav { display: none !important; }
           .hero-grid, .campaigns-grid, .steps-grid, .plans-grid { grid-template-columns: 1fr !important; }
           .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
-          .hero-title { font-size: clamp(42px, 11vw, 80px) !important; }
+          .hero-title { font-size: clamp(38px, 11vw, 60px) !important; }
           .step-connector { display: none !important; }
+          .hero-tag { justify-self: start !important; margin-top: 24px; }
         }
         @media (min-width: 769px) and (max-width: 1023px) {
-          .hero-title { font-size: clamp(52px, 7vw, 80px) !important; }
+          .hero-title { font-size: clamp(44px, 6.4vw, 62px) !important; }
           .campaigns-grid, .plans-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .step-connector { display: none !important; }
         }
-        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px; }
+        .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; align-items: end; gap: 40px; }
         .campaigns-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-        .hero-title { font-size: clamp(52px, 5vw, 88px); }
+        .hero-title { font-size: clamp(48px, 5vw, 72px); }
+        .nav-underline { position: relative; }
         .section-inner { max-width: 1200px; margin: 0 auto; }
       `}</style>
 
+      <IntroSplash onDone={() => setIntroDone(true)} />
+      <FilmGrain />
+      <CursorGlow />
+
       <NavBar onNavigate={onNavigate} scrolled={scrolled} />
 
-      {/* HERO */}
-      <section style={{ padding: '140px clamp(20px, 5vw, 80px) 100px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(70% 60% at 60% 40%, rgba(255,128,0,0.07) 0%, transparent 65%), radial-gradient(40% 50% at 20% 80%, rgba(71,199,252,0.05) 0%, transparent 60%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,128,0,0.3), transparent)' }} />
+      {/* CINEMATIC HERO */}
+      <section style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+        <VideoBackdrop src={HERO_VIDEO_SRC} />
+        <FloatingEmbers />
 
-        <div className="section-inner">
+        <div
+          className="section-inner"
+          style={{ width: '100%', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '120px clamp(20px, 5vw, 80px) 72px', position: 'relative', zIndex: 10 }}
+        >
           <div className="hero-grid">
+            {/* Left column */}
             <div>
-              <div style={{ marginBottom: 28 }}><Eyebrow label="UK'S LEADING MEMBERSHIP PLATFORM" /></div>
+              <FadeIn start={introDone} delay={200} duration={900}>
+                <div style={{ marginBottom: 26 }}><Eyebrow label="SAME-DAY ACCESS · UK'S LEADING MEMBERSHIP PLATFORM" pulse /></div>
+              </FadeIn>
 
-              <h1 className="hero-title" style={{ font: `800 80px/0.98 ${font.family}`, color: colors.text, letterSpacing: '-.03em', margin: 0 }}>
-                More Access.<br />More Experiences.<br /><span style={{ color: colors.accent }}>More You.</span>
-              </h1>
+              <AnimatedHeading
+                className="hero-title"
+                start={introDone}
+                accentWord="You"
+                accentColor={colors.accent}
+                lines={['More Access.', 'More Experiences.', 'More You.']}
+                style={{ fontFamily: font.family, fontWeight: 800, lineHeight: 0.98, letterSpacing: '-.03em', color: colors.text }}
+              />
 
-              <p style={{ font: `400 18px/1.65 ${font.family}`, color: colors.textMuted, marginTop: 28, maxWidth: 440 }}>
-                Unlock premium campaigns, exclusive partner offers and unforgettable experiences — all through one membership. Start with 3 free Credits.
-              </p>
+              <FadeIn start={introDone} delay={800} duration={1000}>
+                <p style={{ font: `400 18px/1.65 ${font.family}`, color: colors.textMuted, marginTop: 24, maxWidth: 460 }}>
+                  Unlock premium campaigns, exclusive partner offers and unforgettable experiences — all through one membership. Start with 3 free Credits.
+                </p>
+              </FadeIn>
 
-              <div style={{ display: 'flex', gap: 12, marginTop: 36, flexWrap: 'wrap' }}>
-                <Button onClick={() => onNavigate('campaigns')} size="lg">
-                  Explore Live Campaigns
-                  <Icon name="arrowRight" size={17} color={colors.bg} />
-                </Button>
-                <Button onClick={() => onNavigate('signup')} variant="secondary" size="lg">Become a Member</Button>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 28 }}>
-                <div style={{ display: 'flex' }}>
-                  {[colors.accent, colors.warning, colors.info, colors.success, colors.accent].map((c, i) => (
-                    <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: c, border: `2px solid ${colors.bg}`, marginLeft: i === 0 ? 0 : -8, opacity: 0.85 }} />
-                  ))}
+              <FadeIn start={introDone} delay={1200} duration={1000}>
+                <div style={{ display: 'flex', gap: 14, marginTop: 34, flexWrap: 'wrap' }}>
+                  <MagneticButton
+                    onClick={() => onNavigate('campaigns')}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 8, height: 56, padding: '0 30px', borderRadius: radius.md, background: colors.accent, border: 'none', color: colors.bg, font: `600 16px ${font.family}`, boxShadow: tokens.shadow.glow }}
+                  >
+                    Explore Live Campaigns
+                    <Icon name="arrowRight" size={17} color={colors.bg} />
+                  </MagneticButton>
+                  <MagneticButton
+                    onClick={() => onNavigate('signup')}
+                    className="liquid-glass"
+                    style={{ height: 56, padding: '0 30px', borderRadius: radius.md, color: colors.text, font: `600 16px ${font.family}` }}
+                  >
+                    Become a Member
+                  </MagneticButton>
                 </div>
-                <span style={{ font: `400 13px ${font.family}`, color: colors.textDim }}>Trusted by <strong style={{ color: colors.textMuted }}>50,000+</strong> members across the UK</span>
-              </div>
+              </FadeIn>
+
+              <FadeIn start={introDone} delay={1500} duration={900}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 28 }}>
+                  <div style={{ display: 'flex' }}>
+                    {[colors.accent, colors.warning, colors.info, colors.success, colors.accent].map((c, i) => (
+                      <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: c, border: `2px solid ${colors.bg}`, marginLeft: i === 0 ? 0 : -8, opacity: 0.85 }} />
+                    ))}
+                  </div>
+                  <span style={{ font: `400 13px ${font.family}`, color: colors.textDim }}>Trusted by <strong style={{ color: colors.textMuted }}>50,000+</strong> members across the UK</span>
+                </div>
+              </FadeIn>
             </div>
 
-            <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {CAMPAIGNS.slice(0, 2).map((c, i) => (
-                <div key={c.title} style={{ transform: i === 0 ? 'rotate(-1deg)' : 'rotate(0.8deg)', transition: 'transform 0.3s ease' }}
-                  onMouseEnter={e => e.currentTarget.style.transform = 'rotate(0deg) translateY(-4px)'}
-                  onMouseLeave={e => e.currentTarget.style.transform = i === 0 ? 'rotate(-1deg)' : 'rotate(0.8deg)'}
-                >
-                  <CampaignCard campaign={c} onClick={() => onNavigate('signup')} size="md" />
-                </div>
-              ))}
-              <div style={{ position: 'absolute', bottom: -40, left: '50%', transform: 'translateX(-50%)', width: 200, height: 200, background: 'radial-gradient(50% 50%, rgba(255,128,0,0.15), transparent)', pointerEvents: 'none' }} />
-            </div>
+            {/* Right column — glass tag */}
+            <FadeIn start={introDone} delay={1400} duration={1000} className="hero-tag" style={{ justifySelf: 'end' }}>
+              <div className="liquid-glass" style={{ borderRadius: radius.lg, padding: '16px 22px' }}>
+                <span style={{ font: `300 clamp(18px,2vw,24px) ${font.family}`, color: colors.text, letterSpacing: '.01em' }}>
+                  Premium. Exclusive. <span style={{ fontFamily: font.display, fontStyle: 'italic', color: colors.accent }}>Yours.</span>
+                </span>
+              </div>
+            </FadeIn>
           </div>
+
+          {/* Scroll cue */}
+          <FadeIn start={introDone} delay={1700} duration={900} style={{ position: 'absolute', left: '50%', bottom: 22, transform: 'translateX(-50%)', pointerEvents: 'none' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+              <span style={{ font: `500 10px ${font.family}`, letterSpacing: '.2em', color: colors.textDim }}>SCROLL</span>
+              <div style={{ width: 1, height: 38, background: `linear-gradient(${colors.textDim}, transparent)`, position: 'relative' }}>
+                <span style={{ position: 'absolute', top: 0, left: -1.5, width: 4, height: 4, borderRadius: '50%', background: colors.accent, animation: 'scrollDot 2.2s ease-in-out infinite' }} />
+              </div>
+            </div>
+          </FadeIn>
         </div>
       </section>
 
       {/* PARTNER STRIP */}
-      <section style={{ padding: '8px clamp(20px, 5vw, 80px) 64px' }}>
+      <section style={{ padding: '56px clamp(20px, 5vw, 80px) 56px', borderTop: `1px solid ${colors.borderFaint}` }}>
         <div className="section-inner">
-          <PartnerStrip />
+          <Reveal><PartnerStrip /></Reveal>
         </div>
       </section>
 
       {/* LIVE CAMPAIGNS */}
       <section id="campaigns" style={{ padding: '80px clamp(20px, 5vw, 80px)', borderTop: `1px solid ${colors.borderFaint}` }}>
         <div className="section-inner">
-          <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 40, flexWrap: 'wrap', gap: 16 }}>
-            <div>
-              <div style={{ marginBottom: 12 }}><Eyebrow label="LIVE NOW" pulse /></div>
-              <h2 style={{ font: `600 38px/1 ${font.display}`, color: colors.text, margin: 0 }}>Campaigns running now</h2>
+          <Reveal>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 40, flexWrap: 'wrap', gap: 16 }}>
+              <div>
+                <div style={{ marginBottom: 12 }}><Eyebrow label="LIVE NOW" pulse /></div>
+                <h2 style={{ font: `600 38px/1 ${font.display}`, color: colors.text, margin: 0 }}>Campaigns running now</h2>
+              </div>
+              <Button onClick={() => onNavigate('campaigns')} variant="ghost" size="md" style={{ border: `1px solid ${colors.accentBorder}`, color: colors.accent }}>
+                View all
+                <Icon name="arrowRight" size={15} color={colors.accent} />
+              </Button>
             </div>
-            <Button onClick={() => onNavigate('campaigns')} variant="ghost" size="md" style={{ border: `1px solid ${colors.accentBorder}`, color: colors.accent }}>
-              View all
-              <Icon name="arrowRight" size={15} color={colors.accent} />
-            </Button>
-          </div>
+          </Reveal>
           <div className="campaigns-grid">
-            {CAMPAIGNS.map(c => <CampaignCard key={c.title} campaign={c} onClick={() => onNavigate('signup')} size="md" />)}
+            {CAMPAIGNS.map((c, i) => (
+              <Reveal key={c.title} delay={i * 120}>
+                <CampaignCard campaign={c} onClick={() => onNavigate('signup')} size="md" />
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
@@ -194,30 +254,31 @@ export default function PublicHome({ onNavigate }) {
       {/* HOW IT WORKS */}
       <section id="how-it-works" style={{ padding: '100px clamp(20px, 5vw, 80px)', background: 'radial-gradient(80% 60% at 50% 50%, rgba(255,128,0,0.04), transparent)' }}>
         <div className="section-inner">
-          <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent, marginBottom: 14 }}>HOW IT WORKS</div>
-            <h2 style={{ font: `600 42px/1.05 ${font.display}`, color: colors.text, margin: 0 }}>Three steps to extraordinary</h2>
-          </div>
+          <Reveal>
+            <div style={{ textAlign: 'center', marginBottom: 64 }}>
+              <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent, marginBottom: 14 }}>HOW IT WORKS</div>
+              <h2 style={{ font: `600 42px/1.05 ${font.display}`, color: colors.text, margin: 0 }}>Three steps to extraordinary</h2>
+            </div>
+          </Reveal>
           <div className="steps-grid">
             {STEPS.map((s, i) => (
-              <div key={s.num} style={{ position: 'relative' }}>
-                {i < STEPS.length - 1 && (
-                  <div className="step-connector" style={{ position: 'absolute', top: 34, left: 'calc(100% - 12px)', width: 'calc(100% - 24px)', height: 1, background: 'linear-gradient(90deg, rgba(255,128,0,0.4), rgba(255,128,0,0.1))', zIndex: 0 }} />
-                )}
-                <div style={{ background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: radius.xl, padding: '28px 26px', position: 'relative', transition: 'border-color 0.2s, transform 0.2s' }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = colors.accentBorder; e.currentTarget.style.transform = 'translateY(-3px)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = colors.border; e.currentTarget.style.transform = 'none'; }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-                    <div style={{ width: 52, height: 52, borderRadius: radius.md, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <Icon name={s.icon} size={26} color={colors.accent} />
+              <Reveal key={s.num} delay={i * 120}>
+                <div style={{ position: 'relative' }}>
+                  {i < STEPS.length - 1 && (
+                    <div className="step-connector" style={{ position: 'absolute', top: 34, left: 'calc(100% - 12px)', width: 'calc(100% - 24px)', height: 1, background: 'linear-gradient(90deg, rgba(255,128,0,0.4), rgba(255,128,0,0.1))', zIndex: 0 }} />
+                  )}
+                  <div className="liquid-glass" style={{ borderRadius: radius.xl, padding: '28px 26px', position: 'relative' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
+                      <div style={{ width: 52, height: 52, borderRadius: radius.md, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <Icon name={s.icon} size={26} color={colors.accent} />
+                      </div>
+                      <span style={{ font: `700 32px/1 ${font.display}`, color: 'rgba(255,128,0,0.2)' }}>{s.num}</span>
                     </div>
-                    <span style={{ font: `700 32px/1 ${font.display}`, color: 'rgba(255,128,0,0.2)' }}>{s.num}</span>
+                    <h3 style={{ font: `600 18px ${font.family}`, color: colors.text, margin: '0 0 10px' }}>{s.title}</h3>
+                    <p style={{ font: `400 14px/1.65 ${font.family}`, color: colors.textDim, margin: 0 }}>{s.body}</p>
                   </div>
-                  <h3 style={{ font: `600 18px ${font.family}`, color: colors.text, margin: '0 0 10px' }}>{s.title}</h3>
-                  <p style={{ font: `400 14px/1.65 ${font.family}`, color: colors.textDim, margin: 0 }}>{s.body}</p>
                 </div>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -226,60 +287,62 @@ export default function PublicHome({ onNavigate }) {
       {/* STATS */}
       <section style={{ padding: '64px clamp(20px, 5vw, 80px)', borderTop: `1px solid ${colors.borderFaint}`, borderBottom: `1px solid ${colors.borderFaint}` }}>
         <div className="section-inner">
-          <div className="stats-grid">
-            {STATS.map(s => (
-              <div key={s.label} style={{ textAlign: 'center', padding: '24px 16px' }}>
-                <div style={{ font: `700 40px/1 ${font.display}`, color: colors.text }}>{s.value}</div>
-                <div style={{ font: `400 13px ${font.family}`, color: colors.textDim, marginTop: 6 }}>{s.label}</div>
-              </div>
-            ))}
-          </div>
+          <Reveal>
+            <div className="stats-grid">
+              {STATS.map(s => (
+                <div key={s.label} style={{ textAlign: 'center', padding: '24px 16px' }}>
+                  <div style={{ font: `700 40px/1 ${font.display}`, color: colors.text }}>{s.value}</div>
+                  <div style={{ font: `400 13px ${font.family}`, color: colors.textDim, marginTop: 6 }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
       {/* MEMBERSHIP */}
       <section id="membership" style={{ padding: '100px clamp(20px, 5vw, 80px)' }}>
         <div className="section-inner">
-          <div style={{ textAlign: 'center', marginBottom: 64 }}>
-            <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent, marginBottom: 14 }}>MEMBERSHIP</div>
-            <h2 style={{ font: `600 42px/1.05 ${font.display}`, color: colors.text, margin: '0 0 14px' }}>Choose your tier</h2>
-            <p style={{ font: `400 16px/1.6 ${font.family}`, color: colors.textDim, maxWidth: 440, margin: '0 auto' }}>Monthly credits, Momentum bonuses, and exclusive access — scaled to your ambition.</p>
-          </div>
+          <Reveal>
+            <div style={{ textAlign: 'center', marginBottom: 64 }}>
+              <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent, marginBottom: 14 }}>MEMBERSHIP</div>
+              <h2 style={{ font: `600 42px/1.05 ${font.display}`, color: colors.text, margin: '0 0 14px' }}>Choose your tier</h2>
+              <p style={{ font: `400 16px/1.6 ${font.family}`, color: colors.textDim, maxWidth: 440, margin: '0 auto' }}>Monthly credits, Momentum bonuses, and exclusive access — scaled to your ambition.</p>
+            </div>
+          </Reveal>
           <div className="plans-grid">
-            {PLANS.map(p => (
-              <div key={p.name} style={{
-                background: p.highlight ? 'linear-gradient(160deg, #1a1206, #0f0c04)' : colors.bg3,
-                border: `1px solid ${p.highlight ? colors.accentBorder : colors.border}`,
-                borderRadius: radius.xl, padding: '32px 28px', position: 'relative',
-                boxShadow: p.highlight ? '0 0 60px rgba(255,128,0,0.12)' : 'none',
-                transition: 'transform 0.2s ease',
-              }}
-                onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
-                onMouseLeave={e => e.currentTarget.style.transform = 'none'}
-              >
-                {p.highlight && (
-                  <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: colors.accent, borderRadius: 20, padding: '4px 14px', font: `700 11px ${font.family}`, color: colors.bg, letterSpacing: '.08em', whiteSpace: 'nowrap' }}>
-                    MOST POPULAR
-                  </div>
-                )}
-                <div style={{ font: `600 13px ${font.family}`, color: p.highlight ? colors.accent : colors.textDim, letterSpacing: '.08em', marginBottom: 8 }}>{p.name.toUpperCase()}</div>
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 }}>
-                  <span style={{ font: `700 38px/1 ${font.display}`, color: colors.text }}>{p.price}</span>
-                  <span style={{ font: `400 13px ${font.family}`, color: colors.textFaint }}>/mo</span>
-                </div>
-                <div style={{ font: `500 13px ${font.family}`, color: colors.accent, marginBottom: 24 }}>{p.credits} credits/month</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
-                  {p.features.map(f => (
-                    <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                      <span style={{ width: 18, height: 18, borderRadius: '50%', background: p.highlight ? 'rgba(255,128,0,0.15)' : colors.surfaceHover, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                        <Icon name="check" size={11} color={p.highlight ? colors.accent : colors.textFaint} />
-                      </span>
-                      <span style={{ font: `400 13px ${font.family}`, color: p.highlight ? colors.textMuted : colors.textDim }}>{f}</span>
+            {PLANS.map((p, i) => (
+              <Reveal key={p.name} delay={i * 120}>
+                <div className="liquid-glass" style={{
+                  background: p.highlight ? 'linear-gradient(160deg, rgba(26,18,6,0.7), rgba(10,10,12,0.6))' : undefined,
+                  border: p.highlight ? `1px solid ${colors.accentBorder}` : undefined,
+                  borderRadius: radius.xl, padding: '32px 28px', position: 'relative',
+                  boxShadow: p.highlight ? '0 0 60px rgba(255,128,0,0.12)' : undefined,
+                }}>
+                  {p.highlight && (
+                    <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: colors.accent, borderRadius: 20, padding: '4px 14px', font: `700 11px ${font.family}`, color: colors.bg, letterSpacing: '.08em', whiteSpace: 'nowrap' }}>
+                      MOST POPULAR
                     </div>
-                  ))}
+                  )}
+                  <div style={{ font: `600 13px ${font.family}`, color: p.highlight ? colors.accent : colors.textDim, letterSpacing: '.08em', marginBottom: 8 }}>{p.name.toUpperCase()}</div>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 4, marginBottom: 4 }}>
+                    <span style={{ font: `700 38px/1 ${font.display}`, color: colors.text }}>{p.price}</span>
+                    <span style={{ font: `400 13px ${font.family}`, color: colors.textFaint }}>/mo</span>
+                  </div>
+                  <div style={{ font: `500 13px ${font.family}`, color: colors.accent, marginBottom: 24 }}>{p.credits} credits/month</div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
+                    {p.features.map(f => (
+                      <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
+                        <span style={{ width: 18, height: 18, borderRadius: '50%', background: p.highlight ? 'rgba(255,128,0,0.15)' : colors.surfaceHover, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <Icon name="check" size={11} color={p.highlight ? colors.accent : colors.textFaint} />
+                        </span>
+                        <span style={{ font: `400 13px ${font.family}`, color: p.highlight ? colors.textMuted : colors.textDim }}>{f}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <Button onClick={() => onNavigate('signup')} variant={p.highlight ? 'primary' : 'secondary'} fullWidth size="md">Get started</Button>
                 </div>
-                <Button onClick={() => onNavigate('signup')} variant={p.highlight ? 'primary' : 'secondary'} fullWidth size="md">Get started</Button>
-              </div>
+              </Reveal>
             ))}
           </div>
         </div>
@@ -288,17 +351,22 @@ export default function PublicHome({ onNavigate }) {
       {/* FINAL CTA */}
       <section style={{ padding: '80px clamp(20px, 5vw, 80px)', background: 'linear-gradient(180deg, rgba(255,128,0,0.05) 0%, transparent 100%)', borderTop: `1px solid ${colors.accentBorder}` }}>
         <div className="section-inner" style={{ textAlign: 'center' }}>
-          <div style={{ marginBottom: 28, display: 'flex', justifyContent: 'center' }}><Eyebrow label="NO CARD REQUIRED" /></div>
-          <h2 style={{ font: `700 clamp(36px, 5vw, 58px)/1.05 ${font.display}`, color: colors.text, margin: '0 0 18px' }}>
-            Start with 3 free credits today
-          </h2>
-          <p style={{ font: `400 16px/1.6 ${font.family}`, color: colors.textDim, maxWidth: 420, margin: '0 auto 36px' }}>
-            Join thousands of members already taking part in extraordinary campaigns. No commitment required.
-          </p>
-          <Button onClick={() => onNavigate('signup')} size="lg" style={{ height: 58, padding: '0 44px', fontSize: 17 }}>
-            Create free account
-            <Icon name="arrowRight" size={18} color={colors.bg} />
-          </Button>
+          <Reveal>
+            <div style={{ marginBottom: 28, display: 'flex', justifyContent: 'center' }}><Eyebrow label="NO CARD REQUIRED" /></div>
+            <h2 style={{ font: `700 clamp(36px, 5vw, 58px)/1.05 ${font.display}`, color: colors.text, margin: '0 0 18px' }}>
+              Start with 3 free Credits today
+            </h2>
+            <p style={{ font: `400 16px/1.6 ${font.family}`, color: colors.textDim, maxWidth: 420, margin: '0 auto 36px' }}>
+              Join thousands of members already taking part in extraordinary campaigns. No commitment required.
+            </p>
+            <MagneticButton
+              onClick={() => onNavigate('signup')}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 10, height: 58, padding: '0 44px', borderRadius: radius.lg, background: colors.accent, border: 'none', color: colors.bg, font: `600 17px ${font.family}`, boxShadow: tokens.shadow.glowStrong }}
+            >
+              Create free account
+              <Icon name="arrowRight" size={18} color={colors.bg} />
+            </MagneticButton>
+          </Reveal>
         </div>
       </section>
 

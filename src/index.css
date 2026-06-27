@@ -11,6 +11,81 @@
   50% { opacity: 0.35; transform: scale(0.82); }
 }
 
+/* ---- Cinematic landing atmosphere ---- */
+
+/* Drifting embers / motes rising in the hero */
+@keyframes emberRise {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+  10%  { opacity: var(--ember-opacity, 0.3); }
+  90%  { opacity: var(--ember-opacity, 0.3); }
+  100% { transform: translate3d(var(--ember-x, 20px), -110vh, 0) rotate(220deg); opacity: 0; }
+}
+
+/* Scroll-cue dot travelling down the hairline */
+@keyframes scrollDot {
+  0%   { transform: translateY(-8px); opacity: 0; }
+  25%  { opacity: 1; }
+  100% { transform: translateY(34px); opacity: 0; }
+}
+
+/* Hairline grow for the intro splash */
+@keyframes hairlineGrow {
+  from { width: 0; opacity: 0; }
+  to   { width: 120px; opacity: 1; }
+}
+
+/* Intro logo settle */
+@keyframes introLogo {
+  from { opacity: 0; transform: scale(0.92) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Slow diagonal sheen sweeping across glass surfaces */
+@keyframes glassSheen {
+  0%, 55% { left: -150%; }
+  100%    { left: 150%; }
+}
+
+/* Subtle living film grain */
+@keyframes grainShift {
+  0%   { background-position: 0 0; }
+  25%  { background-position: -8px 4px; }
+  50%  { background-position: 6px -6px; }
+  75%  { background-position: -4px 8px; }
+  100% { background-position: 0 0; }
+}
+
+/* Premium glass surface (dark) with a 1px gradient edge + slow sheen */
+.liquid-glass {
+  position: relative;
+  overflow: hidden;
+  background: rgba(8, 10, 12, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+.liquid-glass::before {
+  content: '';
+  position: absolute; inset: 0; border-radius: inherit; padding: 1.2px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 22%,
+    rgba(255,255,255,0) 45%, rgba(255,255,255,0) 60%,
+    rgba(255,128,0,0.10) 82%, rgba(255,128,0,0.28) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
+}
+.liquid-glass::after {
+  content: '';
+  position: absolute; top: 0; left: -150%; width: 60%; height: 100%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  transform: skewX(-20deg);
+  animation: glassSheen 8s ease-in-out infinite; pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liquid-glass::after { animation: none; display: none; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
