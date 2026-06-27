@@ -18,6 +18,20 @@ const FEATURED = CAMPAIGNS[0];
 const WINNERS = PAST_WINNERS.slice(0, 3);
 const OFFERS = PARTNER_OFFERS.slice(0, 6);
 
+// Hero brand film + poster still (Cloudinary CDN — reliable on deploy). The
+// video sits over a dark gradient fallback so the hero is never empty even if
+// the clip or poster fails to load.
+const HERO_VIDEO_SRC = 'https://res.cloudinary.com/dcjnzvmwc/video/upload/v1782565725/858109a7-79f6-4cf6-9a51-93d00db72b1d_j2jpwy.mp4';
+const HERO_POSTER = 'https://res.cloudinary.com/dcjnzvmwc/image/upload/v1782565926/_Ultra-premium_dark_editorial_hero_background_202606271811_bpjhgv.jpg';
+
+// Warm editorial gradient "mesh" behind the hero — pure CSS, always renders.
+const HERO_MESH = `
+  radial-gradient(55% 50% at 88% 6%, rgba(255,128,0,0.16), transparent 60%),
+  radial-gradient(45% 45% at 4% 26%, rgba(255,176,102,0.12), transparent 62%),
+  radial-gradient(60% 55% at 50% 110%, rgba(120,128,150,0.08), transparent 60%),
+  linear-gradient(180deg, #FBFAF6 0%, #F5F1E9 100%)
+`;
+
 // The core message: one membership, three concrete benefits.
 const BENEFITS = [
   { icon: 'star', title: 'Premium prize campaigns', body: 'Join live campaigns for luxury cars, travel, tech and tax-free cash — using Credits, from just one per campaign.' },
@@ -341,6 +355,7 @@ export default function PublicHome({ onNavigate }) {
           .lp-hero, .lp-cards, .lp-offers, .lp-bd, .lp-plans { grid-template-columns: 1fr !important; }
           .lp-stats { grid-template-columns: repeat(2, 1fr) !important; }
           .lp-h1 { font-size: clamp(40px, 12vw, 60px) !important; }
+          .hero-visual { height: 380px !important; }
         }
       `}</style>
 
@@ -348,8 +363,8 @@ export default function PublicHome({ onNavigate }) {
       <NavBar onNavigate={onNavigate} scrolled={scrolled} />
 
       {/* HERO — light editorial */}
-      <section style={{ position: 'relative', background: light.canvas, padding: `132px ${PAD} clamp(64px, 8vw, 110px)`, overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: -160, right: -120, width: 560, height: 560, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,128,0,0.10), transparent 68%)', pointerEvents: 'none' }} />
+      <section style={{ position: 'relative', background: HERO_MESH, padding: `132px ${PAD} clamp(72px, 8vw, 120px)`, overflow: 'hidden' }}>
+        <Logo showText={false} color={colors.accent} style={{ position: 'absolute', bottom: -44, left: -34, height: 360, width: 'auto', opacity: 0.05, transform: 'rotate(-8deg)', pointerEvents: 'none' }} />
         <div className="lp-inner lp-hero" style={{ position: 'relative', zIndex: 2 }}>
           {/* left */}
           <div>
@@ -399,9 +414,12 @@ export default function PublicHome({ onNavigate }) {
           {/* right — hero photograph + floating live card */}
           <FadeIn start={introDone} delay={700} duration={1000}>
             <div style={{ position: 'relative' }}>
-              <div style={{ position: 'relative', borderRadius: 28, overflow: 'hidden', aspectRatio: '4 / 5', background: light.soft, boxShadow: light.floatShadow }}>
-                {FEATURED.image && <img src={FEATURED.image} alt={FEATURED.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />}
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(20,17,12,0.18), transparent 30%, transparent 60%, rgba(20,17,12,0.28))' }} />
+              <div className="hero-visual" style={{ position: 'relative', borderRadius: 28, overflow: 'hidden', height: 'clamp(460px, 62vh, 600px)', background: FEATURED.gradient, boxShadow: light.floatShadow }}>
+                <video autoPlay muted loop playsInline poster={HERO_POSTER} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}>
+                  <source src={HERO_VIDEO_SRC} type="video/mp4" />
+                </video>
+                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(75% 60% at 72% 18%, rgba(255,128,0,0.20), transparent 62%)' }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(8,8,10,0.12), transparent 38%, rgba(8,8,10,0.40))' }} />
                 <span style={{ position: 'absolute', top: 18, right: 18, display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(255,255,255,0.94)', borderRadius: 999, padding: '6px 13px', font: `700 11px ${font.family}`, letterSpacing: '.06em', color: light.ink }}>
                   <span style={{ width: 7, height: 7, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} /> LIVE
                 </span>
