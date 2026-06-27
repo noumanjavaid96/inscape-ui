@@ -44,24 +44,28 @@ const SCREENS = {
 
 export default function App() {
   const [screen, setScreen] = useState('public-home');
+  const [params, setParams] = useState({});
   const [history, setHistory] = useState([]);
 
-  const navigate = (to) => {
-    setHistory(h => [...h, screen]);
+  const navigate = (to, nextParams = {}) => {
+    setHistory(h => [...h, { screen, params }]);
     setScreen(to);
+    setParams(nextParams);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const goBack = () => {
     if (history.length > 0) {
-      setScreen(history[history.length - 1]);
+      const prev = history[history.length - 1];
+      setScreen(prev.screen);
+      setParams(prev.params || {});
       setHistory(h => h.slice(0, -1));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
 
   const Screen = SCREENS[screen] || Dashboard;
-  const screenProps = { onNavigate: navigate, onBack: goBack };
+  const screenProps = { onNavigate: navigate, onBack: goBack, params };
 
   const isPublic = PUBLIC_SCREENS.has(screen);
 

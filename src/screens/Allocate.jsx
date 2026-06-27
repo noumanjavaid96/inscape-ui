@@ -3,30 +3,33 @@ import tokens from '../design/tokens';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
+import { findCampaign } from '../data/campaigns';
 
 const { colors, font, radius } = tokens;
 
-export default function Allocate({ onNavigate }) {
+export default function Allocate({ onNavigate, params = {} }) {
+  const campaign = findCampaign(params.campaignId);
+  const perJoin = campaign.cost || 1;
   const [qty, setQty] = useState(1);
   const balance = 124;
-  const cost = qty;
+  const cost = qty * perJoin;
 
   return (
     <div style={{ background: colors.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
       <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(50% 40% at 50% 60%, rgba(255,128,0,0.06), transparent)', pointerEvents: 'none' }} />
       <div style={{ width: '100%', maxWidth: 480, position: 'relative' }}>
 
-        <button onClick={() => onNavigate('campaign-detail')} style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', font: `500 14px ${font.family}`, color: colors.textDim, marginBottom: 24 }}>
+        <button onClick={() => onNavigate('campaign-detail', { campaignId: campaign.id })} style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', font: `500 14px ${font.family}`, color: colors.textDim, marginBottom: 24 }}>
           <Icon name="arrowLeft" size={16} color={colors.textDim} />
           Back to campaign
         </button>
 
         <Card padding="lg" style={{ boxShadow: '0 24px 60px rgba(0,0,0,0.5)' }}>
-          <h1 style={{ font: `700 24px/1.1 ${font.family}`, color: colors.text, margin: '0 0 4px', letterSpacing: '-.01em' }}>Allocate credits</h1>
-          <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 28px' }}>Range Rover Sport · 1 credit per allocation</p>
+          <h1 style={{ font: `700 24px/1.1 ${font.family}`, color: colors.text, margin: '0 0 4px', letterSpacing: '-.01em' }}>Join campaign</h1>
+          <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 28px' }}>{campaign.title} · {perJoin} Credit{perJoin > 1 ? 's' : ''} per participation</p>
 
           <div style={{ background: colors.bg4, border: `1px solid ${colors.border}`, borderRadius: radius.lg, padding: 24, marginBottom: 20, textAlign: 'center' }}>
-            <div style={{ font: `400 13px ${font.family}`, color: colors.textDim, marginBottom: 14 }}>Number of allocations</div>
+            <div style={{ font: `400 13px ${font.family}`, color: colors.textDim, marginBottom: 14 }}>Number of participations</div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24 }}>
               <button
                 onClick={() => setQty(q => Math.max(1, q - 1))}
@@ -71,8 +74,8 @@ export default function Allocate({ onNavigate }) {
             </div>
           </div>
 
-          <Button onClick={() => onNavigate('allocation-success')} fullWidth size="lg" style={{ marginBottom: 14 }}>
-            Confirm · {qty} allocation{qty > 1 ? 's' : ''}
+          <Button onClick={() => onNavigate('allocation-success', { campaignId: campaign.id })} fullWidth size="lg" style={{ marginBottom: 14 }}>
+            Confirm · join with {cost} Credit{cost > 1 ? 's' : ''}
           </Button>
 
           <p style={{ font: `400 11px/1.6 ${font.family}`, color: colors.textGhost, textAlign: 'center', margin: 0 }}>

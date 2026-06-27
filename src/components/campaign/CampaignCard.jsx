@@ -2,6 +2,7 @@ import { useState } from 'react';
 import tokens from '../../design/tokens';
 import Icon from '../ui/Icon';
 import StatusPill from './StatusPill';
+import Countdown from './Countdown';
 
 const { colors, radius, font } = tokens;
 
@@ -52,28 +53,22 @@ export default function CampaignCard({ campaign, onClick, size = 'md', style }) 
           position: 'relative',
         }}
       >
-        <div style={{ position: 'absolute', top: 12, left: 12 }}>
+        <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
           <StatusPill status={c.status} size={size === 'sm' ? 'sm' : 'md'} />
         </div>
-        {c.timeLeft && (
-          <div
-            style={{
-              position: 'absolute',
-              right: 12,
-              top: 12,
-              font: `500 11px ${font.family}`,
-              color: colors.textMuted,
-              background: colors.overlay,
-              borderRadius: 7,
-              padding: '4px 9px',
-            }}
-          >
-            {c.timeLeft} left
-          </div>
+        {size !== 'sm' && (
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(13,15,18,0.85),transparent 55%)' }} />
         )}
-        {size === 'md' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(13,15,18,0.7),transparent 60%)' }} />
-        )}
+        {/* Live countdown (or static fallbacks) */}
+        <div style={{ position: 'absolute', right: 12, bottom: 12, zIndex: 2 }}>
+          {c.closesAt && c.status !== 'UPCOMING' ? (
+            <Countdown target={c.closesAt} size="sm" />
+          ) : (
+            <div style={{ font: `500 11px ${font.family}`, color: colors.textMuted, background: colors.overlay, borderRadius: 7, padding: '4px 9px', backdropFilter: 'blur(8px)' }}>
+              {c.startsIn || (c.timeLeft ? `${c.timeLeft} left` : '')}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Body */}
@@ -106,7 +101,9 @@ export default function CampaignCard({ campaign, onClick, size = 'md', style }) 
               Joined: <span style={{ color: colors.accent }}>{c.allocations}</span>
             </span>
           ) : (
-            <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>{c.participants} participants</span>
+            <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>
+              {c.participants} participants{c.cost ? ` · ${c.cost} cr to join` : ''}
+            </span>
           )}
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, font: `600 13px ${font.family}`, color: colors.accent }}>
             Join

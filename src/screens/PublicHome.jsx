@@ -14,19 +14,16 @@ import AnimatedHeading from '../components/cinematic/AnimatedHeading';
 import MagneticButton from '../components/cinematic/MagneticButton';
 import FadeIn from '../components/cinematic/FadeIn';
 import Reveal from '../components/cinematic/Reveal';
+import { CAMPAIGNS as ALL_CAMPAIGNS } from '../data/campaigns';
 
 const { colors, font, radius } = tokens;
+
+const CAMPAIGNS = ALL_CAMPAIGNS.slice(0, 3);
 
 // Hero brand film + poster still. VideoBackdrop crossfades the clip into its
 // own start for a seamless loop; the poster shows instantly while it buffers.
 const HERO_VIDEO_SRC = 'https://res.cloudinary.com/dcjnzvmwc/video/upload/v1782565725/858109a7-79f6-4cf6-9a51-93d00db72b1d_j2jpwy.mp4';
 const HERO_POSTER = 'https://res.cloudinary.com/dcjnzvmwc/image/upload/v1782565926/_Ultra-premium_dark_editorial_hero_background_202606271811_bpjhgv.jpg';
-
-const CAMPAIGNS = [
-  { title: 'Range Rover Sport', category: 'Vehicles', prize: '£92,000', timeLeft: '2d 14h', participants: '4,821', status: 'LIVE', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.15)' },
-  { title: '7 Nights, Maldives', category: 'Travel', prize: '£18,500', timeLeft: '9h 40m', participants: '2,104', status: 'CLOSING SOON', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.15)' },
-  { title: 'MacBook Pro M4', category: 'Tech', prize: '£3,499', timeLeft: '5d 2h', participants: '1,338', status: 'LIVE', gradient: 'linear-gradient(135deg,#141820,#0a0c10)', glow: 'rgba(71,199,252,0.15)' },
-];
 
 const STEPS = [
   { num: '01', icon: 'wallet', title: 'Get your Credits', body: 'Join free and receive 3 Campaign Credits — no card required. Top up anytime or subscribe for monthly Credits.' },
