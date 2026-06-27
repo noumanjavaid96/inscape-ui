@@ -77,6 +77,18 @@ const PATHS = {
     </>
   ),
   sparkle: (c) => <path d="M12 3l1.8 5.4L19 10l-5.2 1.6L12 17l-1.8-5.4L5 10l5.2-1.6L12 3Z" stroke={c} strokeWidth="1.5" strokeLinejoin="round" />,
+  trophy: (c) => (
+    <>
+      <path d="M7 4h10v5a5 5 0 0 1-10 0V4Z" stroke={c} strokeWidth="1.6" strokeLinejoin="round" />
+      <path d="M7 6H4.5a2.5 2.5 0 0 0 2.5 2.5M17 6h2.5a2.5 2.5 0 0 1-2.5 2.5" stroke={c} strokeWidth="1.6" strokeLinecap="round" />
+      <path d="M12 14v3m-3 4h6m-5 0a3 3 0 0 1 4 0" stroke={c} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </>
+  ),
+  chart: (c) => (
+    <>
+      <path d="M4 20V10M9.5 20V5M15 20v-7M20.5 20V8" stroke={c} strokeWidth="1.7" strokeLinecap="round" />
+    </>
+  ),
 };
 
 export default function Icon({ name, size = 20, color = colors.textFaint, style }) {

@@ -106,6 +106,9 @@ export const PAST_WINNERS = [
   { id: 'tesla-model-3', title: 'Tesla Model 3', category: 'Vehicles', prize: '£42,000', winner: 'Sarah M.', location: 'London', date: 'May 15, 2026', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)' },
   { id: 'nyc-weekend', title: 'NYC Weekend Break', category: 'Travel', prize: '£3,200', winner: 'James T.', location: 'Manchester', date: 'Apr 28, 2026', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)' },
   { id: 'cash-10k', title: '£10,000 Cash', category: 'Cash', prize: '£10,000', winner: 'Priya K.', location: 'Birmingham', date: 'Apr 12, 2026', gradient: 'linear-gradient(135deg,#19130a,#0c0a06)' },
+  { id: 'rolex-datejust', title: 'Rolex Datejust 41', category: 'Lifestyle', prize: '£9,800', winner: 'Daniel O.', location: 'Leeds', date: 'Mar 30, 2026', gradient: 'linear-gradient(135deg,#16161a,#0a0a0c)' },
+  { id: 'iphone-bundle', title: 'iPhone Pro Bundle', category: 'Tech', prize: '£2,400', winner: 'Aisha R.', location: 'Glasgow', date: 'Mar 18, 2026', gradient: 'linear-gradient(135deg,#141820,#0a0c10)' },
+  { id: 'dubai-getaway', title: '5 Nights, Dubai', category: 'Travel', prize: '£7,500', winner: 'Tom W.', location: 'Bristol', date: 'Mar 2, 2026', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)' },
 ];
 
 export const statusColor = (status) =>

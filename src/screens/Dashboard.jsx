@@ -30,13 +30,46 @@ const TRANSACTIONS = [
   { label: 'Momentum reward · 50%', detail: 'May 28, 2026', amount: '+20', iconName: 'bolt', color: colors.info },
 ];
 
+// Member state drives the dashboard variant. Wire to real auth/billing later.
+// One of: 'free' | 'member' | 'past-due'
+const MEMBER_STATE = 'member';
+
+const VARIANTS = {
+  free: { balance: '3', tier: 'Free', tierColor: 'gray', cta: 'Become a member', ctaAction: 'membership' },
+  member: { balance: '124', tier: 'Premium', tierColor: 'orange', cta: 'Boost Credits', ctaAction: 'boost' },
+  'past-due': { balance: '124', tier: 'Past due', tierColor: 'yellow', cta: 'Update payment', ctaAction: 'membership' },
+};
+
 export default function Dashboard({ onNavigate }) {
   const { isMobile, isDesktop } = useBreakpoint();
   const pad = isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px';
+  const v = VARIANTS[MEMBER_STATE] || VARIANTS.member;
 
   return (
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: pad }}>
+
+        {MEMBER_STATE === 'past-due' && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(240,180,60,0.08)', border: `1px solid ${colors.warning}55`, borderRadius: 14, padding: '14px 18px', marginBottom: 20 }}>
+            <Icon name="bolt" size={18} color={colors.warning} />
+            <div style={{ flex: 1, font: `500 13px ${font.family}`, color: colors.text }}>
+              Your membership payment didn’t go through.
+              <span style={{ color: colors.textDim }}> Update it to keep your benefits and monthly Credits.</span>
+            </div>
+            <Button onClick={() => onNavigate('membership')} size="sm">Fix now</Button>
+          </div>
+        )}
+
+        {MEMBER_STATE === 'free' && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, borderRadius: 14, padding: '14px 18px', marginBottom: 20 }}>
+            <Icon name="sparkle" size={18} color={colors.accent} />
+            <div style={{ flex: 1, font: `500 13px ${font.family}`, color: colors.text }}>
+              You’re on the free plan.
+              <span style={{ color: colors.textDim }}> Become a member for monthly Credits, Momentum bonuses and exclusive access.</span>
+            </div>
+            <Button onClick={() => onNavigate('membership')} size="sm">See plans</Button>
+          </div>
+        )}
 
         <PageHeader
           title="Alex Mercer"
@@ -64,21 +97,21 @@ export default function Dashboard({ onNavigate }) {
                 <div>
                   <div style={{ font: `500 12px ${font.family}`, letterSpacing: '.1em', textTransform: 'uppercase', color: colors.textDim }}>Available balance</div>
                   <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, marginTop: 8 }}>
-                    <span style={{ font: `700 56px/0.9 ${font.family}`, color: colors.text, letterSpacing: '-.03em' }}>124</span>
-                    <span style={{ font: `500 16px ${font.family}`, color: colors.textDim, paddingBottom: 8 }}>credits</span>
+                    <span style={{ font: `700 56px/0.9 ${font.family}`, color: colors.text, letterSpacing: '-.03em' }}>{v.balance}</span>
+                    <span style={{ font: `500 16px ${font.family}`, color: colors.textDim, paddingBottom: 8 }}>Credits</span>
                   </div>
                 </div>
-                <Badge label="Premium" color="orange" dot />
+                <Badge label={v.tier} color={v.tierColor} dot />
               </div>
 
               <div style={{ display: 'flex', gap: 28, marginTop: 20, paddingTop: 20, borderTop: `1px solid ${colors.borderFaint}` }}>
-                <Stat label="Allocated" value="6 cr" />
+                <Stat label="In play" value="6 cr" />
                 <Stat label="Bonus earned" value="+20 cr" color={colors.success} />
-                <Stat label="Next allocation" value="12 days" />
+                <Stat label="Next Credits" value={MEMBER_STATE === 'free' ? '—' : '12 days'} />
               </div>
 
               <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-                <Button onClick={() => onNavigate('boost')} size="md" style={{ flex: 1 }}>Boost credits</Button>
+                <Button onClick={() => onNavigate(v.ctaAction)} size="md" style={{ flex: 1 }}>{v.cta}</Button>
                 <Button onClick={() => onNavigate('wallet')} variant="secondary" size="md">Wallet</Button>
               </div>
             </Card>

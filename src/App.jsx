@@ -18,6 +18,8 @@ import Offers from './screens/Offers';
 import Referral from './screens/Referral';
 import Profile from './screens/Profile';
 import Notifications from './screens/Notifications';
+import Winners from './screens/Winners';
+import Insights from './screens/Insights';
 
 const PUBLIC_SCREENS = new Set(['public-home', 'signup', 'login', 'welcome', 'onboarding', 'allocate', 'allocation-success']);
 
@@ -40,6 +42,8 @@ const SCREENS = {
   referral: Referral,
   profile: Profile,
   notifications: Notifications,
+  winners: Winners,
+  insights: Insights,
 };
 
 export default function App() {

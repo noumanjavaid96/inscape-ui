@@ -7,12 +7,14 @@ import Icon from './ui/Icon';
 const { colors, radius, transition, font } = tokens;
 
 const NAV = [
-  { id: 'dashboard', label: 'Home', icon: 'home' },
+  { id: 'dashboard', label: 'Dashboard', icon: 'home' },
   { id: 'campaigns', label: 'Campaigns', icon: 'grid' },
   { id: 'my-campaigns', label: 'My Campaigns', icon: 'target' },
-  { id: 'offers', label: 'Partner Offers', icon: 'star' },
+  { id: 'winners', label: 'Winners', icon: 'trophy' },
   { id: 'wallet', label: 'Wallet', icon: 'wallet' },
-  { id: 'profile', label: 'Profile', icon: 'user' },
+  { id: 'referral', label: 'Referrals', icon: 'users' },
+  { id: 'insights', label: 'Insights', icon: 'chart' },
+  { id: 'offers', label: 'Partner Offers', icon: 'star' },
 ];
 
 // Home and user icons are not in the shared set — define inline
@@ -111,15 +113,27 @@ export default function Sidebar({ active, onNavigate }) {
         ))}
       </nav>
 
-      <div
+      {!collapsed && (
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 10px', marginTop: 8, borderRadius: radius.md, background: colors.bg3, border: `1px solid ${colors.border}` }}>
+          <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>Balance</span>
+          <span style={{ font: `700 13px ${font.family}`, color: colors.accent }}>124 Credits</span>
+        </div>
+      )}
+
+      <button
+        onClick={() => onNavigate('profile')}
         style={{
           display: 'flex',
           alignItems: 'center',
           gap: 10,
           padding: collapsed ? '16px 0 0' : '16px 8px 0',
           justifyContent: collapsed ? 'center' : 'flex-start',
-          borderTop: `1px solid ${colors.border}`,
           marginTop: 8,
+          background: 'none',
+          border: 'none',
+          borderTop: `1px solid ${colors.border}`,
+          cursor: 'pointer',
+          width: '100%',
         }}
       >
         <div
@@ -140,12 +154,12 @@ export default function Sidebar({ active, onNavigate }) {
           A
         </div>
         {!collapsed && (
-          <div style={{ overflow: 'hidden' }}>
+          <div style={{ overflow: 'hidden', textAlign: 'left' }}>
             <div style={{ font: `600 13px ${font.family}`, color: colors.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Alex Mercer</div>
-            <div style={{ font: `400 11px ${font.family}`, color: colors.textFaint }}>Premium</div>
+            <div style={{ font: `400 11px ${font.family}`, color: colors.textFaint }}>Premium member</div>
           </div>
         )}
-      </div>
+      </button>
     </aside>
   );
 }

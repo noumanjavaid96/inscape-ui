@@ -6,7 +6,7 @@ const { colors, font } = tokens;
 const TABS = [
   { id: 'dashboard', label: 'Home', icon: 'home' },
   { id: 'campaigns', label: 'Campaigns', icon: 'grid' },
-  { id: 'offers', label: 'Offers', icon: 'star' },
+  { id: 'winners', label: 'Winners', icon: 'trophy' },
   { id: 'wallet', label: 'Wallet', icon: 'wallet' },
   { id: 'profile', label: 'Profile', icon: 'user' },
 ];
