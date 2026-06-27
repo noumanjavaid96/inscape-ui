@@ -74,9 +74,20 @@ export default function Allocate({ onNavigate, params = {} }) {
             </div>
           </div>
 
-          <Button onClick={() => onNavigate('allocation-success', { campaignId: campaign.id })} fullWidth size="lg" style={{ marginBottom: 14 }}>
-            Confirm · join with {cost} Credit{cost > 1 ? 's' : ''}
-          </Button>
+          {cost > balance ? (
+            <>
+              <div style={{ background: 'rgba(240,180,60,0.08)', border: `1px solid ${colors.warning}55`, borderRadius: radius.md, padding: '12px 14px', marginBottom: 14, font: `500 12px/1.5 ${font.family}`, color: colors.text }}>
+                You need {cost - balance} more Credit{cost - balance > 1 ? 's' : ''} to join with {qty} participation{qty > 1 ? 's' : ''}. Top up to continue — your campaign and amount are saved.
+              </div>
+              <Button onClick={() => onNavigate('boost', { campaignId: campaign.id })} fullWidth size="lg" style={{ marginBottom: 14 }}>
+                Top up Credits
+              </Button>
+            </>
+          ) : (
+            <Button onClick={() => onNavigate('allocation-success', { campaignId: campaign.id })} fullWidth size="lg" style={{ marginBottom: 14 }}>
+              Confirm · join with {cost} Credit{cost > 1 ? 's' : ''}
+            </Button>
+          )}
 
           <p style={{ font: `400 11px/1.6 ${font.family}`, color: colors.textGhost, textAlign: 'center', margin: 0 }}>
             By confirming you agree to the Official Rules. No purchase necessary. US residents 18+.

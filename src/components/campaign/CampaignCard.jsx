@@ -53,6 +53,15 @@ export default function CampaignCard({ campaign, onClick, size = 'md', style }) 
           position: 'relative',
         }}
       >
+        {c.image && (
+          <img
+            src={c.image}
+            alt={c.title}
+            loading="lazy"
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: hovered ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.4s ease' }}
+            onError={(e) => { e.currentTarget.style.display = 'none'; }}
+          />
+        )}
         <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
           <StatusPill status={c.status} size={size === 'sm' ? 'sm' : 'md'} />
         </div>

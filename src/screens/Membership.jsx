@@ -3,6 +3,7 @@ import tokens from '../design/tokens';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
+import CheckoutSheet from '../components/flow/CheckoutSheet';
 
 const { colors, font, radius } = tokens;
 
@@ -14,6 +15,7 @@ const PLANS = [
 
 export default function Membership({ onNavigate }) {
   const [annual, setAnnual] = useState(false);
+  const [checkoutPlan, setCheckoutPlan] = useState(null);
   const { isMobile, isDesktop } = useBreakpoint();
 
   return (
@@ -61,13 +63,31 @@ export default function Membership({ onNavigate }) {
                   </div>
                 ))}
               </div>
-              <Button onClick={() => onNavigate('dashboard')} variant={p.highlight ? 'primary' : 'secondary'} fullWidth size="md">
+              <Button onClick={() => setCheckoutPlan(p)} variant={p.highlight ? 'primary' : 'secondary'} fullWidth size="md">
                 Choose {p.name}
               </Button>
             </div>
           ))}
         </div>
       </div>
+
+      {checkoutPlan && (
+        <CheckoutSheet
+          title={`${checkoutPlan.name} membership`}
+          subtitle={annual ? 'Billed annually' : 'Billed monthly'}
+          lines={[
+            ['Plan', checkoutPlan.name],
+            ['Billing', annual ? 'Annual' : 'Monthly'],
+            ['Monthly Credits', `${checkoutPlan.credits}`],
+          ]}
+          total={annual ? checkoutPlan.price.annual : checkoutPlan.price.monthly}
+          cta="Subscribe"
+          successTitle="Membership active"
+          successBody={`Welcome to ${checkoutPlan.name}. Your ${checkoutPlan.credits} monthly Credits have been posted.`}
+          onClose={() => setCheckoutPlan(null)}
+          onSuccess={() => onNavigate('dashboard')}
+        />
+      )}
     </div>
   );
 }

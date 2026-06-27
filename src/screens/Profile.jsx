@@ -11,10 +11,10 @@ const MENU = [
   { label: 'Personal details', sub: 'Name, email, address', action: null },
   { label: 'Payment methods', sub: 'Cards and billing', action: null },
   { label: 'Notification preferences', sub: 'Campaigns, rewards, news', action: 'notifications' },
-  { label: 'Membership', sub: 'Premium · renews Jul 1', action: 'membership' },
+  { label: 'Membership', sub: 'Premium · renews Jul 1', action: 'membership-manage' },
   { label: 'Referral Centre', sub: '4 invited · 1 qualified', action: 'referral' },
   { label: 'Official rules', sub: 'How winners are chosen', action: null },
-  { label: 'Help and support', sub: 'FAQs, contact us', action: null },
+  { label: 'Help and support', sub: 'FAQs, contact us', action: 'support' },
 ];
 
 const STATS = [

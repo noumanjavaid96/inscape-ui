@@ -20,6 +20,8 @@ import Profile from './screens/Profile';
 import Notifications from './screens/Notifications';
 import Winners from './screens/Winners';
 import Insights from './screens/Insights';
+import MembershipManage from './screens/MembershipManage';
+import Support from './screens/Support';
 
 const PUBLIC_SCREENS = new Set(['public-home', 'signup', 'login', 'welcome', 'onboarding', 'allocate', 'allocation-success']);
 
@@ -44,6 +46,8 @@ const SCREENS = {
   notifications: Notifications,
   winners: Winners,
   insights: Insights,
+  'membership-manage': MembershipManage,
+  support: Support,
 };
 
 export default function App() {

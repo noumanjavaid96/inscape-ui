@@ -6,6 +6,7 @@ import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import Icon from '../components/ui/Icon';
 import PageHeader from '../components/layout/PageHeader';
+import CheckoutSheet from '../components/flow/CheckoutSheet';
 
 const { colors, font, radius } = tokens;
 
@@ -17,10 +18,12 @@ const PACKAGES = [
   { name: 'Diamond', price: '$200', credits: 300, badge: null },
 ];
 
-export default function Boost({ onNavigate }) {
+export default function Boost({ onNavigate, params = {} }) {
   const [selected, setSelected] = useState(2);
+  const [checkout, setCheckout] = useState(false);
   const { isMobile, isDesktop } = useBreakpoint();
   const pkg = PACKAGES[selected];
+  const fromCampaign = params.campaignId; // preserve originating campaign
 
   return (
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
@@ -76,10 +79,23 @@ export default function Boost({ onNavigate }) {
           </div>
         </Card>
 
-        <Button onClick={() => onNavigate('wallet')} fullWidth size="lg">
+        <Button onClick={() => setCheckout(true)} fullWidth size="lg">
           Continue · {pkg.price} for {pkg.credits} credits
         </Button>
       </div>
+
+      {checkout && (
+        <CheckoutSheet
+          title="Boost your Credits"
+          subtitle={`${pkg.name} pack — one-time purchase`}
+          lines={[['Credits', `${pkg.credits}`], ['Price', pkg.price], ['New balance', `${124 + pkg.credits} Credits`]]}
+          total={pkg.price}
+          successTitle="Credits added"
+          successBody={`${pkg.credits} Credits have been posted to your wallet.`}
+          onClose={() => setCheckout(false)}
+          onSuccess={() => (fromCampaign ? onNavigate('campaign-detail', { campaignId: fromCampaign }) : onNavigate('wallet'))}
+        />
+      )}
     </div>
   );
 }
