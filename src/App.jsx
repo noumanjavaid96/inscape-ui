@@ -59,8 +59,10 @@ export default function App() {
   const [params, setParams] = useState({});
   const [history, setHistory] = useState([]);
   const [splashId, setSplashId] = useState(0);
+  const [userName, setUserName] = useState('');
 
   const navigate = (to, nextParams = {}) => {
+    if (nextParams.name) setUserName(nextParams.name);
     if (to === 'dashboard' && AUTH_ENTRY.has(screen)) setSplashId(id => id + 1);
     setHistory(h => [...h, { screen, params }]);
     setScreen(to);
@@ -92,7 +94,7 @@ export default function App() {
           <Screen {...screenProps} />
         </AppLayout>
       )}
-      {splashId > 0 && <IntroSplash key={splashId} hold={1400} lift={700} />}
+      {splashId > 0 && <IntroSplash key={splashId} hold={1900} lift={700} name={userName} />}
     </>
   );
 }

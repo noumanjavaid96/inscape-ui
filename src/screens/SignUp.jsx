@@ -71,7 +71,7 @@ export default function SignUp({ onNavigate }) {
               style={{ marginBottom: 14 }}
             />
           ))}
-          <Button onClick={() => step2Valid && onNavigate('welcome')} fullWidth size="lg" disabled={!step2Valid} style={{ marginTop: 8 }}>
+          <Button onClick={() => step2Valid && onNavigate('welcome', { name: form.name })} fullWidth size="lg" disabled={!step2Valid} style={{ marginTop: 8 }}>
             Create account and claim Credits
           </Button>
         </>

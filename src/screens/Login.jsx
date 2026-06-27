@@ -7,6 +7,12 @@ import Divider from '../components/ui/Divider';
 
 const { colors, font, radius } = tokens;
 
+// Derive a friendly first name from the email local-part for the welcome splash.
+function nameFromEmail(email) {
+  const local = (email.split('@')[0] || '').split(/[._\-+]/)[0] || '';
+  return local ? local.charAt(0).toUpperCase() + local.slice(1) : '';
+}
+
 function GoogleIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24">
@@ -46,7 +52,7 @@ export default function Login({ onNavigate }) {
         <Input type="password" value={form.password} onChange={set('password')} style={{ marginBottom: 0 }} />
       </div>
 
-      <Button onClick={() => valid && onNavigate('dashboard')} fullWidth size="lg" disabled={!valid} style={{ marginBottom: 20 }}>
+      <Button onClick={() => valid && onNavigate('dashboard', { name: nameFromEmail(form.email) })} fullWidth size="lg" disabled={!valid} style={{ marginBottom: 20 }}>
         Sign in
       </Button>
 

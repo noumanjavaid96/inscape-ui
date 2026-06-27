@@ -24,14 +24,6 @@ const OFFERS = PARTNER_OFFERS.slice(0, 6);
 const HERO_VIDEO_SRC = 'https://res.cloudinary.com/dcjnzvmwc/video/upload/v1782565725/858109a7-79f6-4cf6-9a51-93d00db72b1d_j2jpwy.mp4';
 const HERO_POSTER = 'https://res.cloudinary.com/dcjnzvmwc/image/upload/v1782565926/_Ultra-premium_dark_editorial_hero_background_202606271811_bpjhgv.jpg';
 
-// Warm editorial gradient "mesh" behind the hero — pure CSS, always renders.
-const HERO_MESH = `
-  radial-gradient(55% 50% at 88% 6%, rgba(255,128,0,0.16), transparent 60%),
-  radial-gradient(45% 45% at 4% 26%, rgba(255,176,102,0.12), transparent 62%),
-  radial-gradient(60% 55% at 50% 110%, rgba(120,128,150,0.08), transparent 60%),
-  linear-gradient(180deg, #FBFAF6 0%, #F5F1E9 100%)
-`;
-
 // The core message: one membership, three concrete benefits.
 const BENEFITS = [
   { icon: 'star', title: 'Premium prize campaigns', body: 'Join live campaigns for luxury cars, travel, tech and tax-free cash — using Credits, from just one per campaign.' },
@@ -101,9 +93,12 @@ function PrimaryCTA({ children, onClick, size = 'lg', style }) {
   );
 }
 
-function GhostCTA({ children, onClick, size = 'lg', style }) {
+function GhostCTA({ children, onClick, size = 'lg', dark = false, style }) {
   const [hover, setHover] = useState(false);
   const h = size === 'lg' ? 56 : 48;
+  const border = dark ? 'rgba(255,255,255,0.28)' : light.line;
+  const color = dark ? '#ffffff' : light.ink;
+  const hoverBg = dark ? 'rgba(255,255,255,0.10)' : light.soft;
   return (
     <button
       type="button"
@@ -113,8 +108,8 @@ function GhostCTA({ children, onClick, size = 'lg', style }) {
       style={{
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
         height: h, padding: '0 26px', borderRadius: 14,
-        background: hover ? light.soft : 'transparent',
-        border: `1px solid ${light.line}`, color: light.ink,
+        background: hover ? hoverBg : 'transparent',
+        border: `1px solid ${border}`, color,
         font: `600 ${size === 'lg' ? 16 : 15}px ${font.family}`, cursor: 'pointer',
         transition: 'all 0.2s ease', ...style,
       }}
@@ -167,7 +162,7 @@ function CampaignCardLight({ c, onClick }) {
         transition: 'transform 0.35s cubic-bezier(.2,.7,.2,1), box-shadow 0.35s ease',
       }}
     >
-      <div style={{ position: 'relative', aspectRatio: '3 / 2', overflow: 'hidden', background: light.soft }}>
+      <div style={{ position: 'relative', aspectRatio: '3 / 2', overflow: 'hidden', background: c.gradient }}>
         {c.image && (
           <img
             src={c.image} alt={c.title} loading="lazy"
@@ -256,7 +251,7 @@ function OfferCardLight({ o }) {
 function WinnerCardLight({ w, idx }) {
   return (
     <div style={{ background: light.panel, border: `1px solid ${light.line}`, borderRadius: 20, overflow: 'hidden', boxShadow: light.cardShadow }}>
-      <div style={{ position: 'relative', height: 168, background: light.soft, overflow: 'hidden' }}>
+      <div style={{ position: 'relative', height: 168, background: w.gradient, overflow: 'hidden' }}>
         {w.image && <img src={w.image} alt={w.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />}
         <span style={{ position: 'absolute', top: 12, left: 12, display: 'inline-flex', alignItems: 'center', gap: 6, background: '#fff', borderRadius: 999, padding: '5px 11px', font: `700 10px ${font.family}`, letterSpacing: '.08em', color: '#1f8a4c' }}>
           <Icon name="trophy" size={12} color="#1f8a4c" /> WINNER
@@ -283,6 +278,8 @@ function WinnerCardLight({ w, idx }) {
 /* ---------- nav ---------- */
 
 function NavBar({ onNavigate, scrolled }) {
+  const linkColor = scrolled ? light.body : 'rgba(255,255,255,0.82)';
+  const linkHover = scrolled ? light.ink : '#ffffff';
   return (
     <nav style={{
       position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, height: 66,
@@ -293,7 +290,7 @@ function NavBar({ onNavigate, scrolled }) {
       transition: 'all 0.3s ease',
       display: 'flex', alignItems: 'center', padding: `0 ${PAD}`,
     }}>
-      <Logo size="md" showText variant="charcoal" />
+      <Logo size="md" showText variant={scrolled ? 'charcoal' : 'light'} />
 
       <div style={{ display: 'flex', gap: 30, marginLeft: 46, flex: 1 }} className="desktop-nav">
         {[
@@ -303,17 +300,17 @@ function NavBar({ onNavigate, scrolled }) {
           { label: 'Winners', href: '#winners' },
           { label: 'How It Works', href: '#how' },
         ].map(l => (
-          <a key={l.label} href={l.href} style={{ font: `500 14px ${font.family}`, color: light.body, textDecoration: 'none', transition: 'color 0.15s', whiteSpace: 'nowrap' }}
-            onMouseEnter={e => e.currentTarget.style.color = light.ink}
-            onMouseLeave={e => e.currentTarget.style.color = light.body}
+          <a key={l.label} href={l.href} style={{ font: `500 14px ${font.family}`, color: linkColor, textDecoration: 'none', transition: 'color 0.15s', whiteSpace: 'nowrap' }}
+            onMouseEnter={e => e.currentTarget.style.color = linkHover}
+            onMouseLeave={e => e.currentTarget.style.color = linkColor}
           >{l.label}</a>
         ))}
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
-        <button onClick={() => onNavigate('login')} style={{ font: `500 14px ${font.family}`, color: light.body, background: 'none', border: 'none', cursor: 'pointer', padding: '8px 14px' }}
-          onMouseEnter={e => e.currentTarget.style.color = light.ink}
-          onMouseLeave={e => e.currentTarget.style.color = light.body}
+        <button onClick={() => onNavigate('login')} style={{ font: `500 14px ${font.family}`, color: linkColor, background: 'none', border: 'none', cursor: 'pointer', padding: '8px 14px' }}
+          onMouseEnter={e => e.currentTarget.style.color = linkHover}
+          onMouseLeave={e => e.currentTarget.style.color = linkColor}
         >Sign in</button>
         <PrimaryCTA onClick={() => onNavigate('signup')} size="md" style={{ borderRadius: 999, padding: '0 22px' }}>Join now</PrimaryCTA>
       </div>
@@ -363,13 +360,20 @@ export default function PublicHome({ onNavigate }) {
       <NavBar onNavigate={onNavigate} scrolled={scrolled} />
 
       {/* HERO — light editorial */}
-      <section style={{ position: 'relative', background: HERO_MESH, padding: `132px ${PAD} clamp(72px, 8vw, 120px)`, overflow: 'hidden' }}>
-        <Logo showText={false} color={colors.accent} style={{ position: 'absolute', bottom: -44, left: -34, height: 360, width: 'auto', opacity: 0.05, transform: 'rotate(-8deg)', pointerEvents: 'none' }} />
+      <section style={{ position: 'relative', background: colors.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', padding: `120px ${PAD} 96px`, overflow: 'hidden' }}>
+        {/* full-bleed brand film */}
+        <video autoPlay muted loop playsInline poster={HERO_POSTER} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}>
+          <source src={HERO_VIDEO_SRC} type="video/mp4" />
+        </video>
+        {/* legibility scrim (left-weighted) + warm floor glow + fade into the light body */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'linear-gradient(100deg, rgba(6,6,9,0.90) 0%, rgba(6,6,9,0.70) 36%, rgba(6,6,9,0.40) 62%, rgba(6,6,9,0.18) 100%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'radial-gradient(60% 50% at 50% 118%, rgba(255,128,0,0.12), transparent 60%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 140, zIndex: 1, background: 'linear-gradient(180deg, transparent, #FFFFFF)', pointerEvents: 'none' }} />
         <div className="lp-inner lp-hero" style={{ position: 'relative', zIndex: 2 }}>
           {/* left */}
           <div>
             <FadeIn start={introDone} delay={150} duration={800}>
-              <Eyebrow label="USA'S PREMIER MEMBERSHIP PLATFORM" />
+              <Eyebrow label="USA'S PREMIER MEMBERSHIP PLATFORM" dark />
             </FadeIn>
 
             <AnimatedHeading
@@ -378,12 +382,12 @@ export default function PublicHome({ onNavigate }) {
               accentWord="you"
               accentColor={colors.accent}
               lines={['More access.', 'More experiences.', 'More you.']}
-              style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 1.0, letterSpacing: '-0.035em', color: light.ink, margin: '22px 0 0' }}
+              style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 1.0, letterSpacing: '-0.035em', color: '#fff', margin: '22px 0 0' }}
             />
 
             <FadeIn start={introDone} delay={850} duration={900}>
-              <p style={{ font: `400 18px/1.65 ${font.family}`, color: light.body, margin: '22px 0 0', maxWidth: 480 }}>
-                One membership unlocks luxury prize campaigns, members-only offers from leading brands, and rewards that compound every month — from <strong style={{ color: light.ink, fontWeight: 600 }}>$14.99/mo</strong>, or start free with 3 Credits.
+              <p style={{ font: `400 18px/1.65 ${font.family}`, color: 'rgba(255,255,255,0.74)', margin: '22px 0 0', maxWidth: 480 }}>
+                One membership unlocks luxury prize campaigns, members-only offers from leading brands, and rewards that compound every month — from <strong style={{ color: '#fff', fontWeight: 600 }}>$14.99/mo</strong>, or start free with 3 Credits.
               </p>
             </FadeIn>
 
@@ -392,7 +396,7 @@ export default function PublicHome({ onNavigate }) {
                 <PrimaryCTA onClick={() => onNavigate('signup')}>
                   Become a member <Icon name="arrowRight" size={17} color="#1c1003" />
                 </PrimaryCTA>
-                <GhostCTA onClick={() => onNavigate('campaigns')}>Browse live campaigns</GhostCTA>
+                <GhostCTA dark onClick={() => onNavigate('campaigns')}>Browse live campaigns</GhostCTA>
               </div>
             </FadeIn>
 
@@ -401,12 +405,12 @@ export default function PublicHome({ onNavigate }) {
                 <div style={{ display: 'flex' }}>
                   {[12, 32, 45, 5, 23].map((n, i) => (
                     <img key={n} src={`https://i.pravatar.cc/64?img=${n}`} alt=""
-                      style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover', border: `2px solid ${light.canvas}`, marginLeft: i === 0 ? 0 : -11, background: light.soft }}
+                      style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,255,255,0.25)', marginLeft: i === 0 ? 0 : -11, background: 'rgba(255,255,255,0.1)' }}
                       onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
                     />
                   ))}
                 </div>
-                <span style={{ font: `400 13px ${font.family}`, color: light.dim }}>Joined by <strong style={{ color: light.ink, fontWeight: 600 }}>50,000+</strong> members across the US</span>
+                <span style={{ font: `400 13px ${font.family}`, color: 'rgba(255,255,255,0.66)' }}>Joined by <strong style={{ color: '#fff', fontWeight: 600 }}>50,000+</strong> members across the US</span>
               </div>
             </FadeIn>
           </div>
@@ -414,12 +418,9 @@ export default function PublicHome({ onNavigate }) {
           {/* right — hero photograph + floating live card */}
           <FadeIn start={introDone} delay={700} duration={1000}>
             <div style={{ position: 'relative' }}>
-              <div className="hero-visual" style={{ position: 'relative', borderRadius: 28, overflow: 'hidden', height: 'clamp(460px, 62vh, 600px)', background: FEATURED.gradient, boxShadow: light.floatShadow }}>
-                <video autoPlay muted loop playsInline poster={HERO_POSTER} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}>
-                  <source src={HERO_VIDEO_SRC} type="video/mp4" />
-                </video>
-                <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(75% 60% at 72% 18%, rgba(255,128,0,0.20), transparent 62%)' }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(8,8,10,0.12), transparent 38%, rgba(8,8,10,0.40))' }} />
+              <div className="hero-visual" style={{ position: 'relative', borderRadius: 28, overflow: 'hidden', height: 'clamp(460px, 62vh, 600px)', background: FEATURED.gradient, border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 30px 70px rgba(0,0,0,0.5)' }}>
+                {FEATURED.image && <img src={FEATURED.image} alt={FEATURED.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />}
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(8,8,10,0.10), transparent 34%, rgba(8,8,10,0.42))' }} />
                 <span style={{ position: 'absolute', top: 18, right: 18, display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(255,255,255,0.94)', borderRadius: 999, padding: '6px 13px', font: `700 11px ${font.family}`, letterSpacing: '.06em', color: light.ink }}>
                   <span style={{ width: 7, height: 7, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} /> LIVE
                 </span>

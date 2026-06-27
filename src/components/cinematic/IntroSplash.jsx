@@ -21,8 +21,10 @@ const ICON_TRANSFORMS = [
  * growing hairline, then lifts (fades) and unmounts. Calls onDone when the lift
  * begins so the hero entrance can start in sync.
  */
-export default function IntroSplash({ onDone, hold = 1900, lift = 800 }) {
+export default function IntroSplash({ onDone, hold = 1900, lift = 800, name = '' }) {
   const reduced = useReducedMotion();
+  const firstWord = name ? name.trim().split(/\s+/)[0] : '';
+  const firstName = firstWord ? firstWord.charAt(0).toUpperCase() + firstWord.slice(1) : '';
   const [lifting, setLifting] = useState(false);
   const [gone, setGone] = useState(false);
 
@@ -66,6 +68,11 @@ export default function IntroSplash({ onDone, hold = 1900, lift = 800 }) {
         </svg>
         <span style={{ font: `600 30px ${font.display}`, letterSpacing: '.18em', color: colors.text }}>INSCAPE</span>
       </div>
+      {firstName && (
+        <div style={{ font: `400 19px ${font.family}`, color: 'rgba(255,255,255,0.6)', letterSpacing: '.01em', textAlign: 'center', animation: reduced ? 'none' : 'introLogo 800ms 480ms cubic-bezier(.2,.7,.2,1) both' }}>
+          Welcome, <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, fontSize: 25, color: colors.accent }}>{firstName}</span>
+        </div>
+      )}
       <div style={{ height: 1, background: `linear-gradient(90deg, transparent, ${colors.accent}, transparent)`, animation: reduced ? 'none' : 'hairlineGrow 1100ms 300ms ease both', width: reduced ? 120 : 0 }} />
     </div>
   );
