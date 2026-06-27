@@ -346,8 +346,10 @@ export default function PublicHome({ onNavigate }) {
             {WINNERS.map((w, i) => (
               <Reveal key={w.id} delay={i * 120}>
                 <div style={{ background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: radius.xl, overflow: 'hidden' }}>
-                  <div style={{ height: 150, background: w.gradient, position: 'relative' }}>
-                    <div style={{ position: 'absolute', top: 12, left: 12, background: 'rgba(91,208,138,0.12)', border: '1px solid rgba(91,208,138,0.3)', borderRadius: 8, padding: '4px 10px', font: `600 10px ${font.family}`, color: colors.success, letterSpacing: '.08em' }}>WINNER</div>
+                  <div style={{ height: 150, background: w.gradient, position: 'relative', overflow: 'hidden' }}>
+                    {w.image && <img src={w.image} alt={w.title} loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />}
+                    <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(13,15,18,0.6),transparent 60%)' }} />
+                    <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 2, background: 'rgba(91,208,138,0.12)', border: '1px solid rgba(91,208,138,0.3)', borderRadius: 8, padding: '4px 10px', font: `600 10px ${font.family}`, color: colors.success, letterSpacing: '.08em' }}>WINNER</div>
                   </div>
                   <div style={{ padding: '16px 18px 18px' }}>
                     <div style={{ font: `400 11px ${font.family}`, color: colors.textDim }}>{w.category} · {w.prize}</div>

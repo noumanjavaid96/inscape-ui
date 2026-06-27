@@ -9,12 +9,13 @@ import PageHeader from '../components/layout/PageHeader';
 import Section from '../components/layout/Section';
 import CampaignCard from '../components/campaign/CampaignCard';
 import MomentumWidget from '../components/campaign/MomentumWidget';
+import { CAMPAIGNS } from '../data/campaigns';
 
 const { colors, font } = tokens;
 
 const ACTIVE_CAMPAIGNS = [
-  { title: 'Range Rover Sport', category: 'Vehicles', prize: '$92,000', status: 'LIVE', statusColor: colors.accent, timeLeft: '2d 14h', allocations: 2, gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.1)' },
-  { title: 'Maldives Escape', category: 'Travel', prize: '$18,500', status: 'CLOSING SOON', statusColor: colors.warning, timeLeft: '9h 40m', allocations: 4, gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.1)' },
+  { ...CAMPAIGNS[0], allocations: 2 },
+  { ...CAMPAIGNS[1], allocations: 4 },
 ];
 
 const QUICK_ACTIONS = [
@@ -127,7 +128,7 @@ export default function Dashboard({ onNavigate }) {
                     key={c.title}
                     campaign={c}
                     size="sm"
-                    onClick={() => onNavigate('campaign-detail')}
+                    onClick={() => onNavigate('campaign-detail', { campaignId: c.id })}
                   />
                 ))}
               </div>

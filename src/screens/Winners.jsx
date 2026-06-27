@@ -39,7 +39,9 @@ export default function Winners() {
                 Won by <strong style={{ color: colors.text }}>{featured.winner}</strong> from {featured.location}, drawn {featured.date}.
               </p>
             </div>
-            <div style={{ height: 180, borderRadius: radius.lg, background: featured.gradient, border: `1px solid ${colors.border}` }} />
+            <div style={{ height: 180, borderRadius: radius.lg, background: featured.gradient, border: `1px solid ${colors.border}`, overflow: 'hidden', position: 'relative' }}>
+              {featured.image && <img src={featured.image} alt={featured.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />}
+            </div>
           </div>
         </Card>
 
@@ -48,8 +50,10 @@ export default function Winners() {
         <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? 'repeat(3,1fr)' : isMobile ? '1fr' : 'repeat(2,1fr)', gap: 20, marginBottom: 40 }}>
           {rest.map((w) => (
             <div key={w.id} style={{ background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: radius.xl, overflow: 'hidden' }}>
-              <div style={{ height: 120, background: w.gradient, position: 'relative' }}>
-                <div style={{ position: 'absolute', top: 12, left: 12 }}>
+              <div style={{ height: 120, background: w.gradient, position: 'relative', overflow: 'hidden' }}>
+                {w.image && <img src={w.image} alt={w.title} loading="lazy" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />}
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(13,15,18,0.6),transparent 60%)' }} />
+                <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
                   <Badge label="WINNER" color="green" size="sm" />
                 </div>
               </div>

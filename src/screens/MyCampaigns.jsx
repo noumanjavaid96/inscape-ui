@@ -3,12 +3,13 @@ import { useBreakpoint } from '../hooks/useBreakpoint';
 import Card from '../components/ui/Card';
 import PageHeader from '../components/layout/PageHeader';
 import CampaignCard from '../components/campaign/CampaignCard';
+import { CAMPAIGNS } from '../data/campaigns';
 
 const { colors, font, radius } = tokens;
 
 const ACTIVE = [
-  { title: 'Range Rover Sport', category: 'Vehicles', prize: '$92,000', allocations: 2, timeLeft: '2d 14h', status: 'LIVE', statusColor: colors.accent, gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.12)' },
-  { title: '7 Nights, Maldives', category: 'Travel', prize: '$18,500', allocations: 4, timeLeft: '9h 40m', status: 'CLOSING SOON', statusColor: colors.warning, gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.12)' },
+  { ...CAMPAIGNS[0], allocations: 2 },
+  { ...CAMPAIGNS[1], allocations: 4 },
 ];
 
 const PAST = [
@@ -29,7 +30,7 @@ export default function MyCampaigns({ onNavigate }) {
           <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.12em', textTransform: 'uppercase', color: colors.accent, marginBottom: 14 }}>Active · {ACTIVE.length}</div>
           <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? 'repeat(2,1fr)' : '1fr', gap: 16 }}>
             {ACTIVE.map(c => (
-              <CampaignCard key={c.title} campaign={c} size="md" onClick={() => onNavigate('campaign-detail')} />
+              <CampaignCard key={c.id} campaign={c} size="md" onClick={() => onNavigate('campaign-detail', { campaignId: c.id })} />
             ))}
           </div>
         </div>

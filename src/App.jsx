@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import AppLayout from './layouts/AppLayout';
+import IntroSplash from './components/cinematic/IntroSplash';
 import PublicHome from './screens/PublicHome';
 import SignUp from './screens/SignUp';
 import Login from './screens/Login';
@@ -50,12 +51,17 @@ const SCREENS = {
   support: Support,
 };
 
+// Screens that, when they hand off to the dashboard, earn a brand reveal.
+const AUTH_ENTRY = new Set(['login', 'signup', 'welcome', 'onboarding']);
+
 export default function App() {
   const [screen, setScreen] = useState('public-home');
   const [params, setParams] = useState({});
   const [history, setHistory] = useState([]);
+  const [splashId, setSplashId] = useState(0);
 
   const navigate = (to, nextParams = {}) => {
+    if (to === 'dashboard' && AUTH_ENTRY.has(screen)) setSplashId(id => id + 1);
     setHistory(h => [...h, { screen, params }]);
     setScreen(to);
     setParams(nextParams);
@@ -86,6 +92,7 @@ export default function App() {
           <Screen {...screenProps} />
         </AppLayout>
       )}
+      {splashId > 0 && <IntroSplash key={splashId} hold={1400} lift={700} />}
     </>
   );
 }

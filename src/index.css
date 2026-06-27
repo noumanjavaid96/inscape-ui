@@ -23,6 +23,15 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(14px) scale(0.99); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes orbGlow {
+  0%, 100% { box-shadow: 0 0 50px rgba(255,128,0,0.18); }
+  50%      { box-shadow: 0 0 80px rgba(255,128,0,0.30); }
+}
+
 /* Scroll-cue dot travelling down the hairline */
 @keyframes scrollDot {
   0%   { transform: translateY(-8px); opacity: 0; }

@@ -26,6 +26,9 @@ export default function CampaignDetail({ onNavigate, params = {} }) {
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
       {/* Hero */}
       <div style={{ height: isDesktop ? 420 : 300, background: c.gradient, position: 'relative', overflow: 'hidden' }}>
+        {c.image && (
+          <img src={c.image} alt={c.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+        )}
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(70% 70% at 30% 35%, ${c.glow}, transparent)` }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,#050505 0%,transparent 65%)' }} />
         <button

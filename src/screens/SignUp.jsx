@@ -33,10 +33,11 @@ export default function SignUp({ onNavigate }) {
         ))}
       </div>
 
+      <div key={step} style={{ animation: 'slideIn 0.45s cubic-bezier(.2,.7,.2,1) both' }}>
       {step === 1 ? (
         <>
           <h1 style={{ font: `700 26px/1.1 ${font.family}`, color: colors.text, margin: '0 0 6px', letterSpacing: '-.01em' }}>Create your account</h1>
-          <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 28px' }}>Start with 3 free credits — no card required.</p>
+          <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 28px' }}>Start with 3 free Credits — no card required.</p>
           <Input label="Full name" value={form.name} onChange={set('name')} />
           <Input label="Email address" type="email" value={form.email} onChange={set('email')} />
           <Input label="Password (min. 8 characters)" type="password" value={form.password} onChange={set('password')} style={{ marginBottom: 24 }} />
@@ -46,15 +47,20 @@ export default function SignUp({ onNavigate }) {
         </>
       ) : (
         <>
-          <div style={{ width: 52, height: 52, borderRadius: '50%', background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-            <Icon name="star" size={26} color={colors.accent} />
+          <div className="liquid-glass" style={{ width: 56, height: 56, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20, border: `1px solid ${colors.accentBorder}` }}>
+            <Icon name="sparkle" size={28} color={colors.accent} />
           </div>
           <h1 style={{ font: `700 26px/1.1 ${font.family}`, color: colors.text, margin: '0 0 6px', letterSpacing: '-.01em' }}>Almost there</h1>
-          <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 24px' }}>Review and confirm to claim your 3 free credits.</p>
-          <div style={{ background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, borderRadius: radius.md, padding: '16px 18px', marginBottom: 24 }}>
-            <div style={{ font: `600 13px ${font.family}`, color: colors.accent, marginBottom: 4 }}>Welcome grant</div>
-            <div style={{ font: `700 28px/1 ${font.family}`, color: colors.text }}>3 credits</div>
-            <div style={{ font: `400 12px ${font.family}`, color: colors.textDim, marginTop: 4 }}>Ready to use immediately after sign-up</div>
+          <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 24px' }}>Review and confirm to claim your 3 free Credits.</p>
+          <div className="liquid-glass" style={{ borderRadius: radius.md, padding: '18px 20px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ width: 44, height: 44, borderRadius: radius.md, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Icon name="gift" size={22} color={colors.accent} />
+            </div>
+            <div>
+              <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.1em', color: colors.accent }}>WELCOME GRANT</div>
+              <div style={{ font: `700 26px/1 ${font.family}`, color: colors.text, margin: '2px 0' }}>3 Credits</div>
+              <div style={{ font: `400 12px ${font.family}`, color: colors.textDim }}>Ready to use right after sign-up</div>
+            </div>
           </div>
           {CONSENTS.map(c => (
             <Checkbox
@@ -66,10 +72,11 @@ export default function SignUp({ onNavigate }) {
             />
           ))}
           <Button onClick={() => step2Valid && onNavigate('welcome')} fullWidth size="lg" disabled={!step2Valid} style={{ marginTop: 8 }}>
-            Create account and claim credits
+            Create account and claim Credits
           </Button>
         </>
       )}
+      </div>
 
       <div style={{ textAlign: 'center', marginTop: 20 }}>
         <span style={{ font: `400 13px ${font.family}`, color: colors.textFaint }}>Already have an account? </span>

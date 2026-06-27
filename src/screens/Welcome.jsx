@@ -1,50 +1,65 @@
 import tokens from '../design/tokens';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
+import FadeIn from '../components/cinematic/FadeIn';
+import FilmGrain from '../components/cinematic/FilmGrain';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 
 const { colors, font, radius } = tokens;
 
 const STEPS = [
-  { num: '1', title: 'You have 3 free credits', body: 'No card needed. Credits never expire.' },
-  { num: '2', title: 'Join campaigns', body: 'Browse live campaigns and join with your credits.' },
-  { num: '3', title: 'Earn Momentum bonuses', body: 'Hit milestones each month for bonus credits.' },
+  { icon: 'wallet', title: '3 Credits, on us', body: 'No card needed — and your Credits never expire.' },
+  { icon: 'grid', title: 'Join campaigns', body: 'Browse live campaigns and join with your Credits.' },
+  { icon: 'bolt', title: 'Earn Momentum', body: 'Hit milestones each month for bonus Credits.' },
 ];
 
 export default function Welcome({ onNavigate }) {
+  const reduced = useReducedMotion();
   return (
-    <div style={{ background: colors.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(60% 50% at 50% 40%, rgba(255,128,0,0.1), transparent)', pointerEvents: 'none' }} />
-      <div style={{ width: '100%', maxWidth: 480, textAlign: 'center', position: 'relative' }}>
-        <div style={{ width: 90, height: 90, borderRadius: '50%', background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 28px' }}>
-          <Icon name="star" size={42} color={colors.accent} />
-        </div>
+    <div style={{ background: colors.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', position: 'relative', overflow: 'hidden' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(60% 50% at 50% 36%, rgba(255,128,0,0.12), transparent)', pointerEvents: 'none' }} />
+      <FilmGrain />
+      <div style={{ width: '100%', maxWidth: 460, textAlign: 'center', position: 'relative', zIndex: 1 }}>
 
-        <h1 style={{ font: `700 42px/1.05 ${font.display}`, color: colors.text, margin: '0 0 12px', letterSpacing: '-.01em' }}>Welcome to InScape</h1>
-        <p style={{ font: `400 16px/1.6 ${font.family}`, color: colors.textMuted, margin: '0 0 36px' }}>Your 3 free credits are ready to use. Here is how to get started:</p>
-
-        <div style={{ background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: radius.xl, padding: '24px 28px', marginBottom: 24, textAlign: 'left' }}>
-          {STEPS.map(s => (
-            <div key={s.num} style={{ display: 'flex', gap: 16, marginBottom: 20 }}>
-              <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'rgba(255,128,0,0.12)', border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', font: `700 14px ${font.family}`, color: colors.accent, flexShrink: 0 }}>{s.num}</div>
-              <div>
-                <div style={{ font: `600 15px ${font.family}`, color: colors.text, marginBottom: 3 }}>{s.title}</div>
-                <div style={{ font: `400 13px ${font.family}`, color: colors.textDim }}>{s.body}</div>
-              </div>
+        <FadeIn delay={100} duration={800}>
+          <div style={{ position: 'relative', width: 104, height: 104, margin: '0 auto 26px' }}>
+            <div style={{ position: 'absolute', inset: -8, borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,128,0,0.22), transparent 70%)', filter: 'blur(4px)' }} />
+            <div className="liquid-glass" style={{ position: 'absolute', inset: 0, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${colors.accentBorder}`, animation: reduced ? 'none' : 'orbGlow 4s ease-in-out infinite' }}>
+              <Icon name="sparkle" size={44} color={colors.accent} />
             </div>
-          ))}
-        </div>
+          </div>
+        </FadeIn>
 
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, borderRadius: radius.lg, padding: '10px 20px', marginBottom: 28 }}>
-          <Icon name="bolt" size={18} color={colors.accent} />
-          <span style={{ font: `600 15px ${font.family}`, color: colors.accent }}>3 credits added to your wallet</span>
-        </div>
+        <FadeIn delay={300} duration={800}>
+          <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.18em', color: colors.accent, marginBottom: 12 }}>WELCOME TO INSCAPE</div>
+          <h1 style={{ font: `700 44px/1.05 ${font.display}`, color: colors.text, margin: '0 0 12px', letterSpacing: '-.01em' }}>You’re in. Let’s begin.</h1>
+          <p style={{ font: `400 16px/1.6 ${font.family}`, color: colors.textMuted, margin: '0 0 32px' }}>Your <strong style={{ color: colors.text }}>3 free Credits</strong> are ready. Here is how it works:</p>
+        </FadeIn>
 
-        <Button onClick={() => onNavigate('onboarding')} fullWidth size="lg" style={{ marginBottom: 10 }}>
-          Use my 3 credits
-        </Button>
-        <Button onClick={() => onNavigate('campaigns')} variant="ghost" fullWidth size="md">
-          Skip to campaigns
-        </Button>
+        <FadeIn delay={500} duration={800}>
+          <div className="liquid-glass" style={{ borderRadius: radius.xl, padding: '22px 24px', marginBottom: 22, textAlign: 'left' }}>
+            {STEPS.map((s, i) => (
+              <div key={s.title} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '12px 0', borderBottom: i < STEPS.length - 1 ? `1px solid ${colors.borderFaint}` : 'none' }}>
+                <div style={{ width: 40, height: 40, borderRadius: radius.md, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Icon name={s.icon} size={20} color={colors.accent} />
+                </div>
+                <div>
+                  <div style={{ font: `600 15px ${font.family}`, color: colors.text }}>{s.title}</div>
+                  <div style={{ font: `400 13px ${font.family}`, color: colors.textDim, marginTop: 1 }}>{s.body}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={700} duration={800}>
+          <Button onClick={() => onNavigate('onboarding')} fullWidth size="lg" style={{ marginBottom: 10 }}>
+            Use my 3 Credits
+          </Button>
+          <Button onClick={() => onNavigate('campaigns')} variant="ghost" fullWidth size="md">
+            Skip to campaigns
+          </Button>
+        </FadeIn>
       </div>
     </div>
   );

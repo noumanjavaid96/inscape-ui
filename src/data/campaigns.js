@@ -111,6 +111,25 @@ export const PAST_WINNERS = [
   { id: 'dubai-getaway', title: '5 Nights, Dubai', category: 'Travel', prize: '$7,500', winner: 'Tom W.', location: 'Bristol', date: 'Mar 2, 2026', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)' },
 ];
 
+// Prize photography (Unsplash CDN). Cards fall back to their gradient if an
+// image fails to load. Swap for your own Cloudinary URLs anytime.
+const U = (id) => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1000&q=70`;
+const IMAGES = {
+  'range-rover-sport': U('1606664515524-ed2f786a0bd6'),
+  'maldives-escape': U('1514282401047-d79a71a590e8'),
+  'macbook-pro-m4': U('1517336714731-489689fd1ca8'),
+  'cash-25k': U('1554672408-730436b60dde'),
+  'omega-speedmaster': U('1523275335684-37898b6baf30'),
+  'swiss-alps-retreat': U('1531366936337-7c912a4589a7'),
+  'tesla-model-3': U('1560958089-b8a1929cea89'),
+  'nyc-weekend': U('1496442226666-8d4d0e62e6e9'),
+  'cash-10k': U('1565514020179-026b92b84bb6'),
+  'rolex-datejust': U('1587836374828-4dbafa94cf0e'),
+  'iphone-bundle': U('1511707171634-5f897ff02aa9'),
+  'dubai-getaway': U('1512453979798-5ea266f8880c'),
+};
+[...CAMPAIGNS, ...PAST_WINNERS].forEach((o) => { if (IMAGES[o.id]) o.image = IMAGES[o.id]; });
+
 export const statusColor = (status) =>
   ({ LIVE: colors.accent, 'CLOSING SOON': colors.warning, UPCOMING: colors.info, CLOSED: colors.textDim }[status] || colors.accent);
 
