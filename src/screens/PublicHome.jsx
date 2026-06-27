@@ -14,11 +14,19 @@ import AnimatedHeading from '../components/cinematic/AnimatedHeading';
 import MagneticButton from '../components/cinematic/MagneticButton';
 import FadeIn from '../components/cinematic/FadeIn';
 import Reveal from '../components/cinematic/Reveal';
-import { CAMPAIGNS as ALL_CAMPAIGNS } from '../data/campaigns';
+import { CAMPAIGNS as ALL_CAMPAIGNS, PAST_WINNERS } from '../data/campaigns';
 
 const { colors, font, radius } = tokens;
 
 const CAMPAIGNS = ALL_CAMPAIGNS.slice(0, 3);
+const WINNERS = PAST_WINNERS.slice(0, 3);
+
+// The core message: one membership, three concrete benefits.
+const BENEFITS = [
+  { icon: 'star', title: 'Premium prize campaigns', body: 'Join live campaigns for luxury cars, travel, tech and tax-free cash — using Credits, from just 1 per campaign.', cta: 'Explore campaigns', action: 'campaigns' },
+  { icon: 'gift', title: 'Exclusive partner offers', body: 'Unlock members-only offers and savings from leading brands across travel, tech, fashion and lifestyle.', cta: 'See partner offers', action: 'signup' },
+  { icon: 'sparkle', title: 'Real member benefits', body: 'Monthly Credits, Momentum bonuses, referral rewards and early access — value that compounds every month.', cta: 'Compare membership', action: 'signup' },
+];
 
 // Hero brand film + poster still. VideoBackdrop crossfades the clip into its
 // own start for a seamless loop; the poster shows instantly while it buffers.
@@ -146,39 +154,49 @@ export default function PublicHome({ onNavigate }) {
             {/* Left column */}
             <div>
               <FadeIn start={introDone} delay={200} duration={900}>
-                <div style={{ marginBottom: 26 }}><Eyebrow label="SAME-DAY ACCESS · UK'S LEADING MEMBERSHIP PLATFORM" pulse /></div>
+                <div style={{ marginBottom: 26 }}><Eyebrow label="UK'S LEADING MEMBERSHIP PLATFORM" pulse /></div>
               </FadeIn>
 
               <AnimatedHeading
                 className="hero-title"
                 start={introDone}
-                accentWord="You"
+                accentWord="opportunity"
                 accentColor={colors.accent}
-                lines={['More Access.', 'More Experiences.', 'More You.']}
+                lines={['One membership.', 'Endless opportunity.']}
                 style={{ fontFamily: font.family, fontWeight: 800, lineHeight: 0.98, letterSpacing: '-.03em', color: colors.text }}
               />
 
-              <FadeIn start={introDone} delay={800} duration={1000}>
-                <p style={{ font: `400 18px/1.65 ${font.family}`, color: colors.textMuted, marginTop: 24, maxWidth: 460 }}>
-                  Unlock premium campaigns, exclusive partner offers and unforgettable experiences — all through one membership. Start with 3 free Credits.
+              <FadeIn start={introDone} delay={700} duration={900}>
+                <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginTop: 22 }}>
+                  {['Premium prize campaigns', 'Exclusive partner offers', 'Real member benefits'].map((b) => (
+                    <span key={b} className="liquid-glass" style={{ display: 'inline-flex', alignItems: 'center', gap: 7, borderRadius: radius.full, padding: '7px 13px', font: `500 12px ${font.family}`, color: colors.textMuted }}>
+                      <Icon name="check" size={12} color={colors.accent} />{b}
+                    </span>
+                  ))}
+                </div>
+              </FadeIn>
+
+              <FadeIn start={introDone} delay={900} duration={1000}>
+                <p style={{ font: `400 18px/1.65 ${font.family}`, color: colors.textMuted, marginTop: 20, maxWidth: 470 }}>
+                  Win extraordinary prizes, unlock offers from leading brands and enjoy real member benefits — all from one membership, starting at <strong style={{ color: colors.text }}>£14.99/mo</strong>. Or start free with 3 Credits.
                 </p>
               </FadeIn>
 
               <FadeIn start={introDone} delay={1200} duration={1000}>
-                <div style={{ display: 'flex', gap: 14, marginTop: 34, flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', gap: 14, marginTop: 32, flexWrap: 'wrap' }}>
                   <MagneticButton
-                    onClick={() => onNavigate('campaigns')}
+                    onClick={() => onNavigate('signup')}
                     style={{ display: 'inline-flex', alignItems: 'center', gap: 8, height: 56, padding: '0 30px', borderRadius: radius.md, background: colors.accent, border: 'none', color: colors.bg, font: `600 16px ${font.family}`, boxShadow: tokens.shadow.glow }}
                   >
-                    Explore Live Campaigns
+                    Become a Member
                     <Icon name="arrowRight" size={17} color={colors.bg} />
                   </MagneticButton>
                   <MagneticButton
-                    onClick={() => onNavigate('signup')}
+                    onClick={() => onNavigate('campaigns')}
                     className="liquid-glass"
                     style={{ height: 56, padding: '0 30px', borderRadius: radius.md, color: colors.text, font: `600 16px ${font.family}` }}
                   >
-                    Become a Member
+                    Explore Campaigns
                   </MagneticButton>
                 </div>
               </FadeIn>
@@ -211,7 +229,38 @@ export default function PublicHome({ onNavigate }) {
       {/* PARTNER STRIP */}
       <section style={{ padding: '56px clamp(20px, 5vw, 80px) 56px', borderTop: `1px solid ${colors.borderFaint}` }}>
         <div className="section-inner">
-          <Reveal><PartnerStrip /></Reveal>
+          <Reveal><PartnerStrip title="Exclusive offers from leading brands" /></Reveal>
+        </div>
+      </section>
+
+      {/* THREE BENEFITS — the core message */}
+      <section style={{ padding: '20px clamp(20px, 5vw, 80px) 90px' }}>
+        <div className="section-inner">
+          <Reveal>
+            <div style={{ textAlign: 'center', marginBottom: 48 }}>
+              <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent, marginBottom: 14 }}>WHY INSCAPE</div>
+              <h2 style={{ font: `600 42px/1.05 ${font.display}`, color: colors.text, margin: '0 0 12px' }}>One membership. Three ways to win.</h2>
+              <p style={{ font: `400 16px/1.6 ${font.family}`, color: colors.textDim, maxWidth: 460, margin: '0 auto' }}>
+                InScape is more than prize draws — it is a membership that keeps giving back every month.
+              </p>
+            </div>
+          </Reveal>
+          <div className="steps-grid">
+            {BENEFITS.map((b, i) => (
+              <Reveal key={b.title} delay={i * 120}>
+                <div className="liquid-glass" style={{ borderRadius: radius.xl, padding: '30px 28px', height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ width: 52, height: 52, borderRadius: radius.md, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18 }}>
+                    <Icon name={b.icon} size={26} color={colors.accent} />
+                  </div>
+                  <h3 style={{ font: `600 20px ${font.family}`, color: colors.text, margin: '0 0 10px' }}>{b.title}</h3>
+                  <p style={{ font: `400 14px/1.65 ${font.family}`, color: colors.textDim, margin: '0 0 18px', flex: 1 }}>{b.body}</p>
+                  <button onClick={() => onNavigate(b.action)} style={{ display: 'inline-flex', alignItems: 'center', gap: 6, background: 'none', border: 'none', cursor: 'pointer', font: `600 13px ${font.family}`, color: colors.accent, padding: 0, alignSelf: 'flex-start' }}>
+                    {b.cta}<Icon name="arrowRight" size={14} color={colors.accent} />
+                  </button>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -234,6 +283,42 @@ export default function PublicHome({ onNavigate }) {
             {CAMPAIGNS.map((c, i) => (
               <Reveal key={c.title} delay={i * 120}>
                 <CampaignCard campaign={c} onClick={() => onNavigate('signup')} size="md" />
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* RECENT WINNERS — proof */}
+      <section style={{ padding: '80px clamp(20px, 5vw, 80px)', borderTop: `1px solid ${colors.borderFaint}` }}>
+        <div className="section-inner">
+          <Reveal>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 36, flexWrap: 'wrap', gap: 16 }}>
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                  <Icon name="trophy" size={18} color={colors.accent} />
+                  <span style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent }}>REAL WINNERS</span>
+                </div>
+                <h2 style={{ font: `600 38px/1 ${font.display}`, color: colors.text, margin: 0 }}>Members win every week</h2>
+              </div>
+              <span style={{ font: `400 14px ${font.family}`, color: colors.textDim, maxWidth: 320 }}>Every draw is independently witnessed and audited. Real people, real prizes.</span>
+            </div>
+          </Reveal>
+          <div className="campaigns-grid">
+            {WINNERS.map((w, i) => (
+              <Reveal key={w.id} delay={i * 120}>
+                <div style={{ background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: radius.xl, overflow: 'hidden' }}>
+                  <div style={{ height: 150, background: w.gradient, position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: 12, left: 12, background: 'rgba(91,208,138,0.12)', border: '1px solid rgba(91,208,138,0.3)', borderRadius: 8, padding: '4px 10px', font: `600 10px ${font.family}`, color: colors.success, letterSpacing: '.08em' }}>WINNER</div>
+                  </div>
+                  <div style={{ padding: '16px 18px 18px' }}>
+                    <div style={{ font: `400 11px ${font.family}`, color: colors.textDim }}>{w.category} · {w.prize}</div>
+                    <div style={{ font: `700 22px/1.1 ${font.display}`, color: colors.text, marginTop: 4 }}>{w.title}</div>
+                    <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${colors.borderFaint}`, font: `500 13px ${font.family}`, color: colors.textMuted }}>
+                      Won by <span style={{ color: colors.text }}>{w.winner}</span>, {w.location} · {w.date}
+                    </div>
+                  </div>
+                </div>
               </Reveal>
             ))}
           </div>
