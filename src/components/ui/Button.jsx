@@ -6,7 +6,7 @@ const { colors, radius, shadow, transition, font } = tokens;
 const SIZES = {
   sm: { height: 38, padding: '0 16px', fontSize: 13 },
   md: { height: 46, padding: '0 22px', fontSize: 14 },
-  lg: { height: 54, padding: '0 32px', fontSize: 16 },
+  lg: { height: 56, padding: '0 32px', fontSize: 16 },
 };
 
 function variantStyle(variant) {

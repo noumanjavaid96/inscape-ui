@@ -238,6 +238,14 @@ src/
   Add new glyphs there rather than pasting characters into JSX. A middle-dot
   separator and the numeric-stepper minus are the only typographic marks used,
   and both are intentional.
+- **Approved terminology only.** The brand bans gambling language. Do **not** use
+  *Entries, Buy Entries, Lottery, Raffle, Jackpot, Giveaway, Bet, Wager, Deals*.
+  Use the neutral, globally-understood vocabulary instead:
+  - The product is a **Campaign**.
+  - The currency is **Credits** (a.k.a. Campaign Credits).
+  - The action is **Join** / **Join Campaign** (you *join with credits*).
+  - The participation count is **participants** (e.g. "4,821 participants").
+  ("Entry" is allowed **only** as a membership tier name: Entry / Premium / Elite.)
 - **No magic values in screens.** Pull colours, radii, shadows and fonts from
   `tokens`. If you need a new value, add it to the token set.
 - **Screens compose, components contain.** A screen should read as a layout of

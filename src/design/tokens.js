@@ -23,9 +23,9 @@ export const tokens = deepFreeze({
     // Background levels — darkest to lightest surface.
     bg: '#050505',
     bg1: '#080a0c',
-    bg2: '#0a0c0f',
+    bg2: '#0B0D10', // brand "Panel"
     bg3: '#0d0f12',
-    bg4: '#111418',
+    bg4: '#111418', // brand "Elevated Surface"
     bg5: '#15181d',
 
     // Brand accent.
@@ -98,6 +98,23 @@ export const tokens = deepFreeze({
       bold: 700,
       black: 800,
     },
+    // Brand type scale (Master Brand Spec §17). Inter for all UI;
+    // Cormorant Garamond reserved for campaign titles only.
+    scale: {
+      h1: { size: 72, weight: 800, line: 0.9, tracking: '-0.02em' },
+      h2: { size: 56, weight: 700, line: 1.0 },
+      h3: { size: 32, weight: 600, line: 1.1 },
+      body: { size: 18, weight: 400, line: 1.6 },
+      small: { size: 14, weight: 400, line: 1.5 },
+    },
+  },
+
+  // Layout system (Master Brand Spec §9): 1440px max, 12-col desktop grid.
+  layout: {
+    maxWidth: 1440,
+    contentWidth: 1200,
+    grid: 12,
+    gutter: 16,
   },
 
   spacing: {

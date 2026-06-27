@@ -8,10 +8,10 @@ import CampaignCard from '../components/campaign/CampaignCard';
 const { colors, font } = tokens;
 
 const ALL_CAMPAIGNS = [
-  { id: 1, status: 'LIVE', statusColor: colors.accent, timeLeft: '2d 14h', category: 'Vehicles', prize: '£92,000', title: 'Range Rover Sport', entries: '4,821', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.12)' },
-  { id: 2, status: 'CLOSING SOON', statusColor: colors.warning, timeLeft: '9h 40m', category: 'Travel', prize: '£18,500', title: '7 Nights, Maldives', entries: '2,104', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.12)' },
-  { id: 3, status: 'LIVE', statusColor: colors.accent, timeLeft: '5d 2h', category: 'Tech', prize: '£3,499', title: 'MacBook Pro M4', entries: '1,338', gradient: 'linear-gradient(135deg,#141820,#0a0c10)', glow: 'rgba(71,199,252,0.1)' },
-  { id: 4, status: 'UPCOMING', statusColor: colors.info, timeLeft: 'Starts in 3d', category: 'Travel', prize: '£12,000', title: 'Swiss Alps Retreat', entries: '—', gradient: 'linear-gradient(135deg,#141c20,#0a0e10)', glow: 'rgba(71,199,252,0.1)' },
+  { id: 1, status: 'LIVE', statusColor: colors.accent, timeLeft: '2d 14h', category: 'Vehicles', prize: '£92,000', title: 'Range Rover Sport', participants: '4,821', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.12)' },
+  { id: 2, status: 'CLOSING SOON', statusColor: colors.warning, timeLeft: '9h 40m', category: 'Travel', prize: '£18,500', title: '7 Nights, Maldives', participants: '2,104', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.12)' },
+  { id: 3, status: 'LIVE', statusColor: colors.accent, timeLeft: '5d 2h', category: 'Tech', prize: '£3,499', title: 'MacBook Pro M4', participants: '1,338', gradient: 'linear-gradient(135deg,#141820,#0a0c10)', glow: 'rgba(71,199,252,0.1)' },
+  { id: 4, status: 'UPCOMING', statusColor: colors.info, timeLeft: 'Starts in 3d', category: 'Travel', prize: '£12,000', title: 'Swiss Alps Retreat', participants: '—', gradient: 'linear-gradient(135deg,#141c20,#0a0e10)', glow: 'rgba(71,199,252,0.1)' },
 ];
 
 const FILTERS = ['All', 'Travel', 'Vehicles', 'Tech', 'Cash'];

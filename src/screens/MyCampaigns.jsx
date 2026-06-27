@@ -42,7 +42,7 @@ export default function MyCampaigns({ onNavigate }) {
                 <div style={{ width: 44, height: 44, borderRadius: radius.md, background: colors.bg5, flexShrink: 0 }} />
                 <div style={{ flex: 1 }}>
                   <div style={{ font: `500 14px ${font.family}`, color: colors.textMuted }}>{c.title}</div>
-                  <div style={{ font: `400 12px ${font.family}`, color: colors.textFaint, marginTop: 2 }}>{c.date} · {c.yours} allocation{c.yours > 1 ? 's' : ''}</div>
+                  <div style={{ font: `400 12px ${font.family}`, color: colors.textFaint, marginTop: 2 }}>{c.date} · joined with {c.yours} credit{c.yours > 1 ? 's' : ''}</div>
                 </div>
                 <span style={{ font: `500 12px ${font.family}`, color: colors.textFaint }}>{c.result}</span>
               </div>

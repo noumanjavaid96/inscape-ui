@@ -6,9 +6,9 @@ import Icon from '../components/ui/Icon';
 const { colors, font } = tokens;
 
 const SLIDES = [
-  { icon: 'wallet', title: 'Campaign Credits', body: 'Every allocation costs credits. You start with 3 free. Membership or top-ups keep you going. Credits are yours — they never expire.', accent: colors.accent },
-  { icon: 'grid', title: 'Discover Campaigns', body: 'Browse live campaigns in Travel, Vehicles, Tech and more. One credit equals one allocation. Stack allocations to multiply your participation.', accent: colors.accent },
-  { icon: 'bolt', title: 'Earn Momentum', body: 'Hit 25%, 50%, 75%, 100% allocation milestones each month and earn bonus credits automatically — up to 90 per month.', accent: colors.info },
+  { icon: 'wallet', title: 'Campaign Credits', body: 'Joining a campaign costs credits. You start with 3 free. Membership or top-ups keep you going. Credits are yours — they never expire.', accent: colors.accent },
+  { icon: 'grid', title: 'Discover Campaigns', body: 'Browse live campaigns in Travel, Vehicles, Tech and more. One credit joins you to a campaign. Add more credits to boost your participation.', accent: colors.accent },
+  { icon: 'bolt', title: 'Earn Momentum', body: 'Hit 25%, 50%, 75%, 100% participation milestones each month and earn bonus credits automatically — up to 90 per month.', accent: colors.info },
   { icon: 'users', title: 'Refer and Earn', body: 'Share your code. When a friend qualifies, you earn +40 Momentum plus bonus credits. No cap on referrals.', accent: colors.info },
 ];
 

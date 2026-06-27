@@ -9,7 +9,7 @@ const { colors, radius, transition, font } = tokens;
 const NAV = [
   { id: 'dashboard', label: 'Home', icon: 'home' },
   { id: 'campaigns', label: 'Campaigns', icon: 'grid' },
-  { id: 'my-campaigns', label: 'My Entries', icon: 'target' },
+  { id: 'my-campaigns', label: 'My Campaigns', icon: 'target' },
   { id: 'offers', label: 'Partner Offers', icon: 'star' },
   { id: 'wallet', label: 'Wallet', icon: 'wallet' },
   { id: 'profile', label: 'Profile', icon: 'user' },

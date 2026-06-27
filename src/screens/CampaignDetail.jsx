@@ -8,7 +8,7 @@ import StatusPill from '../components/campaign/StatusPill';
 
 const { colors, font, radius } = tokens;
 
-const ELIGIBILITY = ['UK residents 18+', 'One entry minimum', 'No purchase necessary', 'Official Rules apply'];
+const ELIGIBILITY = ['UK residents 18+', 'One allocation minimum', 'No purchase necessary', 'Official Rules apply'];
 const DRAW_DETAILS = [['Draw date', 'Nov 15, 2026'], ['Draw method', 'Random · witnessed'], ['Winner notified', 'By email within 24h']];
 
 export default function CampaignDetail({ onNavigate }) {
@@ -49,8 +49,8 @@ export default function CampaignDetail({ onNavigate }) {
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 28 }}>
               {[
                 { label: 'Prize value', value: '£92,000', color: colors.text },
-                { label: 'Entries', value: '4,821', color: colors.text },
-                { label: 'Cost per entry', value: '1 credit', color: colors.accent },
+                { label: 'Allocations', value: '4,821', color: colors.text },
+                { label: 'Cost per allocation', value: '1 credit', color: colors.accent },
                 { label: 'Closes', value: '2d 14h', color: colors.warning },
               ].map(s => (
                 <Card key={s.label} padding="sm" style={{ minWidth: 100 }}>

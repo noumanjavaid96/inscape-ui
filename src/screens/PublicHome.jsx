@@ -4,19 +4,20 @@ import Logo from '../components/ui/Logo';
 import Button from '../components/ui/Button';
 import Icon from '../components/ui/Icon';
 import CampaignCard from '../components/campaign/CampaignCard';
+import PartnerStrip from '../components/brand/PartnerStrip';
 
 const { colors, font, radius } = tokens;
 
 const CAMPAIGNS = [
-  { title: 'Range Rover Sport', category: 'Vehicles', prize: '£92,000', timeLeft: '2d 14h', entries: '4,821', status: 'LIVE', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.15)' },
-  { title: '7 Nights, Maldives', category: 'Travel', prize: '£18,500', timeLeft: '9h 40m', entries: '2,104', status: 'CLOSING SOON', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.15)' },
-  { title: 'MacBook Pro M4', category: 'Tech', prize: '£3,499', timeLeft: '5d 2h', entries: '1,338', status: 'LIVE', gradient: 'linear-gradient(135deg,#141820,#0a0c10)', glow: 'rgba(71,199,252,0.15)' },
+  { title: 'Range Rover Sport', category: 'Vehicles', prize: '£92,000', timeLeft: '2d 14h', participants: '4,821', status: 'LIVE', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.15)' },
+  { title: '7 Nights, Maldives', category: 'Travel', prize: '£18,500', timeLeft: '9h 40m', participants: '2,104', status: 'CLOSING SOON', gradient: 'linear-gradient(135deg,#1a1e28,#0c0e18)', glow: 'rgba(240,180,60,0.15)' },
+  { title: 'MacBook Pro M4', category: 'Tech', prize: '£3,499', timeLeft: '5d 2h', participants: '1,338', status: 'LIVE', gradient: 'linear-gradient(135deg,#141820,#0a0c10)', glow: 'rgba(71,199,252,0.15)' },
 ];
 
 const STEPS = [
-  { num: '01', icon: 'wallet', title: 'Get your credits', body: 'Join free and receive 3 campaign credits — no card required. Top up anytime or subscribe for monthly allocations.' },
-  { num: '02', icon: 'grid', title: 'Allocate to campaigns', body: 'Browse live campaigns across travel, vehicles, tech and more. Each credit is one allocation. Stack credits to multiply your participation.' },
-  { num: '03', icon: 'star', title: 'Win extraordinary prizes', body: 'Winners are drawn transparently at campaign close. Earn Momentum bonuses along the way — up to 90 bonus credits per month.' },
+  { num: '01', icon: 'wallet', title: 'Get your Credits', body: 'Join free and receive 3 Campaign Credits — no card required. Top up anytime or subscribe for monthly Credits.' },
+  { num: '02', icon: 'grid', title: 'Join campaigns', body: 'Browse live campaigns across travel, vehicles, tech and more. One Credit joins you to a campaign — add more to boost your participation.' },
+  { num: '03', icon: 'star', title: 'Win extraordinary prizes', body: 'Winners are selected transparently at campaign close. Earn Momentum bonuses along the way — up to 90 bonus Credits per month.' },
 ];
 
 const PLANS = [
@@ -26,10 +27,10 @@ const PLANS = [
 ];
 
 const STATS = [
-  { value: '12,400+', label: 'Active members' },
-  { value: '£2.1M', label: 'Prizes awarded' },
-  { value: '340+', label: 'Campaigns run' },
-  { value: '98%', label: 'Draw satisfaction' },
+  { value: '50,000+', label: 'Active members' },
+  { value: '1,200+', label: 'Live campaigns' },
+  { value: '£20M+', label: 'Member value unlocked' },
+  { value: '4.8/5', label: 'Member satisfaction' },
 ];
 
 function NavBar({ onNavigate, scrolled }) {
@@ -44,12 +45,18 @@ function NavBar({ onNavigate, scrolled }) {
     }}>
       <Logo size="md" showText />
 
-      <div style={{ display: 'flex', gap: 32, marginLeft: 48, flex: 1 }} className="desktop-nav">
-        {['Campaigns', 'How it works', 'Membership'].map(l => (
-          <a key={l} href={`#${l.toLowerCase().replace(/ /g, '-')}`} style={{ font: `500 14px ${font.family}`, color: colors.textMuted, textDecoration: 'none', transition: 'color 0.15s' }}
+      <div style={{ display: 'flex', gap: 30, marginLeft: 48, flex: 1 }} className="desktop-nav">
+        {[
+          { label: 'Explore', href: '#campaigns' },
+          { label: 'Live Campaigns', href: '#campaigns' },
+          { label: 'Membership', href: '#membership' },
+          { label: 'For Partners', href: '#how-it-works' },
+          { label: 'About Us', href: '#how-it-works' },
+        ].map(l => (
+          <a key={l.label} href={l.href} style={{ font: `500 14px ${font.family}`, color: colors.textMuted, textDecoration: 'none', transition: 'color 0.15s', whiteSpace: 'nowrap' }}
             onMouseEnter={e => e.target.style.color = colors.text}
             onMouseLeave={e => e.target.style.color = colors.textMuted}
-          >{l}</a>
+          >{l.label}</a>
         ))}
       </div>
 
@@ -58,7 +65,7 @@ function NavBar({ onNavigate, scrolled }) {
           onMouseEnter={e => e.target.style.color = colors.text}
           onMouseLeave={e => e.target.style.color = colors.textMuted}
         >Sign in</button>
-        <Button onClick={() => onNavigate('signup')} size="md">Join free</Button>
+        <Button onClick={() => onNavigate('signup')} size="md">Join Now</Button>
       </div>
     </nav>
   );
@@ -115,22 +122,22 @@ export default function PublicHome({ onNavigate }) {
         <div className="section-inner">
           <div className="hero-grid">
             <div>
-              <div style={{ marginBottom: 28 }}><Eyebrow label="3 CAMPAIGNS LIVE NOW" pulse /></div>
+              <div style={{ marginBottom: 28 }}><Eyebrow label="UK'S LEADING MEMBERSHIP PLATFORM" /></div>
 
-              <h1 className="hero-title" style={{ font: `700 80px/0.93 ${font.display}`, color: colors.text, letterSpacing: '-.02em', margin: 0 }}>
-                Campaign<br />Credits,<br /><em style={{ fontStyle: 'italic', color: 'rgba(255,255,255,0.55)' }}>beautifully</em><br />allocated.
+              <h1 className="hero-title" style={{ font: `800 80px/0.98 ${font.family}`, color: colors.text, letterSpacing: '-.03em', margin: 0 }}>
+                More Access.<br />More Experiences.<br /><span style={{ color: colors.accent }}>More You.</span>
               </h1>
 
-              <p style={{ font: `400 17px/1.7 ${font.family}`, color: colors.textMuted, marginTop: 28, maxWidth: 420 }}>
-                A premium platform for campaign credit allocation. Browse extraordinary prizes, stake your credits, and win — starting with 3 free.
+              <p style={{ font: `400 18px/1.65 ${font.family}`, color: colors.textMuted, marginTop: 28, maxWidth: 440 }}>
+                Unlock premium campaigns, exclusive partner offers and unforgettable experiences — all through one membership. Start with 3 free Credits.
               </p>
 
               <div style={{ display: 'flex', gap: 12, marginTop: 36, flexWrap: 'wrap' }}>
-                <Button onClick={() => onNavigate('signup')} size="lg">
-                  Join free · get 3 credits
+                <Button onClick={() => onNavigate('campaigns')} size="lg">
+                  Explore Live Campaigns
                   <Icon name="arrowRight" size={17} color={colors.bg} />
                 </Button>
-                <Button onClick={() => onNavigate('campaigns')} variant="secondary" size="lg">Browse campaigns</Button>
+                <Button onClick={() => onNavigate('signup')} variant="secondary" size="lg">Become a Member</Button>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 28 }}>
@@ -139,7 +146,7 @@ export default function PublicHome({ onNavigate }) {
                     <div key={i} style={{ width: 28, height: 28, borderRadius: '50%', background: c, border: `2px solid ${colors.bg}`, marginLeft: i === 0 ? 0 : -8, opacity: 0.85 }} />
                   ))}
                 </div>
-                <span style={{ font: `400 13px ${font.family}`, color: colors.textDim }}>Joined by <strong style={{ color: colors.textMuted }}>12,400+</strong> members</span>
+                <span style={{ font: `400 13px ${font.family}`, color: colors.textDim }}>Trusted by <strong style={{ color: colors.textMuted }}>50,000+</strong> members across the UK</span>
               </div>
             </div>
 
@@ -155,6 +162,13 @@ export default function PublicHome({ onNavigate }) {
               <div style={{ position: 'absolute', bottom: -40, left: '50%', transform: 'translateX(-50%)', width: 200, height: 200, background: 'radial-gradient(50% 50%, rgba(255,128,0,0.15), transparent)', pointerEvents: 'none' }} />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* PARTNER STRIP */}
+      <section style={{ padding: '8px clamp(20px, 5vw, 80px) 64px' }}>
+        <div className="section-inner">
+          <PartnerStrip />
         </div>
       </section>
 
@@ -279,7 +293,7 @@ export default function PublicHome({ onNavigate }) {
             Start with 3 free credits today
           </h2>
           <p style={{ font: `400 16px/1.6 ${font.family}`, color: colors.textDim, maxWidth: 420, margin: '0 auto 36px' }}>
-            Join thousands of members already allocating credits to extraordinary campaigns. No commitment required.
+            Join thousands of members already taking part in extraordinary campaigns. No commitment required.
           </p>
           <Button onClick={() => onNavigate('signup')} size="lg" style={{ height: 58, padding: '0 44px', fontSize: 17 }}>
             Create free account
@@ -304,7 +318,7 @@ export default function PublicHome({ onNavigate }) {
             <div style={{ font: `400 12px ${font.family}`, color: colors.textGhost }}>© 2026 InScape. All rights reserved.</div>
           </div>
           <div style={{ marginTop: 20, font: `400 11px/1.6 ${font.family}`, color: colors.textGhost, maxWidth: 600 }}>
-            InScape is a skill-based campaign allocation platform. No purchase necessary. Open to UK residents 18+. See Official Rules for full eligibility and draw procedures.
+            InScape is a skill-based membership platform. No purchase necessary. Open to UK residents 18+. See Official Rules for full eligibility and selection procedures.
           </div>
         </div>
       </footer>

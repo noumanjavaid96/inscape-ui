@@ -6,7 +6,7 @@ const { colors, font, radius } = tokens;
 
 const STEPS = [
   { num: '1', title: 'You have 3 free credits', body: 'No card needed. Credits never expire.' },
-  { num: '2', title: 'Allocate to campaigns', body: 'Browse live campaigns and stake your credits.' },
+  { num: '2', title: 'Join campaigns', body: 'Browse live campaigns and join with your credits.' },
   { num: '3', title: 'Earn Momentum bonuses', body: 'Hit milestones each month for bonus credits.' },
 ];
 

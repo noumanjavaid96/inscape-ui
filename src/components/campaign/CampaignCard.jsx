@@ -10,7 +10,7 @@ const { colors, radius, font } = tokens;
  *
  * campaign: {
  *   title, category, prize, status, statusColor, timeLeft,
- *   entries, credits, gradient, glow, allocations
+ *   participants, credits, gradient, glow, allocations
  * }
  *
  * @param {'sm'|'md'|'lg'} size
@@ -103,13 +103,13 @@ export default function CampaignCard({ campaign, onClick, size = 'md', style }) 
         >
           {c.allocations != null ? (
             <span style={{ font: `600 13px ${font.family}`, color: colors.textMuted }}>
-              Yours: <span style={{ color: colors.accent }}>{c.allocations}</span>
+              Joined: <span style={{ color: colors.accent }}>{c.allocations}</span>
             </span>
           ) : (
-            <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>{c.entries} entries</span>
+            <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>{c.participants} participants</span>
           )}
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, font: `600 13px ${font.family}`, color: colors.accent }}>
-            Allocate
+            Join
             <Icon name="arrowRight" size={14} color={colors.accent} />
           </span>
         </div>

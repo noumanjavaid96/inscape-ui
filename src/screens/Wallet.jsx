@@ -10,10 +10,10 @@ import PageHeader from '../components/layout/PageHeader';
 const { colors, font, radius } = tokens;
 
 const TX = [
-  { iconName: 'arrowDown', label: 'Monthly Premium allocation', detail: 'June 1, 2026', amount: '+120', color: colors.success },
-  { iconName: 'arrowUp', label: 'Range Rover allocation', detail: 'May 30, 2026', amount: '-2', color: colors.accent },
+  { iconName: 'arrowDown', label: 'Monthly Premium credits', detail: 'June 1, 2026', amount: '+120', color: colors.success },
+  { iconName: 'arrowUp', label: 'Joined Range Rover Sport', detail: 'May 30, 2026', amount: '-2', color: colors.accent },
   { iconName: 'bolt', label: 'Momentum reward · 50%', detail: 'May 28, 2026', amount: '+20', color: colors.info },
-  { iconName: 'arrowUp', label: 'Maldives allocation', detail: 'May 22, 2026', amount: '-4', color: colors.accent },
+  { iconName: 'arrowUp', label: 'Joined 7 Nights, Maldives', detail: 'May 22, 2026', amount: '-4', color: colors.accent },
   { iconName: 'arrowDown', label: 'Referral reward — Sam R.', detail: 'May 20, 2026', amount: '+40', color: colors.success },
 ];
 
@@ -40,7 +40,7 @@ export default function Wallet({ onNavigate }) {
           </div>
 
           <div style={{ display: 'flex', gap: isDesktop ? 28 : 18, marginTop: 22, marginBottom: 22, paddingTop: 20, borderTop: `1px solid ${colors.borderFaint}`, flexWrap: 'wrap' }}>
-            <Stat label="Allocated" value="6 cr" />
+            <Stat label="In play" value="6 cr" />
             <Stat label="Bonus earned" value="+20 cr" color={colors.success} />
             <Stat label="Total used" value="6 cr" />
           </div>

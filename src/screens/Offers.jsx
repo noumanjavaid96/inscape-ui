@@ -19,7 +19,7 @@ export default function Offers() {
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
       <div style={{ maxWidth: 860, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
 
-        <PageHeader title="Partner Offers" subtitle="Exclusive deals for InScape members." />
+        <PageHeader title="Partner Offers" subtitle="Exclusive offers for InScape members." />
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {OFFERS.map(o => (

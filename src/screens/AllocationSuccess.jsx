@@ -7,7 +7,7 @@ const { colors, font } = tokens;
 
 const DETAILS = [
   { label: 'Campaign', value: 'Range Rover Sport' },
-  { label: 'Allocations', value: '1 credit' },
+  { label: 'Credits used', value: '1 credit' },
   { label: 'Reference', value: 'INS-ALLOC-7F3A9C', mono: true },
   { label: 'Draw date', value: 'Nov 15, 2026' },
 ];
@@ -21,7 +21,7 @@ export default function AllocationSuccess({ onNavigate }) {
           <Icon name="check" size={38} color={colors.success} />
         </div>
 
-        <h1 style={{ font: `700 36px/1.05 ${font.display}`, color: colors.text, margin: '0 0 10px' }}>Allocated</h1>
+        <h1 style={{ font: `700 36px/1.05 ${font.display}`, color: colors.text, margin: '0 0 10px' }}>You're in</h1>
         <p style={{ font: `400 15px ${font.family}`, color: colors.textMuted, margin: '0 0 32px' }}>Your credits are in. Good luck with the draw.</p>
 
         <Card padding="md" style={{ marginBottom: 20, textAlign: 'left' }}>
@@ -41,7 +41,7 @@ export default function AllocationSuccess({ onNavigate }) {
         </Card>
 
         <Button onClick={() => onNavigate('my-campaigns')} fullWidth size="lg" style={{ marginBottom: 10 }}>
-          View my entries
+          View my campaigns
         </Button>
         <Button onClick={() => onNavigate('campaigns')} variant="secondary" fullWidth>
           Browse more campaigns

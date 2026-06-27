@@ -21,7 +21,7 @@ const QUICK_ACTIONS = [
   { label: 'Allocate credits', sub: 'Browse campaigns', action: 'campaigns', icon: 'grid' },
   { label: 'View wallet', sub: '124 credits', action: 'wallet', icon: 'wallet' },
   { label: 'Referral centre', sub: '4 invited · 1 qualified', action: 'referral', icon: 'users' },
-  { label: 'Partner offers', sub: '2 exclusive deals', action: 'offers', icon: 'star' },
+  { label: 'Partner offers', sub: '2 member offers', action: 'offers', icon: 'star' },
 ];
 
 const TRANSACTIONS = [
