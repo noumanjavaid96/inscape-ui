@@ -17,9 +17,10 @@ import Reveal from '../components/cinematic/Reveal';
 
 const { colors, font, radius } = tokens;
 
-// Drop the generated InScape hero clip URL here to activate the video backdrop.
-// While empty, VideoBackdrop renders a cinematic animated-gradient fallback.
-const HERO_VIDEO_SRC = '';
+// Hero brand film + poster still. VideoBackdrop crossfades the clip into its
+// own start for a seamless loop; the poster shows instantly while it buffers.
+const HERO_VIDEO_SRC = 'https://res.cloudinary.com/dcjnzvmwc/video/upload/v1782565725/858109a7-79f6-4cf6-9a51-93d00db72b1d_j2jpwy.mp4';
+const HERO_POSTER = 'https://res.cloudinary.com/dcjnzvmwc/image/upload/v1782565926/_Ultra-premium_dark_editorial_hero_background_202606271811_bpjhgv.jpg';
 
 const CAMPAIGNS = [
   { title: 'Range Rover Sport', category: 'Vehicles', prize: '£92,000', timeLeft: '2d 14h', participants: '4,821', status: 'LIVE', gradient: 'linear-gradient(135deg,#1a2030,#0c1018)', glow: 'rgba(255,128,0,0.15)' },
@@ -137,7 +138,7 @@ export default function PublicHome({ onNavigate }) {
 
       {/* CINEMATIC HERO */}
       <section style={{ position: 'relative', minHeight: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-        <VideoBackdrop src={HERO_VIDEO_SRC} />
+        <VideoBackdrop src={HERO_VIDEO_SRC} poster={HERO_POSTER} />
         <FloatingEmbers />
 
         <div
