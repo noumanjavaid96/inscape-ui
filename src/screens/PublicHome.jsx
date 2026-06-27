@@ -205,15 +205,6 @@ export default function PublicHome({ onNavigate }) {
             </FadeIn>
           </div>
 
-          {/* Scroll cue */}
-          <FadeIn start={introDone} delay={1700} duration={900} style={{ position: 'absolute', left: '50%', bottom: 22, transform: 'translateX(-50%)', pointerEvents: 'none' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-              <span style={{ font: `500 10px ${font.family}`, letterSpacing: '.2em', color: colors.textDim }}>SCROLL</span>
-              <div style={{ width: 1, height: 38, background: `linear-gradient(${colors.textDim}, transparent)`, position: 'relative' }}>
-                <span style={{ position: 'absolute', top: 0, left: -1.5, width: 4, height: 4, borderRadius: '50%', background: colors.accent, animation: 'scrollDot 2.2s ease-in-out infinite' }} />
-              </div>
-            </div>
-          </FadeIn>
         </div>
       </section>
 
