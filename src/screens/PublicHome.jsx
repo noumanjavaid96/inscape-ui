@@ -360,14 +360,16 @@ export default function PublicHome({ onNavigate }) {
 
       {/* HERO — light editorial */}
       <section style={{
-        position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center',
-        padding: `120px ${PAD} 120px`, overflow: 'hidden',
+        position: 'relative', minHeight: '94vh', display: 'flex', alignItems: 'center',
+        padding: `120px ${PAD} 150px`, overflow: 'hidden',
         backgroundColor: '#0a0a0c',
-        backgroundImage: `linear-gradient(103deg, rgba(8,8,11,0.92) 0%, rgba(8,8,11,0.64) 46%, rgba(8,8,11,0.36) 78%, rgba(8,8,11,0.32) 100%), linear-gradient(180deg, rgba(8,8,11,0.30) 0%, rgba(8,8,11,0.12) 32%, rgba(8,8,11,0.50) 78%, #FFFFFF 100%), url(${HERO_IMAGE})`,
+        backgroundImage: `linear-gradient(103deg, rgba(8,8,11,0.92) 0%, rgba(8,8,11,0.64) 46%, rgba(8,8,11,0.44) 78%, rgba(8,8,11,0.42) 100%), linear-gradient(180deg, rgba(8,8,11,0.26) 0%, rgba(8,8,11,0.08) 38%, rgba(8,8,11,0.70) 90%, rgba(8,8,11,0.90) 100%), url(${HERO_IMAGE})`,
         backgroundSize: 'cover, cover, cover',
         backgroundPosition: 'center, center, center 28%',
         backgroundRepeat: 'no-repeat',
       }}>
+        {/* tight dissolve into the white section below — kept short so it reads as a clean edge, not a grey wash */}
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 130, zIndex: 1, background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 72%, #FFFFFF 100%)', pointerEvents: 'none' }} />
         <div className="lp-inner lp-hero" style={{ position: 'relative', zIndex: 2 }}>
           {/* left */}
           <div>
@@ -456,9 +458,9 @@ export default function PublicHome({ onNavigate }) {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(28px, 5vw, 60px)', flexWrap: 'wrap', rowGap: 26 }}>
               {PARTNER_OFFERS.map(p => (
                 <img key={p.slug} src={`/brand/partners/${p.slug}.png`} alt={p.brand}
-                  style={{ height: 34, width: 'auto', filter: 'brightness(0)', opacity: 0.34, transition: 'opacity 0.2s ease' }}
-                  onMouseEnter={e => e.currentTarget.style.opacity = 0.8}
-                  onMouseLeave={e => e.currentTarget.style.opacity = 0.34}
+                  style={{ height: 44, width: 'auto', filter: 'brightness(0)', opacity: 0.72, transition: 'opacity 0.2s ease' }}
+                  onMouseEnter={e => e.currentTarget.style.opacity = 1}
+                  onMouseLeave={e => e.currentTarget.style.opacity = 0.72}
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                 />
               ))}
