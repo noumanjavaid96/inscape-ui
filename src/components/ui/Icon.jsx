@@ -89,6 +89,8 @@ const PATHS = {
       <path d="M4 20V10M9.5 20V5M15 20v-7M20.5 20V8" stroke={c} strokeWidth="1.7" strokeLinecap="round" />
     </>
   ),
+  menu: (c) => <path d="M4 7h16M4 12h16M4 17h16" stroke={c} strokeWidth="1.8" strokeLinecap="round" />,
+  close: (c) => <path d="M6 6l12 12M18 6 6 18" stroke={c} strokeWidth="1.8" strokeLinecap="round" />,
 };
 
 export default function Icon({ name, size = 20, color = colors.textFaint, style }) {

@@ -255,44 +255,84 @@ function WinnerCardLight({ w, idx }) {
 
 /* ---------- nav ---------- */
 
+const NAV_LINKS = [
+  { label: 'Live Campaigns', href: '#campaigns' },
+  { label: 'Membership', href: '#membership' },
+  { label: 'Partner Offers', href: '#offers' },
+  { label: 'Winners', href: '#winners' },
+  { label: 'How It Works', href: '#how' },
+];
+
 function NavBar({ onNavigate, scrolled }) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const linkColor = scrolled ? light.body : 'rgba(255,255,255,0.82)';
   const linkHover = scrolled ? light.ink : '#ffffff';
-  return (
-    <nav style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, height: 66,
-      background: scrolled ? 'rgba(255,255,255,0.86)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(20px)' : 'none',
-      WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-      borderBottom: `1px solid ${scrolled ? light.line : 'transparent'}`,
-      transition: 'all 0.3s ease',
-      display: 'flex', alignItems: 'center', padding: `0 ${PAD}`,
-    }}>
-      <Logo size="md" showText variant={scrolled ? 'charcoal' : 'light'} />
+  const close = () => setMenuOpen(false);
 
-      <div style={{ display: 'flex', gap: 30, marginLeft: 46, flex: 1 }} className="desktop-nav">
-        {[
-          { label: 'Live Campaigns', href: '#campaigns' },
-          { label: 'Membership', href: '#membership' },
-          { label: 'Partner Offers', href: '#offers' },
-          { label: 'Winners', href: '#winners' },
-          { label: 'How It Works', href: '#how' },
-        ].map(l => (
-          <a key={l.label} href={l.href} style={{ font: `500 14px ${font.family}`, color: linkColor, textDecoration: 'none', transition: 'color 0.15s', whiteSpace: 'nowrap' }}
+  return (
+    <>
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 200, height: 66,
+        background: scrolled ? 'rgba(255,255,255,0.86)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: `1px solid ${scrolled ? light.line : 'transparent'}`,
+        transition: 'all 0.3s ease',
+        display: 'flex', alignItems: 'center', padding: `0 ${PAD}`,
+      }}>
+        <Logo size="md" showText variant={scrolled ? 'charcoal' : 'light'} />
+
+        <div style={{ display: 'flex', gap: 30, marginLeft: 46, flex: 1 }} className="desktop-nav">
+          {NAV_LINKS.map(l => (
+            <a key={l.label} href={l.href} style={{ font: `500 14px ${font.family}`, color: linkColor, textDecoration: 'none', transition: 'color 0.15s', whiteSpace: 'nowrap' }}
+              onMouseEnter={e => e.currentTarget.style.color = linkHover}
+              onMouseLeave={e => e.currentTarget.style.color = linkColor}
+            >{l.label}</a>
+          ))}
+        </div>
+
+        <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
+          <button onClick={() => onNavigate('login')} style={{ font: `500 14px ${font.family}`, color: linkColor, background: 'none', border: 'none', cursor: 'pointer', padding: '8px 14px' }}
             onMouseEnter={e => e.currentTarget.style.color = linkHover}
             onMouseLeave={e => e.currentTarget.style.color = linkColor}
-          >{l.label}</a>
-        ))}
-      </div>
+          >Sign in</button>
+          <PrimaryCTA onClick={() => onNavigate('signup')} size="md" style={{ borderRadius: 999, padding: '0 22px' }}>Join now</PrimaryCTA>
+        </div>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
-        <button onClick={() => onNavigate('login')} style={{ font: `500 14px ${font.family}`, color: linkColor, background: 'none', border: 'none', cursor: 'pointer', padding: '8px 14px' }}
-          onMouseEnter={e => e.currentTarget.style.color = linkHover}
-          onMouseLeave={e => e.currentTarget.style.color = linkColor}
-        >Sign in</button>
-        <PrimaryCTA onClick={() => onNavigate('signup')} size="md" style={{ borderRadius: 999, padding: '0 22px' }}>Join now</PrimaryCTA>
-      </div>
-    </nav>
+        <button
+          className="mobile-nav-btn" aria-label="Open menu" onClick={() => setMenuOpen(true)}
+          style={{ display: 'none', marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', padding: 8 }}
+        >
+          <Icon name="menu" size={26} color={scrolled ? light.ink : '#ffffff'} />
+        </button>
+      </nav>
+
+      {menuOpen && (
+        <div style={{ position: 'fixed', inset: 0, zIndex: 300, background: 'rgba(10,11,14,0.98)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', flexDirection: 'column', padding: `0 ${PAD} 36px`, animation: 'slideIn 0.25s ease both' }}>
+          <div style={{ height: 66, display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+            <Logo size="md" showText variant="light" />
+            <button aria-label="Close menu" onClick={close} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 8 }}>
+              <Icon name="close" size={26} color="#ffffff" />
+            </button>
+          </div>
+
+          <nav style={{ display: 'flex', flexDirection: 'column', marginTop: 18, flex: 1 }}>
+            {NAV_LINKS.map(l => (
+              <a key={l.label} href={l.href} onClick={close}
+                style={{ font: `300 30px ${font.family}`, letterSpacing: '-0.01em', color: '#fff', textDecoration: 'none', padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.08)' }}
+              >{l.label}</a>
+            ))}
+          </nav>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flexShrink: 0 }}>
+            <button onClick={() => { close(); onNavigate('login'); }}
+              style={{ height: 52, borderRadius: 14, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.18)', color: '#fff', font: `600 16px ${font.family}`, cursor: 'pointer' }}
+            >Sign in</button>
+            <PrimaryCTA onClick={() => { close(); onNavigate('signup'); }} style={{ width: '100%' }}>Join now</PrimaryCTA>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -328,6 +368,7 @@ export default function PublicHome({ onNavigate }) {
         }
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
+          .mobile-nav-btn { display: inline-flex !important; }
           .lp-hero, .lp-cards, .lp-offers, .lp-bd, .lp-plans { grid-template-columns: 1fr !important; }
           .lp-stats { grid-template-columns: repeat(2, 1fr) !important; }
           .lp-h1 { font-size: clamp(40px, 12vw, 60px) !important; }
