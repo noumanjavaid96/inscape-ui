@@ -383,12 +383,14 @@ export default function PublicHome({ onNavigate }) {
       <section style={{
         position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end', overflow: 'hidden',
         backgroundColor: '#0c0d10',
-        backgroundImage: `linear-gradient(92deg, rgba(5,7,11,0.80) 0%, rgba(5,7,11,0.42) 44%, rgba(5,7,11,0.08) 74%, rgba(5,7,11,0) 100%), linear-gradient(180deg, rgba(5,7,11,0.55) 0%, rgba(5,7,11,0) 26%, rgba(5,7,11,0) 48%, rgba(5,7,11,0.86) 90%, #FFFFFF 100%), url(${HERO_IMAGE})`,
+        backgroundImage: `linear-gradient(92deg, rgba(5,7,11,0.82) 0%, rgba(5,7,11,0.44) 44%, rgba(5,7,11,0.10) 74%, rgba(5,7,11,0) 100%), linear-gradient(180deg, rgba(5,7,11,0.55) 0%, rgba(5,7,11,0) 26%, rgba(5,7,11,0) 52%, rgba(5,7,11,0.80) 88%, rgba(5,7,11,0.94) 100%), url(${HERO_IMAGE})`,
         backgroundSize: 'cover, cover, cover',
         backgroundPosition: 'center, center, center',
         backgroundRepeat: 'no-repeat',
       }}>
-        <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `0 ${PAD} clamp(56px, 7vh, 96px)` }}>
+        {/* tight dissolve into the white section below, kept clear of the content */}
+        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 72, zIndex: 1, background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.92) 68%, #FFFFFF 100%)', pointerEvents: 'none' }} />
+        <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `0 ${PAD} clamp(84px, 11vh, 116px)` }}>
           <FadeIn start={introDone} delay={150} duration={800}>
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, font: `600 11px ${font.family}`, letterSpacing: '.16em', color: 'rgba(255,255,255,0.9)', marginBottom: 18 }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} />
@@ -433,7 +435,7 @@ export default function PublicHome({ onNavigate }) {
       </section>
 
       {/* PARTNER LOGO STRIP */}
-      <section style={{ padding: `clamp(56px, 7vw, 76px) ${PAD} clamp(40px, 5vw, 56px)`, background: light.page }}>
+      <section style={{ padding: `clamp(28px, 4vw, 52px) ${PAD} clamp(40px, 5vw, 56px)`, background: light.page }}>
         <div className="lp-inner">
           <Reveal>
             <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.16em', textTransform: 'uppercase', color: light.dim, textAlign: 'center', marginBottom: 30 }}>In good company — offers from leading brands</div>
