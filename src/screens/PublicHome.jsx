@@ -18,11 +18,10 @@ const FEATURED = CAMPAIGNS[0];
 const WINNERS = PAST_WINNERS.slice(0, 3);
 const OFFERS = PARTNER_OFFERS.slice(0, 6);
 
-// Hero brand film + poster still (Cloudinary CDN — reliable on deploy). The
-// video sits over a dark gradient fallback so the hero is never empty even if
-// the clip or poster fails to load.
-const HERO_VIDEO_SRC = 'https://res.cloudinary.com/dcjnzvmwc/video/upload/v1782565725/858109a7-79f6-4cf6-9a51-93d00db72b1d_j2jpwy.mp4';
-const HERO_POSTER = 'https://res.cloudinary.com/dcjnzvmwc/image/upload/v1782565926/_Ultra-premium_dark_editorial_hero_background_202606271811_bpjhgv.jpg';
+// Ultra-premium dark editorial still — applied as a CSS background layer (not an
+// <img>/<video>) and dissolved into the page so it reads as ambient depth rather
+// than a discrete, framed image.
+const HERO_IMAGE = 'https://res.cloudinary.com/dcjnzvmwc/image/upload/v1782565926/_Ultra-premium_dark_editorial_hero_background_202606271811_bpjhgv.jpg';
 
 // The core message: one membership, three concrete benefits.
 const BENEFITS = [
@@ -360,15 +359,15 @@ export default function PublicHome({ onNavigate }) {
       <NavBar onNavigate={onNavigate} scrolled={scrolled} />
 
       {/* HERO — light editorial */}
-      <section style={{ position: 'relative', background: colors.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', padding: `120px ${PAD} 96px`, overflow: 'hidden' }}>
-        {/* full-bleed brand film */}
-        <video autoPlay muted loop playsInline poster={HERO_POSTER} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }}>
-          <source src={HERO_VIDEO_SRC} type="video/mp4" />
-        </video>
-        {/* legibility scrim (left-weighted) + warm floor glow + fade into the light body */}
-        <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'linear-gradient(100deg, rgba(6,6,9,0.90) 0%, rgba(6,6,9,0.70) 36%, rgba(6,6,9,0.40) 62%, rgba(6,6,9,0.18) 100%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', inset: 0, zIndex: 1, background: 'radial-gradient(60% 50% at 50% 118%, rgba(255,128,0,0.12), transparent 60%)', pointerEvents: 'none' }} />
-        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 140, zIndex: 1, background: 'linear-gradient(180deg, transparent, #FFFFFF)', pointerEvents: 'none' }} />
+      <section style={{
+        position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center',
+        padding: `120px ${PAD} 120px`, overflow: 'hidden',
+        backgroundColor: '#0a0a0c',
+        backgroundImage: `linear-gradient(103deg, rgba(8,8,11,0.92) 0%, rgba(8,8,11,0.64) 46%, rgba(8,8,11,0.36) 78%, rgba(8,8,11,0.32) 100%), linear-gradient(180deg, rgba(8,8,11,0.30) 0%, rgba(8,8,11,0.12) 32%, rgba(8,8,11,0.50) 78%, #FFFFFF 100%), url(${HERO_IMAGE})`,
+        backgroundSize: 'cover, cover, cover',
+        backgroundPosition: 'center, center, center 28%',
+        backgroundRepeat: 'no-repeat',
+      }}>
         <div className="lp-inner lp-hero" style={{ position: 'relative', zIndex: 2 }}>
           {/* left */}
           <div>
@@ -513,7 +512,7 @@ export default function PublicHome({ onNavigate }) {
 
       {/* DARK EDITORIAL BAND — the value proposition */}
       <section style={{ background: light.charcoal, padding: `clamp(72px, 9vw, 120px) ${PAD}`, position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: 900, height: 500, background: 'radial-gradient(circle, rgba(255,128,0,0.10), transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: 900, height: 500, background: 'radial-gradient(circle, rgba(255,128,0,0.05), transparent 70%)', pointerEvents: 'none' }} />
         <div className="lp-inner" style={{ position: 'relative', zIndex: 2 }}>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: 56 }}>
