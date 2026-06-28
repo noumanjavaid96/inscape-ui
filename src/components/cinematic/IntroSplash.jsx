@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import tokens from '../../design/tokens';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
@@ -28,19 +28,24 @@ export default function IntroSplash({ onDone, hold = 1900, lift = 800, name = ''
   const [lifting, setLifting] = useState(false);
   const [gone, setGone] = useState(false);
 
+  // Keep onDone in a ref so a parent re-render (e.g. a per-second countdown)
+  // doesn't reset the lift timers and freeze the splash.
+  const onDoneRef = useRef(onDone);
+  onDoneRef.current = onDone;
+
   useEffect(() => {
     if (reduced) {
-      onDone?.();
+      onDoneRef.current?.();
       setGone(true);
       return;
     }
     const t1 = setTimeout(() => {
       setLifting(true);
-      onDone?.();
+      onDoneRef.current?.();
     }, hold);
     const t2 = setTimeout(() => setGone(true), hold + lift);
     return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, [reduced, hold, lift, onDone]);
+  }, [reduced, hold, lift]);
 
   if (gone) return null;
 

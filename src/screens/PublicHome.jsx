@@ -5,7 +5,6 @@ import Icon from '../components/ui/Icon';
 import IntroSplash from '../components/cinematic/IntroSplash';
 import FadeIn from '../components/cinematic/FadeIn';
 import Reveal from '../components/cinematic/Reveal';
-import AnimatedHeading from '../components/cinematic/AnimatedHeading';
 import MagneticButton from '../components/cinematic/MagneticButton';
 import { useCountdown } from '../hooks/useCountdown';
 import { CAMPAIGNS, PAST_WINNERS, CATEGORIES } from '../data/campaigns';
@@ -14,14 +13,17 @@ import { PARTNER_OFFERS } from '../data/offers';
 const { colors, font, light } = tokens;
 
 const PAD = 'clamp(20px, 5vw, 80px)';
-const FEATURED = CAMPAIGNS[0];
 const WINNERS = PAST_WINNERS.slice(0, 3);
 const OFFERS = PARTNER_OFFERS.slice(0, 6);
 
-// Ultra-premium dark editorial still — applied as a CSS background layer (not an
-// <img>/<video>) and dissolved into the page so it reads as ambient depth rather
-// than a discrete, framed image.
-const HERO_IMAGE = 'https://res.cloudinary.com/dcjnzvmwc/image/upload/v1782565926/_Ultra-premium_dark_editorial_hero_background_202606271811_bpjhgv.jpg';
+// The campaign featured on the hero "cover" and the live-this-month ticker.
+const COVER = CAMPAIGNS.find((c) => c.id === 'maldives-escape') || CAMPAIGNS[0];
+const TICKER = ['7 Nights, Maldives', 'Range Rover Sport', '$25,000 cash'];
+
+// Full-bleed magazine "cover" photo for the hero — a bright, aspirational prize
+// shot applied as a CSS background so the headline can sit over it. Swap for a
+// hosted (e.g. Cloudinary) image anytime for guaranteed sharpness.
+const HERO_IMAGE = 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=2400&q=80';
 
 // The core message: one membership, three concrete benefits.
 const BENEFITS = [
@@ -48,14 +50,6 @@ const STATS = [
   { value: '$20M+', label: 'Member value unlocked' },
   { value: '4.8/5', label: 'Member satisfaction' },
 ];
-
-const lightGlass = {
-  background: light.glass,
-  backdropFilter: 'blur(18px)',
-  WebkitBackdropFilter: 'blur(18px)',
-  border: `1px solid ${light.glassBorder}`,
-  boxShadow: light.floatShadow,
-};
 
 /* ---------- small shared pieces ---------- */
 
@@ -123,21 +117,6 @@ function closesLabel(t) {
   if (t.days > 0) return `${t.days}d ${t.hours}h left`;
   if (t.hours > 0) return `${t.hours}h ${t.minutes}m left`;
   return `${t.minutes}m ${t.seconds}s left`;
-}
-
-function MiniCountdown({ target }) {
-  const t = useCountdown(target);
-  const items = [['Days', t.days], ['Hrs', t.hours], ['Min', t.minutes]];
-  return (
-    <div style={{ display: 'flex', gap: 6 }}>
-      {items.map(([l, v]) => (
-        <div key={l} style={{ minWidth: 42, textAlign: 'center', background: light.soft, borderRadius: 10, padding: '7px 8px' }}>
-          <div style={{ font: `700 18px/1 ${font.family}`, color: light.ink }}>{String(v).padStart(2, '0')}</div>
-          <div style={{ font: `600 8.5px ${font.family}`, letterSpacing: '.12em', color: light.dim, marginTop: 4 }}>{l.toUpperCase()}</div>
-        </div>
-      ))}
-    </div>
-  );
 }
 
 /* ---------- campaign card (light, Airbnb-grade) ---------- */
@@ -323,6 +302,7 @@ export default function PublicHome({ onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [cat, setCat] = useState('All');
+  const coverTime = useCountdown(COVER.closesAt);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -358,93 +338,54 @@ export default function PublicHome({ onNavigate }) {
       <IntroSplash onDone={() => setIntroDone(true)} hold={1500} lift={700} />
       <NavBar onNavigate={onNavigate} scrolled={scrolled} />
 
-      {/* HERO — light editorial */}
+      {/* HERO — bold editorial / magazine cover */}
       <section style={{
-        position: 'relative', minHeight: '94vh', display: 'flex', alignItems: 'center',
-        padding: `120px ${PAD} 150px`, overflow: 'hidden',
-        backgroundColor: '#0a0a0c',
-        backgroundImage: `linear-gradient(103deg, rgba(8,8,11,0.92) 0%, rgba(8,8,11,0.64) 46%, rgba(8,8,11,0.44) 78%, rgba(8,8,11,0.42) 100%), linear-gradient(180deg, rgba(8,8,11,0.26) 0%, rgba(8,8,11,0.08) 38%, rgba(8,8,11,0.70) 90%, rgba(8,8,11,0.90) 100%), url(${HERO_IMAGE})`,
+        position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end', overflow: 'hidden',
+        backgroundColor: '#0c0d10',
+        backgroundImage: `linear-gradient(92deg, rgba(5,7,11,0.80) 0%, rgba(5,7,11,0.42) 44%, rgba(5,7,11,0.08) 74%, rgba(5,7,11,0) 100%), linear-gradient(180deg, rgba(5,7,11,0.55) 0%, rgba(5,7,11,0) 26%, rgba(5,7,11,0) 48%, rgba(5,7,11,0.86) 90%, #FFFFFF 100%), url(${HERO_IMAGE})`,
         backgroundSize: 'cover, cover, cover',
-        backgroundPosition: 'center, center, center 28%',
+        backgroundPosition: 'center, center, center',
         backgroundRepeat: 'no-repeat',
       }}>
-        {/* tight dissolve into the white section below — kept short so it reads as a clean edge, not a grey wash */}
-        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 130, zIndex: 1, background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.9) 72%, #FFFFFF 100%)', pointerEvents: 'none' }} />
-        <div className="lp-inner lp-hero" style={{ position: 'relative', zIndex: 2 }}>
-          {/* left */}
-          <div>
-            <FadeIn start={introDone} delay={150} duration={800}>
-              <Eyebrow label="USA'S PREMIER MEMBERSHIP PLATFORM" dark />
-            </FadeIn>
+        <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `0 ${PAD} clamp(56px, 7vh, 96px)` }}>
+          <FadeIn start={introDone} delay={150} duration={800}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, font: `600 11px ${font.family}`, letterSpacing: '.16em', color: 'rgba(255,255,255,0.9)', marginBottom: 18 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} />
+              ON THE COVER · {COVER.title.toUpperCase()} — LIVE NOW
+            </div>
+          </FadeIn>
 
-            <AnimatedHeading
-              className="lp-h1"
-              start={introDone}
-              accentWord="you"
-              accentColor={colors.accent}
-              lines={['More access.', 'More experiences.', 'More you.']}
-              style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 1.0, letterSpacing: '-0.035em', color: '#fff', margin: '22px 0 0' }}
-            />
+          <FadeIn start={introDone} delay={300} duration={900}>
+            <h1 className="lp-h1" style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 0.98, letterSpacing: '-0.038em', color: '#fff', margin: 0, maxWidth: 1000, textShadow: '0 2px 40px rgba(0,0,0,0.30)' }}>
+              More access. More experiences. More <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>you.</span>
+            </h1>
+          </FadeIn>
 
-            <FadeIn start={introDone} delay={850} duration={900}>
-              <p style={{ font: `400 18px/1.65 ${font.family}`, color: 'rgba(255,255,255,0.74)', margin: '22px 0 0', maxWidth: 480 }}>
-                One membership unlocks luxury prize campaigns, members-only offers from leading brands, and rewards that compound every month — from <strong style={{ color: '#fff', fontWeight: 600 }}>$14.99/mo</strong>, or start free with 3 Credits.
-              </p>
-            </FadeIn>
+          <FadeIn start={introDone} delay={650} duration={900}>
+            <p style={{ font: `400 18px/1.6 ${font.family}`, color: 'rgba(255,255,255,0.84)', margin: '22px 0 0', maxWidth: 560, textShadow: '0 1px 20px rgba(0,0,0,0.35)' }}>
+              One membership — luxury prize campaigns, members-only offers, and rewards that compound. From <strong style={{ color: '#fff', fontWeight: 600 }}>$14.99/mo</strong>, or start free with 3 Credits.
+            </p>
+          </FadeIn>
 
-            <FadeIn start={introDone} delay={1050} duration={900}>
-              <div style={{ display: 'flex', gap: 14, marginTop: 32, flexWrap: 'wrap' }}>
-                <PrimaryCTA onClick={() => onNavigate('signup')}>
-                  Become a member <Icon name="arrowRight" size={17} color="#1c1003" />
-                </PrimaryCTA>
-                <GhostCTA dark onClick={() => onNavigate('campaigns')}>Browse live campaigns</GhostCTA>
-              </div>
-            </FadeIn>
+          <FadeIn start={introDone} delay={850} duration={900}>
+            <div style={{ display: 'flex', gap: 14, marginTop: 32, flexWrap: 'wrap' }}>
+              <PrimaryCTA onClick={() => onNavigate('signup')}>
+                Become a member <Icon name="arrowRight" size={17} color="#1c1003" />
+              </PrimaryCTA>
+              <GhostCTA dark onClick={() => onNavigate('campaigns')}>Browse live campaigns</GhostCTA>
+            </div>
+          </FadeIn>
 
-            <FadeIn start={introDone} delay={1300} duration={900}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 30 }}>
-                <div style={{ display: 'flex' }}>
-                  {[12, 32, 45, 5, 23].map((n, i) => (
-                    <img key={n} src={`https://i.pravatar.cc/64?img=${n}`} alt=""
-                      style={{ width: 32, height: 32, borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,255,255,0.25)', marginLeft: i === 0 ? 0 : -11, background: 'rgba(255,255,255,0.1)' }}
-                      onError={(e) => { e.currentTarget.style.visibility = 'hidden'; }}
-                    />
-                  ))}
-                </div>
-                <span style={{ font: `400 13px ${font.family}`, color: 'rgba(255,255,255,0.66)' }}>Joined by <strong style={{ color: '#fff', fontWeight: 600 }}>50,000+</strong> members across the US</span>
-              </div>
-            </FadeIn>
-          </div>
-
-          {/* right — hero photograph + floating live card */}
-          <FadeIn start={introDone} delay={700} duration={1000}>
-            <div style={{ position: 'relative' }}>
-              <div className="hero-visual" style={{ position: 'relative', borderRadius: 28, overflow: 'hidden', height: 'clamp(460px, 62vh, 600px)', background: FEATURED.gradient, border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 30px 70px rgba(0,0,0,0.5)' }}>
-                {FEATURED.image && <img src={FEATURED.image} alt={FEATURED.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />}
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(8,8,10,0.10), transparent 34%, rgba(8,8,10,0.42))' }} />
-                <span style={{ position: 'absolute', top: 18, right: 18, display: 'inline-flex', alignItems: 'center', gap: 7, background: 'rgba(255,255,255,0.94)', borderRadius: 999, padding: '6px 13px', font: `700 11px ${font.family}`, letterSpacing: '.06em', color: light.ink }}>
-                  <span style={{ width: 7, height: 7, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} /> LIVE
+          <FadeIn start={introDone} delay={1100} duration={900}>
+            <div className="hero-ticker" style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', marginTop: 40, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.18)' }}>
+              <span style={{ font: `600 11px ${font.family}`, letterSpacing: '.12em', color: 'rgba(255,255,255,0.6)' }}>LIVE THIS MONTH</span>
+              {TICKER.map((t, i) => (
+                <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 16 }}>
+                  {i > 0 && <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>}
+                  <span style={{ font: `500 14px ${font.family}`, color: '#fff' }}>{t}</span>
                 </span>
-              </div>
-
-              <div style={{ position: 'absolute', left: 'clamp(-8px, 2vw, 22px)', right: 'clamp(-8px, 2vw, 22px)', bottom: -26, borderRadius: 20, padding: '18px 20px', ...lightGlass }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                  <div>
-                    <div style={{ font: `600 10px ${font.family}`, letterSpacing: '.1em', textTransform: 'uppercase', color: light.dim }}>{FEATURED.category} · Live campaign</div>
-                    <div style={{ font: `600 20px/1.1 ${font.display}`, color: light.ink, marginTop: 2 }}>{FEATURED.title}</div>
-                  </div>
-                  <MiniCountdown target={FEATURED.closesAt} />
-                </div>
-                <div style={{ height: 5, borderRadius: 3, background: light.soft, overflow: 'hidden' }}>
-                  <div style={{ width: `${FEATURED.sold}%`, height: '100%', background: colors.accent, borderRadius: 3 }} />
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 11 }}>
-                  <span style={{ font: `500 12px ${font.family}`, color: light.body }}>{FEATURED.sold}% allocated · from {FEATURED.cost} Credit</span>
-                  <button onClick={() => onNavigate('signup')} style={{ font: `600 13px ${font.family}`, color: colors.accent, background: 'none', border: 'none', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-                    Join <Icon name="arrowRight" size={13} color={colors.accent} />
-                  </button>
-                </div>
-              </div>
+              ))}
+              <span className="hero-ticker-close" style={{ marginLeft: 'auto', font: `600 13px ${font.family}`, color: colors.accent }}>closes in {closesLabel(coverTime).replace(' left', '')}</span>
             </div>
           </FadeIn>
         </div>
