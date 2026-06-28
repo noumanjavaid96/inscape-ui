@@ -456,7 +456,7 @@ export default function PublicHome({ onNavigate }) {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(28px, 5vw, 60px)', flexWrap: 'wrap', rowGap: 26 }}>
               {PARTNER_OFFERS.map(p => (
                 <img key={p.slug} src={`/brand/partners/${p.slug}.png`} alt={p.brand}
-                  style={{ height: 24, width: 'auto', filter: 'brightness(0)', opacity: 0.34, transition: 'opacity 0.2s ease' }}
+                  style={{ height: 34, width: 'auto', filter: 'brightness(0)', opacity: 0.34, transition: 'opacity 0.2s ease' }}
                   onMouseEnter={e => e.currentTarget.style.opacity = 0.8}
                   onMouseLeave={e => e.currentTarget.style.opacity = 0.34}
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
