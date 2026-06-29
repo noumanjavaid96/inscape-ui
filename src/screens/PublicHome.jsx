@@ -7,7 +7,7 @@ import FadeIn from '../components/cinematic/FadeIn';
 import Reveal from '../components/cinematic/Reveal';
 import MagneticButton from '../components/cinematic/MagneticButton';
 import { useCountdown } from '../hooks/useCountdown';
-import { CAMPAIGNS, PAST_WINNERS, CATEGORIES } from '../data/campaigns';
+import { CAMPAIGNS, PAST_WINNERS } from '../data/campaigns';
 import { PARTNER_OFFERS } from '../data/offers';
 
 const { colors, font, light } = tokens;
@@ -39,9 +39,9 @@ const STEPS = [
 ];
 
 const PLANS = [
-  { name: 'Entry', price: '$14.99', credits: 40, features: ['40 monthly Credits', 'Full campaign access', 'Momentum tracking'], highlight: false },
-  { name: 'Premium', price: '$19.99', credits: 120, features: ['120 monthly Credits', 'Priority campaign access', 'Momentum bonuses', 'Exclusive member offers', 'Referral rewards'], highlight: true },
-  { name: 'Elite', price: '$24.99', credits: 250, features: ['250 monthly Credits', 'Early campaign access', 'Maximum Momentum tier', 'Partner offer upgrades', 'Dedicated support'], highlight: false },
+  { name: 'Entry', price: '$14.99', annualPrice: '$149.99', credits: 40, annualCredits: 480, features: ['40 Credits every month', 'Full campaign access', 'Member-only promotions'], highlight: false },
+  { name: 'Premium', price: '$19.99', annualPrice: '$199.99', credits: 120, annualCredits: 1440, features: ['120 Credits every month', 'Priority campaign access', 'Momentum bonuses', 'Full Offers Hub', 'Referral rewards'], highlight: true },
+  { name: 'Elite', price: '$24.99', annualPrice: '$249.99', credits: 250, annualCredits: 3000, features: ['250 Credits every month', 'Early campaign access', 'Bonus allocation campaigns', 'Exclusive partner offers', 'Priority support'], highlight: false },
 ];
 
 const STATS = [
@@ -256,12 +256,40 @@ function WinnerCardLight({ w, idx }) {
 /* ---------- nav ---------- */
 
 const NAV_LINKS = [
-  { label: 'Live Campaigns', href: '#campaigns' },
+  { label: 'Campaigns', href: '#campaigns' },
   { label: 'Membership', href: '#membership' },
-  { label: 'Partner Offers', href: '#offers' },
-  { label: 'Winners', href: '#winners' },
-  { label: 'How It Works', href: '#how' },
+  { label: 'Offers Hub', href: '#offers' },
 ];
+
+const EXPLORE_LINKS = [
+  { label: 'About Us', href: '#how' },
+  { label: 'Partnership', href: '#how' },
+  { label: 'FAQ', href: '#how' },
+  { label: 'Merch (Coming Soon)', href: '#', soon: true },
+];
+
+function ExploreMenu({ linkColor, linkHover }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div style={{ position: 'relative' }} onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+      <button style={{ display: 'inline-flex', alignItems: 'center', gap: 5, font: `500 14px ${font.family}`, color: open ? linkHover : linkColor, background: 'none', border: 'none', cursor: 'pointer', padding: 0, transition: 'color 0.15s' }}>
+        Explore
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
+      </button>
+      {open && (
+        <div style={{ position: 'absolute', top: 'calc(100% + 12px)', left: '50%', transform: 'translateX(-50%)', minWidth: 210, background: '#fff', border: `1px solid ${light.line}`, borderRadius: 14, boxShadow: light.floatShadow, padding: 8, zIndex: 300 }}>
+          {EXPLORE_LINKS.map(l => (
+            <a key={l.label} href={l.soon ? undefined : l.href}
+              style={{ display: 'block', padding: '10px 12px', borderRadius: 10, font: `500 14px ${font.family}`, color: l.soon ? light.dim : light.ink, textDecoration: 'none', cursor: l.soon ? 'default' : 'pointer' }}
+              onMouseEnter={e => { if (!l.soon) e.currentTarget.style.background = light.soft; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+            >{l.label}</a>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function NavBar({ onNavigate, scrolled }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -282,13 +310,14 @@ function NavBar({ onNavigate, scrolled }) {
       }}>
         <Logo size="md" showText variant={scrolled ? 'charcoal' : 'light'} />
 
-        <div style={{ display: 'flex', gap: 30, marginLeft: 46, flex: 1 }} className="desktop-nav">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 30, marginLeft: 46, flex: 1 }} className="desktop-nav">
           {NAV_LINKS.map(l => (
             <a key={l.label} href={l.href} style={{ font: `500 14px ${font.family}`, color: linkColor, textDecoration: 'none', transition: 'color 0.15s', whiteSpace: 'nowrap' }}
               onMouseEnter={e => e.currentTarget.style.color = linkHover}
               onMouseLeave={e => e.currentTarget.style.color = linkColor}
             >{l.label}</a>
           ))}
+          <ExploreMenu linkColor={linkColor} linkHover={linkHover} />
         </div>
 
         <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
@@ -322,6 +351,13 @@ function NavBar({ onNavigate, scrolled }) {
                 style={{ font: `300 30px ${font.family}`, letterSpacing: '-0.01em', color: '#fff', textDecoration: 'none', padding: '16px 0', borderBottom: '1px solid rgba(255,255,255,0.08)' }}
               >{l.label}</a>
             ))}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 18, paddingTop: 20 }}>
+              {EXPLORE_LINKS.map(l => (
+                <a key={l.label} href={l.soon ? undefined : l.href} onClick={l.soon ? undefined : close}
+                  style={{ font: `400 15px ${font.family}`, color: 'rgba(255,255,255,0.55)', textDecoration: 'none' }}
+                >{l.label}</a>
+              ))}
+            </div>
           </nav>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flexShrink: 0 }}>
@@ -341,7 +377,7 @@ function NavBar({ onNavigate, scrolled }) {
 export default function PublicHome({ onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
   const [introDone, setIntroDone] = useState(false);
-  const [cat, setCat] = useState('All');
+  const [annual, setAnnual] = useState(false);
   const coverTime = useCountdown(COVER.closesAt);
 
   useEffect(() => {
@@ -349,8 +385,6 @@ export default function PublicHome({ onNavigate }) {
     window.addEventListener('scroll', handler);
     return () => window.removeEventListener('scroll', handler);
   }, []);
-
-  const shown = cat === 'All' ? CAMPAIGNS : CAMPAIGNS.filter(c => c.category === cat);
 
   return (
     <div style={{ background: light.page, minHeight: '100vh', fontFamily: font.family, color: light.ink, overflowX: 'hidden' }}>
@@ -467,27 +501,8 @@ export default function PublicHome({ onNavigate }) {
             </div>
           </Reveal>
 
-          <Reveal>
-            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 30 }}>
-              {CATEGORIES.map(category => {
-                const active = cat === category;
-                return (
-                  <button key={category} onClick={() => setCat(category)}
-                    style={{
-                      font: `500 13px ${font.family}`, padding: '9px 18px', borderRadius: 999, cursor: 'pointer',
-                      background: active ? light.ink : light.panel,
-                      color: active ? '#fff' : light.body,
-                      border: `1px solid ${active ? light.ink : light.line}`,
-                      transition: 'all 0.2s ease',
-                    }}
-                  >{category}</button>
-                );
-              })}
-            </div>
-          </Reveal>
-
           <div className="lp-cards">
-            {shown.map((c, i) => (
+            {CAMPAIGNS.map((c, i) => (
               <Reveal key={c.id} delay={i * 90}>
                 <CampaignCardLight c={c} onClick={() => onNavigate('signup')} />
               </Reveal>
@@ -533,7 +548,7 @@ export default function PublicHome({ onNavigate }) {
           <Reveal>
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap', marginBottom: 36 }}>
               <div>
-                <div style={{ marginBottom: 14 }}><Eyebrow label="PARTNER OFFERS" /></div>
+                <div style={{ marginBottom: 14 }}><Eyebrow label="OFFERS HUB" /></div>
                 <h2 style={{ font: `400 clamp(32px, 4vw, 48px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Membership that pays for itself</h2>
                 <p style={{ font: `400 16px/1.6 ${font.family}`, color: light.body, margin: '12px 0 0', maxWidth: 500 }}>Members unlock exclusive pricing from leading brands — real savings, every month, on top of the campaigns.</p>
               </div>
@@ -626,6 +641,21 @@ export default function PublicHome({ onNavigate }) {
               <p style={{ font: `400 16px/1.6 ${font.family}`, color: light.body, maxWidth: 460, margin: '0 auto' }}>Monthly Credits, Momentum bonuses and exclusive access — scaled to your ambition.</p>
             </div>
           </Reveal>
+          <Reveal>
+            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 36 }}>
+              <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4, background: light.soft, border: `1px solid ${light.line}`, borderRadius: 999, padding: 4 }}>
+                {['Monthly', 'Annual'].map((t, i) => {
+                  const active = annual === (i === 1);
+                  return (
+                    <button key={t} onClick={() => setAnnual(i === 1)}
+                      style={{ padding: '8px 20px', borderRadius: 999, font: `600 13px ${font.family}`, border: 'none', cursor: 'pointer', background: active ? light.ink : 'transparent', color: active ? '#fff' : light.body, transition: 'all 0.2s ease' }}>
+                      {t}{i === 1 && <span style={{ font: `600 10px ${font.family}`, color: active ? '#9be3b4' : colors.accent, marginLeft: 6 }}>2 months free</span>}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </Reveal>
           <div className="lp-plans">
             {PLANS.map((p, i) => (
               <Reveal key={p.name} delay={i * 110}>
@@ -640,10 +670,10 @@ export default function PublicHome({ onNavigate }) {
                   )}
                   <div style={{ font: `600 13px ${font.family}`, color: p.highlight ? colors.accent : light.dim, letterSpacing: '.06em', marginBottom: 10 }}>{p.name.toUpperCase()}</div>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: 5, marginBottom: 4 }}>
-                    <span style={{ font: `400 42px/1 ${font.family}`, letterSpacing: '-0.02em', color: light.ink }}>{p.price}</span>
-                    <span style={{ font: `400 14px ${font.family}`, color: light.dim }}>/mo</span>
+                    <span style={{ font: `400 42px/1 ${font.family}`, letterSpacing: '-0.02em', color: light.ink }}>{annual ? p.annualPrice : p.price}</span>
+                    <span style={{ font: `400 14px ${font.family}`, color: light.dim }}>{annual ? '/yr' : '/mo'}</span>
                   </div>
-                  <div style={{ font: `500 13px ${font.family}`, color: colors.accent, marginBottom: 26 }}>{p.credits} Credits / month</div>
+                  <div style={{ font: `500 13px ${font.family}`, color: colors.accent, marginBottom: 26 }}>{annual ? `${p.annualCredits.toLocaleString()} Credits / year` : `${p.credits} Credits / month`}</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 30 }}>
                     {p.features.map(f => (
                       <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>

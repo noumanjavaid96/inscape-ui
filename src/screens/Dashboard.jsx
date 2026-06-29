@@ -9,6 +9,7 @@ import PageHeader from '../components/layout/PageHeader';
 import Section from '../components/layout/Section';
 import CampaignCard from '../components/campaign/CampaignCard';
 import MomentumWidget from '../components/campaign/MomentumWidget';
+import CampaignExplorerWidget from '../components/campaign/CampaignExplorerWidget';
 import { CAMPAIGNS } from '../data/campaigns';
 
 const { colors, font } = tokens;
@@ -28,7 +29,7 @@ const QUICK_ACTIONS = [
 const TRANSACTIONS = [
   { label: 'Monthly Premium allocation', detail: 'June 1, 2026', amount: '+120', iconName: 'arrowDown', color: colors.success },
   { label: 'Range Rover allocation', detail: 'May 30, 2026', amount: '-2', iconName: 'arrowUp', color: colors.accent },
-  { label: 'Momentum reward · 50%', detail: 'May 28, 2026', amount: '+20', iconName: 'bolt', color: colors.info },
+  { label: 'Momentum reward · 50%', detail: 'May 28, 2026', amount: '+10', iconName: 'bolt', color: colors.info },
 ];
 
 // Member state drives the dashboard variant. Wire to real auth/billing later.
@@ -142,7 +143,9 @@ export default function Dashboard({ onNavigate }) {
           {/* Right column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
-            <MomentumWidget value={62} nextReward="+25 cr" nextThreshold={75} resets="14d" />
+            <MomentumWidget value={72} nextReward="+25 cr" nextThreshold={75} remaining="12 pts left" resets="in 6 days" />
+
+            <CampaignExplorerWidget joined={3} target={5} nextReward="+10 cr" />
 
             {/* Quick actions */}
             <Card padding="md">

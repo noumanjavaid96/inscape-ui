@@ -10,7 +10,7 @@ const MILESTONES = [25, 50, 75, 100];
  * Monthly Momentum tracker. Shows progress towards the next reward and the
  * 25/50/75/100% milestone ladder.
  */
-export default function MomentumWidget({ value = 0, nextReward, nextThreshold, resets, compact = false, style }) {
+export default function MomentumWidget({ value = 0, nextReward, nextThreshold, remaining, resets, compact = false, style }) {
   return (
     <Card padding="md" style={style}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
@@ -25,6 +25,7 @@ export default function MomentumWidget({ value = 0, nextReward, nextThreshold, r
           <span style={{ font: `400 12px ${font.family}`, color: colors.textDim }}>
             Next: <span style={{ color: colors.text }}>{nextReward}</span>
             {nextThreshold ? ` at ${nextThreshold}%` : ''}
+            {remaining ? ` · ${remaining}` : ''}
           </span>
         )}
         {resets && <span style={{ font: `400 12px ${font.family}`, color: colors.textFaint }}>Resets {resets}</span>}

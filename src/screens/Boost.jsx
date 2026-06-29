@@ -10,12 +10,13 @@ import CheckoutSheet from '../components/flow/CheckoutSheet';
 
 const { colors, font, radius } = tokens;
 
+// Campaign Access packages — one-time credit top-ups (per confirmed structure).
 const PACKAGES = [
   { name: 'Bronze', price: '$2', credits: 1, badge: null },
-  { name: 'Silver', price: '$9', credits: 5, badge: null },
-  { name: 'Gold', price: '$17', credits: 10, badge: null },
-  { name: 'Platinum', price: '$30', credits: 30, badge: 'Best value' },
-  { name: 'Diamond', price: '$200', credits: 300, badge: null },
+  { name: 'Silver', price: '$10', credits: 8, badge: null },
+  { name: 'Gold', price: '$30', credits: 25, badge: 'Most popular' },
+  { name: 'Platinum', price: '$100', credits: 100, badge: null },
+  { name: 'Diamond', price: '$200', credits: 250, badge: null },
 ];
 
 export default function Boost({ onNavigate, params = {} }) {
@@ -29,7 +30,7 @@ export default function Boost({ onNavigate, params = {} }) {
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
       <div style={{ maxWidth: 720, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
 
-        <PageHeader title="Boost credits" subtitle="One-time top-ups — credits never expire." backAction={() => onNavigate('wallet')} />
+        <PageHeader title="Campaign Access" subtitle="One-time credit packages — credits never expire." backAction={() => onNavigate('wallet')} />
 
         <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2,1fr)' : 'repeat(3,1fr)', gap: 12, marginBottom: 24 }}>
           {PACKAGES.map((p, i) => {
@@ -86,7 +87,7 @@ export default function Boost({ onNavigate, params = {} }) {
 
       {checkout && (
         <CheckoutSheet
-          title="Boost your Credits"
+          title="Campaign Access"
           subtitle={`${pkg.name} pack — one-time purchase`}
           lines={[['Credits', `${pkg.credits}`], ['Price', pkg.price], ['New balance', `${124 + pkg.credits} Credits`]]}
           total={pkg.price}

@@ -14,7 +14,7 @@ const NAV = [
   { id: 'wallet', label: 'Wallet', icon: 'wallet' },
   { id: 'referral', label: 'Referrals', icon: 'users' },
   { id: 'insights', label: 'Insights', icon: 'chart' },
-  { id: 'offers', label: 'Partner Offers', icon: 'star' },
+  { id: 'offers', label: 'Offers Hub', icon: 'star' },
 ];
 
 // Home and user icons are not in the shared set — define inline

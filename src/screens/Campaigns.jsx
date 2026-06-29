@@ -4,61 +4,24 @@ import { useBreakpoint } from '../hooks/useBreakpoint';
 import Icon from '../components/ui/Icon';
 import PageHeader from '../components/layout/PageHeader';
 import CampaignCard from '../components/campaign/CampaignCard';
-import { CAMPAIGNS, CATEGORIES, PAST_WINNERS } from '../data/campaigns';
+import { CAMPAIGNS, PAST_WINNERS } from '../data/campaigns';
 
 const { colors, font, radius } = tokens;
 
 const STATUS_TABS = ['Live', 'Upcoming', 'Past Winners'];
-const SORTS = [
-  { id: 'ending', label: 'Ending soon' },
-  { id: 'value', label: 'Prize value' },
-  { id: 'cost', label: 'Lowest cost' },
-];
-
-function Pill({ active, onClick, children }) {
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        font: `${active ? 600 : 500} 13px ${font.family}`,
-        color: active ? colors.bg : colors.textMuted,
-        background: active ? colors.accent : colors.bg4,
-        border: `1px solid ${active ? 'transparent' : colors.border}`,
-        borderRadius: 10,
-        padding: '9px 16px',
-        whiteSpace: 'nowrap',
-        cursor: 'pointer',
-        transition: 'all 0.15s',
-      }}
-    >
-      {children}
-    </button>
-  );
-}
 
 export default function Campaigns({ onNavigate }) {
-  const [category, setCategory] = useState('All');
   const [statusTab, setStatusTab] = useState('Live');
-  const [sort, setSort] = useState('ending');
   const { isMobile, isDesktop } = useBreakpoint();
 
   const filtered = useMemo(() => {
-    let list = CAMPAIGNS.filter((c) => (category === 'All' || c.category === category));
+    let list = CAMPAIGNS;
     if (statusTab === 'Live') list = list.filter((c) => c.status === 'LIVE' || c.status === 'CLOSING SOON');
     if (statusTab === 'Upcoming') list = list.filter((c) => c.status === 'UPCOMING');
-    const by = {
-      ending: (a, b) => new Date(a.closesAt) - new Date(b.closesAt),
-      value: (a, b) => b.prizeValue - a.prizeValue,
-      cost: (a, b) => a.cost - b.cost,
-    }[sort];
-    return [...list].sort(by);
-  }, [category, statusTab, sort]);
+    return [...list].sort((a, b) => new Date(a.closesAt) - new Date(b.closesAt));
+  }, [statusTab]);
 
-  const winners = useMemo(
-    () => PAST_WINNERS.filter((w) => category === 'All' || w.category === category),
-    [category]
-  );
-
+  const winners = PAST_WINNERS;
   const showingWinners = statusTab === 'Past Winners';
   const count = showingWinners ? winners.length : filtered.length;
 
@@ -76,15 +39,8 @@ export default function Campaigns({ onNavigate }) {
           }
         />
 
-        {/* Category filters */}
-        <div style={{ display: 'flex', gap: 8, marginBottom: 16, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
-          {CATEGORIES.map((f) => (
-            <Pill key={f} active={category === f} onClick={() => setCategory(f)}>{f}</Pill>
-          ))}
-        </div>
-
-        {/* Status tabs + sort */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, marginBottom: 28, flexWrap: 'wrap' }}>
+        {/* Live / Upcoming / Past Winners toggle */}
+        <div style={{ display: 'flex', marginBottom: 28 }}>
           <div style={{ display: 'flex', background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: 13, padding: 4 }}>
             {STATUS_TABS.map((t) => (
               <button
@@ -94,35 +50,13 @@ export default function Campaigns({ onNavigate }) {
                   font: `${statusTab === t ? 600 : 500} 13px ${font.family}`,
                   color: statusTab === t ? colors.text : colors.textDim,
                   background: statusTab === t ? colors.line : 'transparent',
-                  border: 'none', borderRadius: 10, padding: '9px 16px', cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap',
+                  border: 'none', borderRadius: 10, padding: '9px 18px', cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap',
                 }}
               >
                 {t}
               </button>
             ))}
           </div>
-
-          {!showingWinners && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ font: `400 12px ${font.family}`, color: colors.textFaint }}>Sort</span>
-              <div style={{ display: 'flex', gap: 6 }}>
-                {SORTS.map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() => setSort(s.id)}
-                    style={{
-                      font: `${sort === s.id ? 600 : 500} 12px ${font.family}`,
-                      color: sort === s.id ? colors.accent : colors.textDim,
-                      background: 'none', border: `1px solid ${sort === s.id ? colors.accentBorder : colors.border}`,
-                      borderRadius: 8, padding: '6px 11px', cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {s.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Grid */}
@@ -156,7 +90,7 @@ export default function Campaigns({ onNavigate }) {
 
         {count === 0 && (
           <div style={{ textAlign: 'center', padding: '60px 20px', font: `400 14px ${font.family}`, color: colors.textDim }}>
-            No campaigns match these filters yet. Try another category.
+            No campaigns here right now — check back soon.
           </div>
         )}
       </div>
