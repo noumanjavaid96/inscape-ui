@@ -16,14 +16,13 @@ const PAD = 'clamp(20px, 5vw, 80px)';
 const WINNERS = PAST_WINNERS.slice(0, 3);
 const OFFERS = PARTNER_OFFERS.slice(0, 6);
 
-// The campaign featured on the hero "cover" and the live-this-month ticker.
-const COVER = CAMPAIGNS.find((c) => c.id === 'maldives-escape') || CAMPAIGNS[0];
-const TICKER = ['7 Nights, Maldives', 'Range Rover Sport', '$25,000 cash'];
+// The hero rotates through the live campaigns as a "cover" — the background
+// photo cross-fades while the campaign name, status, prize and countdown switch
+// in sync. Featured set = currently live/closing campaigns, capped at five.
+const HERO_CAMPAIGNS = CAMPAIGNS.filter((c) => c.status === 'LIVE' || c.status === 'CLOSING SOON').slice(0, 5);
 
-// Full-bleed magazine "cover" photo for the hero — a bright, aspirational prize
-// shot applied as a CSS background so the headline can sit over it. Swap for a
-// hosted (e.g. Cloudinary) image anytime for guaranteed sharpness.
-const HERO_IMAGE = 'https://images.unsplash.com/photo-1514282401047-d79a71a590e8?auto=format&fit=crop&w=2400&q=80';
+// A larger crop of each campaign photo for the full-bleed hero (cards use w=1000).
+const heroImg = (c) => (c.image ? c.image.replace('w=1000', 'w=2400').replace('q=70', 'q=80') : '');
 
 // The core message: one membership, three concrete benefits.
 const BENEFITS = [
@@ -378,12 +377,22 @@ export default function PublicHome({ onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [annual, setAnnual] = useState(false);
-  const coverTime = useCountdown(COVER.closesAt);
+  const [heroIdx, setHeroIdx] = useState(0);
+  const activeCover = HERO_CAMPAIGNS[heroIdx] || HERO_CAMPAIGNS[0];
+  const coverTime = useCountdown(activeCover.closesAt);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handler);
     return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  // Advance the hero cover; respects reduced-motion by staying on the first.
+  useEffect(() => {
+    if (HERO_CAMPAIGNS.length < 2) return undefined;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    const t = setInterval(() => setHeroIdx((i) => (i + 1) % HERO_CAMPAIGNS.length), 5500);
+    return () => clearInterval(t);
   }, []);
 
   return (
@@ -397,6 +406,7 @@ export default function PublicHome({ onNavigate }) {
         .lp-plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
         .lp-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
         .lp-h1 { font-size: clamp(46px, 6vw, 86px); }
+        @keyframes heroMeta { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
         @media (max-width: 1023px) {
           .lp-cards, .lp-offers, .lp-bd, .lp-plans { grid-template-columns: repeat(2, 1fr) !important; }
         }
@@ -413,23 +423,36 @@ export default function PublicHome({ onNavigate }) {
       <IntroSplash onDone={() => setIntroDone(true)} hold={1500} lift={700} />
       <NavBar onNavigate={onNavigate} scrolled={scrolled} />
 
-      {/* HERO — bold editorial / magazine cover */}
+      {/* HERO — bold editorial / magazine cover, rotating through live campaigns */}
       <section style={{
         position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end', overflow: 'hidden',
         backgroundColor: '#0c0d10',
-        backgroundImage: `linear-gradient(to right, rgba(6,8,12,0.50) 0%, rgba(6,8,12,0) 62%), linear-gradient(to top, rgba(6,8,12,0.94) 0%, rgba(6,8,12,0.80) 22%, rgba(6,8,12,0.55) 42%, rgba(6,8,12,0.28) 62%, rgba(6,8,12,0.08) 80%, rgba(6,8,12,0) 100%), linear-gradient(135deg, rgba(20,10,2,0.26) 0%, rgba(10,8,12,0.10) 48%, rgba(8,10,20,0.26) 100%), url(${HERO_IMAGE})`,
-        backgroundSize: 'cover, cover, cover, cover',
-        backgroundPosition: 'center, center, center, center',
-        backgroundRepeat: 'no-repeat',
       }}>
+        {/* Cross-fading campaign photos (all preloaded, only the active one visible) */}
+        {HERO_CAMPAIGNS.map((c, i) => (
+          <div key={c.id} aria-hidden="true" style={{
+            position: 'absolute', inset: 0, zIndex: 0,
+            backgroundImage: `url(${heroImg(c)})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
+            opacity: i === heroIdx ? 1 : 0, transition: 'opacity 1.1s ease-in-out',
+          }} />
+        ))}
+        {/* Image-independent legibility scrims + brand tint — keep text readable on any photo */}
+        <div aria-hidden="true" style={{
+          position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
+          backgroundImage: 'linear-gradient(to right, rgba(6,8,12,0.50) 0%, rgba(6,8,12,0) 62%), linear-gradient(to top, rgba(6,8,12,0.94) 0%, rgba(6,8,12,0.80) 22%, rgba(6,8,12,0.55) 42%, rgba(6,8,12,0.28) 62%, rgba(6,8,12,0.08) 80%, rgba(6,8,12,0) 100%), linear-gradient(135deg, rgba(20,10,2,0.26) 0%, rgba(10,8,12,0.10) 48%, rgba(8,10,20,0.26) 100%)',
+        }} />
         {/* long, eased dissolve into the white section — no visible edge, kept below the content */}
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 160, zIndex: 1, background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0.9) 82%, #FFFFFF 100%)', pointerEvents: 'none' }} />
         <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `0 ${PAD} clamp(176px, 21vh, 200px)` }}>
           <FadeIn start={introDone} delay={150} duration={800}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, font: `600 11px ${font.family}`, letterSpacing: '.16em', color: 'rgba(255,255,255,0.92)', marginBottom: 18, textShadow: '0 1px 14px rgba(0,0,0,0.6)' }}>
+            <button
+              onClick={() => onNavigate('campaign-detail', { campaignId: activeCover.id })}
+              key={activeCover.id}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: 9, font: `600 11px ${font.family}`, letterSpacing: '.16em', color: 'rgba(255,255,255,0.92)', marginBottom: 18, textShadow: '0 1px 14px rgba(0,0,0,0.6)', background: 'none', border: 'none', padding: 0, cursor: 'pointer', animation: 'heroMeta 0.7s ease both' }}
+            >
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} />
-              ON THE COVER · {COVER.title.toUpperCase()} — LIVE NOW
-            </div>
+              ON THE COVER · {activeCover.title.toUpperCase()} · {activeCover.prize} — {activeCover.status}
+            </button>
           </FadeIn>
 
           <FadeIn start={introDone} delay={300} duration={900}>
@@ -455,14 +478,20 @@ export default function PublicHome({ onNavigate }) {
 
           <FadeIn start={introDone} delay={1100} duration={900}>
             <div className="hero-ticker" style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', marginTop: 40, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.18)' }}>
-              <span style={{ font: `600 11px ${font.family}`, letterSpacing: '.12em', color: 'rgba(255,255,255,0.6)' }}>LIVE THIS MONTH</span>
-              {TICKER.map((t, i) => (
-                <span key={t} style={{ display: 'inline-flex', alignItems: 'center', gap: 16 }}>
-                  {i > 0 && <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>}
-                  <span style={{ font: `500 14px ${font.family}`, color: '#fff' }}>{t}</span>
-                </span>
-              ))}
-              <span className="hero-ticker-close" style={{ marginLeft: 'auto', font: `600 13px ${font.family}`, color: colors.accent }}>closes in {closesLabel(coverTime).replace(' left', '')}</span>
+              {/* clickable dots — which cover is showing, jump on click */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                {HERO_CAMPAIGNS.map((c, i) => (
+                  <button key={c.id} aria-label={`Show ${c.title}`} onClick={() => setHeroIdx(i)}
+                    style={{ width: i === heroIdx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', padding: 0, cursor: 'pointer', background: i === heroIdx ? colors.accent : 'rgba(255,255,255,0.4)', transition: 'all 0.3s ease' }} />
+                ))}
+              </div>
+              <span style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.2)' }} />
+              <span key={activeCover.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, animation: 'heroMeta 0.7s ease both' }}>
+                <span style={{ font: `500 14px ${font.family}`, color: '#fff' }}>{activeCover.title}</span>
+                <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
+                <span style={{ font: `500 14px ${font.family}`, color: 'rgba(255,255,255,0.7)' }}>{activeCover.prize} value</span>
+              </span>
+              <span key={`t-${activeCover.id}`} className="hero-ticker-close" style={{ marginLeft: 'auto', font: `600 13px ${font.family}`, color: colors.accent, animation: 'heroMeta 0.7s ease both' }}>closes in {closesLabel(coverTime).replace(' left', '')}</span>
             </div>
           </FadeIn>
         </div>
