@@ -413,9 +413,9 @@ export default function PublicHome({ onNavigate }) {
       <section style={{
         position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end', overflow: 'hidden',
         backgroundColor: '#0c0d10',
-        backgroundImage: `linear-gradient(to right, rgba(6,8,12,0.50) 0%, rgba(6,8,12,0) 62%), linear-gradient(to top, rgba(6,8,12,0.94) 0%, rgba(6,8,12,0.80) 22%, rgba(6,8,12,0.55) 42%, rgba(6,8,12,0.28) 62%, rgba(6,8,12,0.08) 80%, rgba(6,8,12,0) 100%), url(${HERO_IMAGE})`,
-        backgroundSize: 'cover, cover, cover',
-        backgroundPosition: 'center, center, center',
+        backgroundImage: `linear-gradient(to right, rgba(6,8,12,0.50) 0%, rgba(6,8,12,0) 62%), linear-gradient(to top, rgba(6,8,12,0.94) 0%, rgba(6,8,12,0.80) 22%, rgba(6,8,12,0.55) 42%, rgba(6,8,12,0.28) 62%, rgba(6,8,12,0.08) 80%, rgba(6,8,12,0) 100%), linear-gradient(135deg, rgba(8,12,22,0.30) 0%, rgba(8,12,22,0.12) 50%, rgba(8,12,22,0.22) 100%), url(${HERO_IMAGE})`,
+        backgroundSize: 'cover, cover, cover, cover',
+        backgroundPosition: 'center, center, center, center',
         backgroundRepeat: 'no-repeat',
       }}>
         {/* long, eased dissolve into the white section — no visible edge, kept below the content */}
