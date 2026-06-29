@@ -277,14 +277,18 @@ function ExploreMenu({ linkColor, linkHover }) {
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" style={{ transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}><path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </button>
       {open && (
-        <div style={{ position: 'absolute', top: 'calc(100% + 12px)', left: '50%', transform: 'translateX(-50%)', minWidth: 210, background: '#fff', border: `1px solid ${light.line}`, borderRadius: 14, boxShadow: light.floatShadow, padding: 8, zIndex: 300 }}>
-          {EXPLORE_LINKS.map(l => (
-            <a key={l.label} href={l.soon ? undefined : l.href}
-              style={{ display: 'block', padding: '10px 12px', borderRadius: 10, font: `500 14px ${font.family}`, color: l.soon ? light.dim : light.ink, textDecoration: 'none', cursor: l.soon ? 'default' : 'pointer' }}
-              onMouseEnter={e => { if (!l.soon) e.currentTarget.style.background = light.soft; }}
-              onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-            >{l.label}</a>
-          ))}
+        /* Transparent paddingTop bridges the button↔menu gap so the cursor
+           never leaves the hover area on its way to the items. */
+        <div style={{ position: 'absolute', top: '100%', left: '50%', transform: 'translateX(-50%)', paddingTop: 12, zIndex: 300 }}>
+          <div style={{ minWidth: 210, background: '#fff', border: `1px solid ${light.line}`, borderRadius: 14, boxShadow: light.floatShadow, padding: 8 }}>
+            {EXPLORE_LINKS.map(l => (
+              <a key={l.label} href={l.soon ? undefined : l.href} onClick={() => setOpen(false)}
+                style={{ display: 'block', padding: '10px 12px', borderRadius: 10, font: `500 14px ${font.family}`, color: l.soon ? light.dim : light.ink, textDecoration: 'none', cursor: l.soon ? 'default' : 'pointer' }}
+                onMouseEnter={e => { if (!l.soon) e.currentTarget.style.background = light.soft; }}
+                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+              >{l.label}</a>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -413,7 +417,7 @@ export default function PublicHome({ onNavigate }) {
       <section style={{
         position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end', overflow: 'hidden',
         backgroundColor: '#0c0d10',
-        backgroundImage: `linear-gradient(to right, rgba(6,8,12,0.50) 0%, rgba(6,8,12,0) 62%), linear-gradient(to top, rgba(6,8,12,0.94) 0%, rgba(6,8,12,0.80) 22%, rgba(6,8,12,0.55) 42%, rgba(6,8,12,0.28) 62%, rgba(6,8,12,0.08) 80%, rgba(6,8,12,0) 100%), linear-gradient(135deg, rgba(8,12,22,0.30) 0%, rgba(8,12,22,0.12) 50%, rgba(8,12,22,0.22) 100%), url(${HERO_IMAGE})`,
+        backgroundImage: `linear-gradient(to right, rgba(6,8,12,0.50) 0%, rgba(6,8,12,0) 62%), linear-gradient(to top, rgba(6,8,12,0.94) 0%, rgba(6,8,12,0.80) 22%, rgba(6,8,12,0.55) 42%, rgba(6,8,12,0.28) 62%, rgba(6,8,12,0.08) 80%, rgba(6,8,12,0) 100%), linear-gradient(135deg, rgba(20,10,2,0.26) 0%, rgba(10,8,12,0.10) 48%, rgba(8,10,20,0.26) 100%), url(${HERO_IMAGE})`,
         backgroundSize: 'cover, cover, cover, cover',
         backgroundPosition: 'center, center, center, center',
         backgroundRepeat: 'no-repeat',
