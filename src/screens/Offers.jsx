@@ -78,7 +78,7 @@ export default function Offers({ onNavigate }) {
             </div>
           </div>
         ) : (
-          <PartnerOffers offers={filtered} columns={columns} />
+          <PartnerOffers offers={filtered} columns={columns} onSelect={(o) => onNavigate('offer-detail', { slug: o.slug })} />
         )}
 
         <p style={{ font: `400 12px/1.6 ${font.family}`, color: colors.textGhost, marginTop: 24 }}>

@@ -321,10 +321,6 @@ function NavBar({ onNavigate, scrolled }) {
         </div>
 
         <div className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: 8, marginLeft: 'auto' }}>
-          <button onClick={() => onNavigate('login')} style={{ font: `500 14px ${font.family}`, color: linkColor, background: 'none', border: 'none', cursor: 'pointer', padding: '8px 14px' }}
-            onMouseEnter={e => e.currentTarget.style.color = linkHover}
-            onMouseLeave={e => e.currentTarget.style.color = linkColor}
-          >Sign in</button>
           <PrimaryCTA onClick={() => onNavigate('signup')} size="md" style={{ borderRadius: 999, padding: '0 22px' }}>Join now</PrimaryCTA>
         </div>
 

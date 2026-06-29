@@ -16,6 +16,7 @@ import Wallet from './screens/Wallet';
 import Boost from './screens/Boost';
 import Membership from './screens/Membership';
 import Offers from './screens/Offers';
+import OfferDetail from './screens/OfferDetail';
 import Referral from './screens/Referral';
 import Profile from './screens/Profile';
 import Notifications from './screens/Notifications';
@@ -42,6 +43,7 @@ const SCREENS = {
   boost: Boost,
   membership: Membership,
   offers: Offers,
+  'offer-detail': OfferDetail,
   referral: Referral,
   profile: Profile,
   notifications: Notifications,

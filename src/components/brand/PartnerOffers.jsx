@@ -5,12 +5,17 @@ import { PARTNER_OFFERS } from '../../data/offers';
 
 const { colors, font, radius } = tokens;
 
-function OfferCard({ o }) {
+function OfferCard({ o, onSelect }) {
   const [hover, setHover] = useState(false);
+  const clickable = typeof onSelect === 'function';
   return (
     <div
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
+      onClick={clickable ? () => onSelect(o) : undefined}
+      role={clickable ? 'button' : undefined}
+      tabIndex={clickable ? 0 : undefined}
+      onKeyDown={clickable ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(o); } } : undefined}
       style={{
         background: colors.bg3,
         border: `1px solid ${hover ? colors.borderStrong : colors.border}`,
@@ -18,6 +23,7 @@ function OfferCard({ o }) {
         padding: '18px 18px 16px',
         transition: 'transform 0.2s ease, border-color 0.2s ease',
         transform: hover ? 'translateY(-3px)' : 'none',
+        cursor: clickable ? 'pointer' : 'default',
         display: 'flex',
         flexDirection: 'column',
         gap: 12,
@@ -42,12 +48,12 @@ function OfferCard({ o }) {
 }
 
 /** Responsive grid of partner member-offers. */
-export default function PartnerOffers({ offers = PARTNER_OFFERS, limit, columns = 'repeat(auto-fill, minmax(220px, 1fr))', style }) {
+export default function PartnerOffers({ offers = PARTNER_OFFERS, limit, columns = 'repeat(auto-fill, minmax(220px, 1fr))', style, onSelect }) {
   const list = limit ? offers.slice(0, limit) : offers;
   return (
     <div style={{ display: 'grid', gridTemplateColumns: columns, gap: 14, ...style }}>
       {list.map((o) => (
-        <OfferCard key={o.slug} o={o} />
+        <OfferCard key={o.slug} o={o} onSelect={onSelect} />
       ))}
     </div>
   );
