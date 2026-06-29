@@ -687,11 +687,12 @@ export default function PublicHome({ onNavigate }) {
           </Reveal>
           <div className="lp-plans">
             {PLANS.map((p, i) => (
-              <Reveal key={p.name} delay={i * 110}>
+              <Reveal key={p.name} delay={i * 110} style={{ height: '100%' }}>
                 <div style={{
                   background: p.highlight ? light.softer : light.panel,
                   border: `1px solid ${p.highlight ? light.accentBorder : light.line}`,
                   borderRadius: 22, padding: '34px 30px', position: 'relative', height: '100%',
+                  display: 'flex', flexDirection: 'column',
                   boxShadow: p.highlight ? '0 20px 50px rgba(255,128,0,0.12)' : 'none',
                 }}>
                   {p.highlight && (
@@ -703,7 +704,7 @@ export default function PublicHome({ onNavigate }) {
                     <span style={{ font: `400 14px ${font.family}`, color: light.dim }}>{annual ? '/yr' : '/mo'}</span>
                   </div>
                   <div style={{ font: `500 13px ${font.family}`, color: colors.accent, marginBottom: 26 }}>{annual ? `${p.annualCredits.toLocaleString()} Credits / year` : `${p.credits} Credits / month`}</div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 30 }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 30, flex: 1 }}>
                     {p.features.map(f => (
                       <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                         <span style={{ width: 19, height: 19, borderRadius: '50%', background: p.highlight ? light.accentSoft : light.soft, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
