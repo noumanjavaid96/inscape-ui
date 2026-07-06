@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import tokens from '../design/tokens';
 import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useTheme } from '../hooks/useTheme';
 import Logo from './ui/Logo';
 import Icon from './ui/Icon';
 
@@ -20,18 +21,18 @@ const NAV = [
 // Home and user icons are not in the shared set — define inline
 function HomeIcon({ color }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round"/>
-      <path d="M9 21V12h6v9" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ color }} aria-hidden="true">
+      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
+      <path d="M9 21V12h6v9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
 
 function UserIcon({ color }) {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="8" r="4" stroke={color} strokeWidth="1.6"/>
-      <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ color }} aria-hidden="true">
+      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.6"/>
+      <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
     </svg>
   );
 }
@@ -77,6 +78,7 @@ function NavItem({ item, isActive, collapsed, onNavigate }) {
 
 export default function Sidebar({ active, onNavigate }) {
   const { sidebarFull } = useBreakpoint();
+  const { theme, toggle } = useTheme();
   // Expanded by default; the user can collapse it. Narrow viewports force compact.
   const [userCollapsed, setUserCollapsed] = useState(false);
   const collapsed = !sidebarFull || userCollapsed;
@@ -139,6 +141,26 @@ export default function Sidebar({ active, onNavigate }) {
           <span style={{ font: `700 13px ${font.family}`, color: colors.accent }}>124 Credits</span>
         </div>
       )}
+
+      {/* Dark / light toggle — dark stays the brand default */}
+      <button
+        aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+        onClick={toggle}
+        style={{
+          display: 'flex', alignItems: 'center', gap: 10, marginTop: 8,
+          padding: collapsed ? '10px 0' : '10px 12px',
+          justifyContent: collapsed ? 'center' : 'flex-start',
+          borderRadius: radius.md, background: 'none', border: `1px solid ${colors.border}`,
+          cursor: 'pointer', width: '100%',
+        }}
+      >
+        <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={17} color={colors.textDim} />
+        {!collapsed && (
+          <span style={{ font: `500 13px ${font.family}`, color: colors.textDim, whiteSpace: 'nowrap' }}>
+            {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+          </span>
+        )}
+      </button>
 
       <button
         onClick={() => onNavigate('profile')}

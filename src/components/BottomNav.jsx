@@ -14,18 +14,18 @@ const TABS = [
 
 function HomeIcon({ color }) {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5Z" stroke={color} strokeWidth="1.6" strokeLinejoin="round"/>
-      <path d="M9 21V12h6v9" stroke={color} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ color }} aria-hidden="true">
+      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/>
+      <path d="M9 21V12h6v9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
 
 function UserIcon({ color }) {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="8" r="4" stroke={color} strokeWidth="1.6"/>
-      <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ color }} aria-hidden="true">
+      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.6"/>
+      <path d="M4 20c0-4 3.58-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
     </svg>
   );
 }
@@ -46,7 +46,7 @@ export default function BottomNav({ active, onNavigate }) {
         right: 0,
         zIndex: 100,
         height: 72,
-        background: 'rgba(8,10,12,0.92)',
+        background: colors.overlay,
         borderTop: `1px solid ${colors.border}`,
         backdropFilter: 'blur(20px)',
         display: 'flex',

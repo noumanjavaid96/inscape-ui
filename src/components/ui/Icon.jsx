@@ -90,15 +90,24 @@ const PATHS = {
     </>
   ),
   menu: (c) => <path d="M4 7h16M4 12h16M4 17h16" stroke={c} strokeWidth="1.8" strokeLinecap="round" />,
+  sun: (c) => (
+    <>
+      <circle cx="12" cy="12" r="4.2" stroke={c} strokeWidth="1.6" />
+      <path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5 5l1.7 1.7M17.3 17.3 19 19M19 5l-1.7 1.7M6.7 17.3 5 19" stroke={c} strokeWidth="1.6" strokeLinecap="round" />
+    </>
+  ),
+  moon: (c) => <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z" stroke={c} strokeWidth="1.6" strokeLinejoin="round" />,
   close: (c) => <path d="M6 6l12 12M18 6 6 18" stroke={c} strokeWidth="1.8" strokeLinecap="round" />,
 };
 
 export default function Icon({ name, size = 20, color = colors.textFaint, style }) {
   const render = PATHS[name];
   if (!render) return null;
+  // Colour is applied via CSS `color` + currentColor so theme CSS variables
+  // (var(--text) etc.) resolve — SVG presentation attributes can't parse var().
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={style} aria-hidden="true">
-      {render(color)}
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" style={{ color, ...style }} aria-hidden="true">
+      {render('currentColor')}
     </svg>
   );
 }

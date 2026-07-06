@@ -20,38 +20,41 @@ function deepFreeze(obj) {
 
 export const tokens = deepFreeze({
   colors: {
-    // Background levels — darkest to lightest surface.
-    bg: '#050505',
-    bg1: '#080a0c',
-    bg2: '#0B0D10', // brand "Panel"
-    bg3: '#0d0f12',
-    bg4: '#111418', // brand "Elevated Surface"
-    bg5: '#15181d',
+    // Background levels — darkest to lightest surface. Theme-dependent values
+    // resolve through CSS variables (see index.css); dark is the default and
+    // [data-theme="light"] flips the member app to the light palette.
+    bg: 'var(--bg)',
+    bg1: 'var(--bg1)',
+    bg2: 'var(--bg2)', // brand "Panel"
+    bg3: 'var(--bg3)',
+    bg4: 'var(--bg4)', // brand "Elevated Surface"
+    bg5: 'var(--bg5)',
 
-    // Brand accent.
+    // Brand accent — shared across themes, kept literal so string
+    // concatenations like `${colors.warning}55` keep working.
     accent: '#FF8000',
     accentDark: '#cc6600',
 
-    // Semantic.
+    // Semantic — shared across themes.
     info: '#47C7FC',
     success: '#5BD08A',
     warning: '#F0B43C',
     danger: '#ff4444',
 
     // Text levels — brightest to faintest.
-    text: '#ffffff',
-    textMuted: '#A3A3A3',
-    textDim: '#707070',
-    textFaint: '#4a4f57',
-    textGhost: '#3a3f47',
-    line: '#22262c',
+    text: 'var(--text)',
+    textMuted: 'var(--text-muted)',
+    textDim: 'var(--text-dim)',
+    textFaint: 'var(--text-faint)',
+    textGhost: 'var(--text-ghost)',
+    line: 'var(--line)',
 
     // Common translucent overlays.
-    border: 'rgba(255,255,255,0.08)',
-    borderStrong: 'rgba(255,255,255,0.15)',
-    borderFaint: 'rgba(255,255,255,0.06)',
-    surfaceHover: 'rgba(255,255,255,0.04)',
-    overlay: 'rgba(5,5,5,0.65)',
+    border: 'var(--border)',
+    borderStrong: 'var(--border-strong)',
+    borderFaint: 'var(--border-faint)',
+    surfaceHover: 'var(--surface-hover)',
+    overlay: 'var(--overlay)',
     accentSoft: 'rgba(255,128,0,0.1)',
     accentBorder: 'rgba(255,128,0,0.3)',
   },

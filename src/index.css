@@ -133,3 +133,48 @@ a { color: inherit; }
   border-radius: 4px;
 }
 button, a, input, [role="button"], [tabindex] { outline-color: #FF8000; }
+
+/* ---------------------------------------------------------------------------
+ * Theme variables. Dark is the default; [data-theme="light"] flips the member
+ * app to the warm editorial light palette. Accent + semantic hues are shared
+ * across themes and stay literal in tokens.js.
+ * ------------------------------------------------------------------------- */
+:root {
+  --bg: #050505;
+  --bg1: #080a0c;
+  --bg2: #0B0D10;
+  --bg3: #0d0f12;
+  --bg4: #111418;
+  --bg5: #15181d;
+  --text: #ffffff;
+  --text-muted: #A3A3A3;
+  --text-dim: #707070;
+  --text-faint: #4a4f57;
+  --text-ghost: #3a3f47;
+  --line: #22262c;
+  --border: rgba(255,255,255,0.08);
+  --border-strong: rgba(255,255,255,0.15);
+  --border-faint: rgba(255,255,255,0.06);
+  --surface-hover: rgba(255,255,255,0.04);
+  --overlay: rgba(5,5,5,0.65);
+}
+:root[data-theme='light'] {
+  --bg: #FAF8F4;
+  --bg1: #FFFFFF;
+  --bg2: #FFFFFF;
+  --bg3: #F6F3EE;
+  --bg4: #F1EDE6;
+  --bg5: #EAE5DC;
+  --text: #15120E;
+  --text-muted: #4E4A44;
+  --text-dim: #6B6660;
+  --text-faint: #8C867D;
+  --text-ghost: #B6B0A6;
+  --line: rgba(20,17,12,0.14);
+  --border: rgba(20,17,12,0.10);
+  --border-strong: rgba(20,17,12,0.20);
+  --border-faint: rgba(20,17,12,0.06);
+  --surface-hover: rgba(20,17,12,0.04);
+  --overlay: rgba(250,248,244,0.7);
+}
+:root[data-theme='light'] input::placeholder { color: #8C867D; }
