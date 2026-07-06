@@ -2,28 +2,30 @@ import { useState } from 'react';
 import tokens from '../../design/tokens';
 import Icon from '../ui/Icon';
 import StatusPill from './StatusPill';
-import Countdown from './Countdown';
 
 const { colors, radius, font } = tokens;
 
+// Days remaining, floored — the card shows one calm "Xd left" line instead of
+// a ticking multi-tile countdown (the detail page keeps the live countdown).
+const daysLeft = (t) => {
+  if (!t) return null;
+  const d = Math.floor((t - Date.now()) / 86400000);
+  return `${Math.max(d, 0)}d left`;
+};
+
 /**
- * Campaign card in three sizes.
+ * Campaign card — deliberately minimal: tall image, category eyebrow, title,
+ * and a single "time left / credits" footer row. Status pills only appear for
+ * non-live states; everything else lives on the campaign detail page.
  *
- * campaign: {
- *   title, category, prize, status, statusColor, timeLeft,
- *   participants, credits, gradient, glow, allocations
- * }
- *
- * @param {'sm'|'md'|'lg'} size
- *   sm - compact list/grid row (dashboard, my-campaigns)
- *   md - standard grid card (campaigns index)
- *   lg - featured hero card (landing page)
+ * @param {'sm'|'md'|'lg'} size  sm - compact grids · md/lg - taller feature grids
  */
 export default function CampaignCard({ campaign, onClick, size = 'md', style }) {
   const [hovered, setHovered] = useState(false);
   const c = campaign;
-  const heroHeight = size === 'lg' ? 160 : size === 'sm' ? 100 : 160;
   const glow = c.glow || 'rgba(255,128,0,0.12)';
+  const upcoming = c.status === 'UPCOMING';
+  const timeLabel = upcoming ? (c.startsIn || 'Opening soon') : daysLeft(c.closesAt) || c.timeLeft || '';
 
   return (
     <div
@@ -31,88 +33,55 @@ export default function CampaignCard({ campaign, onClick, size = 'md', style }) 
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: size === 'lg' ? c.gradient : colors.bg3,
+        background: colors.bg3,
         border: `1px solid ${hovered ? colors.borderStrong : colors.border}`,
         borderRadius: radius.xl,
         overflow: 'hidden',
         cursor: onClick ? 'pointer' : 'default',
         transition: 'transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease',
-        transform: hovered ? `translateY(${size === 'lg' ? -4 : -3}px)` : 'none',
+        transform: hovered ? 'translateY(-3px)' : 'none',
         boxShadow: hovered ? `0 16px 40px ${glow}` : 'none',
+        display: 'flex',
+        flexDirection: 'column',
         ...style,
       }}
     >
-      {/* Hero image area */}
-      <div
-        style={{
-          height: heroHeight,
-          background:
-            size === 'lg'
-              ? `radial-gradient(80% 80% at 30% 30%, ${glow.replace(/0?\.\d+\)/, '0.3)')}, transparent)`
-              : c.gradient,
-          position: 'relative',
-        }}
-      >
+      {/* Tall editorial image */}
+      <div style={{ position: 'relative', aspectRatio: size === 'sm' ? '4 / 3.4' : '4 / 4.4', background: c.gradient, overflow: 'hidden' }}>
         {c.image && (
           <img
             src={c.image}
             alt={c.title}
             loading="lazy"
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: hovered ? 'scale(1.05)' : 'scale(1)', transition: 'transform 0.4s ease' }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', transform: hovered ? 'scale(1.04)' : 'scale(1)', transition: 'transform 0.45s ease' }}
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
         )}
-        <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
-          <StatusPill status={c.status} size={size === 'sm' ? 'sm' : 'md'} />
-        </div>
-        {size !== 'sm' && (
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(13,15,18,0.85),transparent 55%)' }} />
+        {/* Only surface a pill when the state is not the default LIVE */}
+        {c.status && c.status !== 'LIVE' && (
+          <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
+            <StatusPill status={c.status} size="sm" />
+          </div>
         )}
-        {/* Live countdown (or static fallbacks) */}
-        <div style={{ position: 'absolute', right: 12, bottom: 12, zIndex: 2 }}>
-          {c.closesAt && c.status !== 'UPCOMING' ? (
-            <Countdown target={c.closesAt} size="sm" />
-          ) : (
-            <div style={{ font: `500 11px ${font.family}`, color: colors.textMuted, background: colors.overlay, borderRadius: 7, padding: '4px 9px', backdropFilter: 'blur(8px)' }}>
-              {c.startsIn || (c.timeLeft ? `${c.timeLeft} left` : '')}
-            </div>
-          )}
-        </div>
       </div>
 
-      {/* Body */}
-      <div style={{ padding: size === 'sm' ? '14px 16px 16px' : '16px 18px 18px' }}>
-        <div style={{ font: `400 11px ${font.family}`, color: colors.textDim }}>
-          {c.category}{c.prize ? ` · ${c.prize}` : ''}
+      {/* Minimal body */}
+      <div style={{ padding: size === 'sm' ? '13px 15px 14px' : '15px 17px 16px', display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
+        <div style={{ font: `700 10px ${font.family}`, letterSpacing: '.12em', textTransform: 'uppercase', color: colors.accent }}>
+          {c.category}
         </div>
-        <div
-          style={{
-            font: `700 ${size === 'sm' ? 18 : 22}px ${font.display}`,
-            lineHeight: 1.1,
-            color: colors.text,
-            marginTop: 4,
-          }}
-        >
+        <div style={{ font: `600 ${size === 'sm' ? 15 : 17}px/1.25 ${font.family}`, color: colors.text }}>
           {c.title}
         </div>
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginTop: 14,
-            paddingTop: 12,
-            borderTop: `1px solid ${colors.borderFaint}`,
-          }}
-        >
-          {/* Participant / allocation counts stay hidden by design decision. */}
-          <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>
-            {c.cost ? `${c.cost} ${c.cost === 1 ? 'Credit' : 'Credits'} to join` : `Draw ${c.drawDate}`}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 8 }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, font: `400 12px ${font.family}`, color: colors.textDim }}>
+            <Icon name="clock" size={12} color={colors.textDim} /> {timeLabel}
           </span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, font: `600 13px ${font.family}`, color: colors.accent }}>
-            Join
-            <Icon name="arrowRight" size={14} color={colors.accent} />
-          </span>
+          {c.cost != null && (
+            <span style={{ font: `600 12px ${font.family}`, color: colors.text }}>
+              {c.cost} {c.cost === 1 ? 'credit' : 'credits'}
+            </span>
+          )}
         </div>
       </div>
     </div>
