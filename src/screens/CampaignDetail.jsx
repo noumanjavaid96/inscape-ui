@@ -30,12 +30,14 @@ export default function CampaignDetail({ onNavigate, params = {} }) {
           <img src={c.image} alt={c.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
         )}
         <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(70% 70% at 30% 35%, ${c.glow}, transparent)` }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,#050505 0%,transparent 65%)' }} />
+        {/* fade into the page background — themed so light mode has no black band */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, var(--bg) 0%, transparent 65%)' }} />
         <button
           onClick={() => onNavigate('campaigns')}
-          style={{ position: 'absolute', top: 20, left: 20, width: 40, height: 40, borderRadius: '50%', background: 'rgba(5,5,5,0.6)', border: `1px solid ${colors.borderStrong}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(8px)' }}
+          aria-label="Back to campaigns"
+          style={{ position: 'absolute', top: 20, left: 20, width: 40, height: 40, borderRadius: '50%', background: 'rgba(5,5,5,0.55)', border: '1px solid rgba(255,255,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', backdropFilter: 'blur(8px)' }}
         >
-          <Icon name="arrowLeft" size={18} color={colors.text} />
+          <Icon name="arrowLeft" size={18} color="#ffffff" />
         </button>
         <div style={{ position: 'absolute', bottom: 28, left: 24 }}>
           <StatusPill status={c.status} size="lg" />
