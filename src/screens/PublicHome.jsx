@@ -139,7 +139,7 @@ function CampaignCardLight({ c, onClick }) {
         transition: 'transform 0.35s cubic-bezier(.2,.7,.2,1), box-shadow 0.35s ease',
       }}
     >
-      <div style={{ position: 'relative', aspectRatio: '3 / 2', overflow: 'hidden', background: c.gradient }}>
+      <div style={{ position: 'relative', aspectRatio: '4 / 4.2', overflow: 'hidden', background: c.gradient }}>
         {c.image && (
           <img
             src={c.image} alt={c.title} loading="lazy"
@@ -147,43 +147,24 @@ function CampaignCardLight({ c, onClick }) {
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
         )}
-        <div style={{ position: 'absolute', top: 14, left: 14, display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.92)', borderRadius: 999, padding: '5px 11px' }}>
-          <span style={{ width: 6, height: 6, borderRadius: '50%', background: statusTone }} />
-          <span style={{ font: `700 10px ${font.family}`, letterSpacing: '.08em', color: light.ink }}>{c.status}</span>
-        </div>
-        <div style={{ position: 'absolute', top: 14, right: 14, background: 'rgba(20,17,12,0.78)', backdropFilter: 'blur(6px)', borderRadius: 999, padding: '5px 11px', font: `600 11px ${font.family}`, color: '#fff' }}>
-          {c.cost} {c.cost === 1 ? 'Credit' : 'Credits'}
-        </div>
-      </div>
-
-      <div style={{ padding: '20px 22px 22px' }}>
-        <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.1em', textTransform: 'uppercase', color: light.dim }}>{c.category}</div>
-        <h3 style={{ font: `600 24px/1.1 ${font.display}`, color: light.ink, margin: '4px 0 0' }}>{c.title}</h3>
-        <div style={{ font: `400 13px ${font.family}`, color: light.body, marginTop: 5 }}>
-          Worth <strong style={{ color: light.ink, fontWeight: 600 }}>{c.prize}</strong>
-        </div>
-
-        {upcoming ? (
-          <div style={{ marginTop: 18, font: `500 12.5px ${font.family}`, color: colors.info }}>{c.startsIn || 'Opening soon'}</div>
-        ) : (
-          <div style={{ marginTop: 18 }}>
-            <div style={{ height: 5, borderRadius: 3, background: light.soft, overflow: 'hidden' }}>
-              <div style={{ width: `${c.sold}%`, height: '100%', background: colors.accent, borderRadius: 3 }} />
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, font: `500 11.5px ${font.family}` }}>
-              <span style={{ color: light.ink }}>{c.sold}% allocated</span>
-              <span style={{ color: light.dim }}>From {c.cost} {c.cost === 1 ? 'Credit' : 'Credits'}</span>
-            </div>
+        {c.status !== 'LIVE' && (
+          <div style={{ position: 'absolute', top: 14, left: 14, display: 'inline-flex', alignItems: 'center', gap: 6, background: 'rgba(255,255,255,0.92)', borderRadius: 999, padding: '5px 11px' }}>
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: statusTone }} />
+            <span style={{ font: `700 10px ${font.family}`, letterSpacing: '.08em', color: light.ink }}>{c.status}</span>
           </div>
         )}
+      </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 18, paddingTop: 16, borderTop: `1px solid ${light.lineSoft}` }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, font: `500 12px ${font.family}`, color: light.dim }}>
-            <Icon name="clock" size={14} color={light.dim} />
-            {upcoming ? c.drawDate : closesLabel(t)}
+      <div style={{ padding: '18px 20px 18px' }}>
+        <div style={{ font: `700 10px ${font.family}`, letterSpacing: '.12em', textTransform: 'uppercase', color: colors.accent }}>{c.category}</div>
+        <h3 style={{ font: `600 17px/1.25 ${font.family}`, color: light.ink, margin: '5px 0 0' }}>{c.title}</h3>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 }}>
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, font: `400 12px ${font.family}`, color: light.dim }}>
+            <Icon name="clock" size={13} color={light.dim} />
+            {upcoming ? (c.startsIn || 'Opening soon') : closesLabel(t)}
           </span>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, font: `600 13px ${font.family}`, color: colors.accent }}>
-            Join <Icon name="arrowRight" size={14} color={colors.accent} />
+          <span style={{ font: `600 12px ${font.family}`, color: light.ink }}>
+            {c.cost} {c.cost === 1 ? 'credit' : 'credits'}
           </span>
         </div>
       </div>
@@ -413,7 +394,7 @@ export default function PublicHome({ onNavigate }) {
         .lp-h1 { font-size: clamp(46px, 6vw, 86px); }
         @keyframes heroMeta { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
         .lp-marquee { overflow: hidden; width: 100%; -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); }
-        .lp-marquee-track { display: flex; width: max-content; animation: lpMarquee 46s linear infinite; }
+        .lp-marquee-track { display: flex; width: max-content; animation: lpMarquee 55s linear infinite; }
         @keyframes lpMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @media (prefers-reduced-motion: reduce) { .lp-marquee-track { animation: none; } }
         @media (max-width: 1023px) {
@@ -453,7 +434,7 @@ export default function PublicHome({ onNavigate }) {
         }} />
         {/* long, eased dissolve into the white section — no visible edge, kept below the content */}
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 160, zIndex: 1, background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0.9) 82%, #FFFFFF 100%)', pointerEvents: 'none' }} />
-        <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `0 ${PAD} clamp(176px, 21vh, 200px)` }}>
+        <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `0 ${PAD} clamp(176px, 21vh, 200px)`, textAlign: 'center' }}>
           <FadeIn start={introDone} delay={150} duration={800}>
             <button
               onClick={() => onNavigate('campaign-detail', { campaignId: activeCover.id })}
@@ -466,19 +447,19 @@ export default function PublicHome({ onNavigate }) {
           </FadeIn>
 
           <FadeIn start={introDone} delay={300} duration={900}>
-            <h1 className="lp-h1" style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 0.98, letterSpacing: '-0.038em', color: '#fff', margin: 0, maxWidth: 1000, textShadow: '0 2px 40px rgba(0,0,0,0.30)' }}>
+            <h1 className="lp-h1" style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 0.98, letterSpacing: '-0.038em', color: '#fff', margin: '0 auto', maxWidth: 1000, textShadow: '0 2px 40px rgba(0,0,0,0.30)' }}>
               More access. More experiences. More <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>YOU.</span>
             </h1>
           </FadeIn>
 
           <FadeIn start={introDone} delay={650} duration={900}>
-            <p style={{ font: `400 18px/1.6 ${font.family}`, color: 'rgba(255,255,255,0.92)', margin: '22px 0 0', maxWidth: 560, textShadow: '0 1px 18px rgba(0,0,0,0.6)' }}>
+            <p style={{ font: `400 18px/1.6 ${font.family}`, color: 'rgba(255,255,255,0.92)', margin: '22px auto 0', maxWidth: 560, textShadow: '0 1px 18px rgba(0,0,0,0.6)' }}>
               One membership — luxury prize campaigns, members-only offers, and rewards that compound. From <strong style={{ color: '#fff', fontWeight: 600 }}>$14.99/mo</strong>, or start free with 3 Credits.
             </p>
           </FadeIn>
 
           <FadeIn start={introDone} delay={850} duration={900}>
-            <div style={{ display: 'flex', gap: 14, marginTop: 32, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', gap: 14, marginTop: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
               <PrimaryCTA onClick={() => onNavigate('signup')}>
                 Become a member <Icon name="arrowRight" size={17} color="#1c1003" />
               </PrimaryCTA>
@@ -487,7 +468,7 @@ export default function PublicHome({ onNavigate }) {
           </FadeIn>
 
           <FadeIn start={introDone} delay={1100} duration={900}>
-            <div className="hero-ticker" style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap', marginTop: 40, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.18)' }}>
+            <div className="hero-ticker" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, flexWrap: 'wrap', marginTop: 40, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.18)' }}>
               {/* clickable dots — which cover is showing, jump on click */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 {HERO_CAMPAIGNS.map((c, i) => (
@@ -501,7 +482,7 @@ export default function PublicHome({ onNavigate }) {
                 <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
                 <span style={{ font: `500 14px ${font.family}`, color: 'rgba(255,255,255,0.7)' }}>{activeCover.prize} value</span>
               </span>
-              <span key={`t-${activeCover.id}`} className="hero-ticker-close" style={{ marginLeft: 'auto', font: `600 13px ${font.family}`, color: colors.accent, animation: 'heroMeta 0.7s ease both' }}>closes in {closesLabel(coverTime).replace(' left', '')}</span>
+              <span key={`t-${activeCover.id}`} className="hero-ticker-close" style={{ font: `600 13px ${font.family}`, color: colors.accent, animation: 'heroMeta 0.7s ease both' }}>closes in {closesLabel(coverTime).replace(' left', '')}</span>
             </div>
           </FadeIn>
         </div>
@@ -516,23 +497,22 @@ export default function PublicHome({ onNavigate }) {
               Exceptional benefits. <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>World-leading</span> brands.
             </h2>
           </div>
-          {[false, true].map((reverse) => (
-            <div key={String(reverse)} className="lp-marquee" style={{ marginTop: reverse ? 26 : 0 }}>
-              <div className="lp-marquee-track" style={{ animationDirection: reverse ? 'reverse' : 'normal' }}>
-                {/* content duplicated so the loop is seamless */}
-                {[0, 1].map((dup) => (
-                  <div key={dup} aria-hidden={dup === 1} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(44px, 6vw, 88px)', paddingRight: 'clamp(44px, 6vw, 88px)' }}>
-                    {(reverse ? [...PARTNER_OFFERS].reverse() : PARTNER_OFFERS).map(p => (
-                      <img key={p.slug} src={`/brand/partners/${p.slug}.png`} alt={dup === 0 ? p.brand : ''}
-                        style={{ height: 52, width: 'auto', filter: 'brightness(0)', opacity: 0.75, flexShrink: 0 }}
-                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
+          {/* single slow strip, large logos — FoundersCard-style credibility shelf */}
+          <div className="lp-marquee">
+            <div className="lp-marquee-track">
+              {/* content duplicated so the loop is seamless */}
+              {[0, 1].map((dup) => (
+                <div key={dup} aria-hidden={dup === 1} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(56px, 7vw, 110px)', paddingRight: 'clamp(56px, 7vw, 110px)' }}>
+                  {PARTNER_OFFERS.map(p => (
+                    <img key={p.slug} src={`/brand/partners/${p.slug}.png`} alt={dup === 0 ? p.brand : ''}
+                      style={{ height: 76, width: 'auto', filter: 'brightness(0)', opacity: 0.8, flexShrink: 0 }}
+                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                    />
+                  ))}
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </Reveal>
       </section>
 
@@ -543,7 +523,7 @@ export default function PublicHome({ onNavigate }) {
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap', marginBottom: 26 }}>
               <div>
                 <div style={{ marginBottom: 14 }}><Eyebrow label="LIVE NOW" /></div>
-                <h2 style={{ font: `400 clamp(34px, 4vw, 50px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Campaigns open now</h2>
+                <h2 style={{ font: `400 clamp(34px, 4vw, 50px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Campaigns open <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>now.</span></h2>
                 <p style={{ font: `400 16px/1.6 ${font.family}`, color: light.body, margin: '12px 0 0', maxWidth: 520 }}>Browse this month's collection. Join with Credits — every draw is independently witnessed and audited.</p>
               </div>
               <GhostCTA onClick={() => onNavigate('campaigns')} size="md">View all <Icon name="arrowRight" size={15} color={light.ink} /></GhostCTA>
@@ -599,7 +579,7 @@ export default function PublicHome({ onNavigate }) {
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap', marginBottom: 36 }}>
               <div>
                 <div style={{ marginBottom: 14 }}><Eyebrow label="OFFERS HUB" /></div>
-                <h2 style={{ font: `400 clamp(32px, 4vw, 48px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Membership that pays for itself</h2>
+                <h2 style={{ font: `400 clamp(32px, 4vw, 48px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Membership that pays for <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>itself.</span></h2>
                 <p style={{ font: `400 16px/1.6 ${font.family}`, color: light.body, margin: '12px 0 0', maxWidth: 500 }}>Members unlock exclusive pricing from leading brands — real savings, every month, on top of the campaigns.</p>
               </div>
               <GhostCTA onClick={() => onNavigate('signup')} size="md">All offers <Icon name="arrowRight" size={15} color={light.ink} /></GhostCTA>
@@ -622,7 +602,7 @@ export default function PublicHome({ onNavigate }) {
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap', marginBottom: 36 }}>
               <div>
                 <div style={{ marginBottom: 14 }}><Eyebrow label="REAL WINNERS" /></div>
-                <h2 style={{ font: `400 clamp(32px, 4vw, 48px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Members win every week</h2>
+                <h2 style={{ font: `400 clamp(32px, 4vw, 48px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Members win <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>every week.</span></h2>
               </div>
               <p style={{ font: `400 14px/1.6 ${font.family}`, color: light.dim, maxWidth: 320, margin: 0 }}>Every draw is independently witnessed and audited. Real people, real prizes.</p>
             </div>
@@ -669,6 +649,9 @@ export default function PublicHome({ onNavigate }) {
       <section style={{ padding: `clamp(48px, 6vw, 72px) ${PAD}`, background: light.canvas, borderTop: `1px solid ${light.line}`, borderBottom: `1px solid ${light.line}` }}>
         <div className="lp-inner">
           <Reveal>
+            <h2 style={{ font: `400 clamp(28px, 3.4vw, 42px)/1.08 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: '0 0 34px', textAlign: 'center' }}>
+              A membership like <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>no other.</span>
+            </h2>
             <div className="lp-stats">
               {STATS.map(s => (
                 <div key={s.label} style={{ textAlign: 'center', padding: '18px 12px' }}>
@@ -687,7 +670,7 @@ export default function PublicHome({ onNavigate }) {
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: 56 }}>
               <div style={{ marginBottom: 14, display: 'flex', justifyContent: 'center' }}><Eyebrow label="MEMBERSHIP" /></div>
-              <h2 style={{ font: `400 clamp(34px, 4.4vw, 52px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: '0 0 14px' }}>Choose your tier</h2>
+              <h2 style={{ font: `400 clamp(34px, 4.4vw, 52px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: '0 0 14px' }}>Choose your <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>tier.</span></h2>
               <p style={{ font: `400 16px/1.6 ${font.family}`, color: light.body, maxWidth: 460, margin: '0 auto' }}>Monthly Credits, Momentum bonuses and exclusive access — scaled to your ambition.</p>
             </div>
           </Reveal>
