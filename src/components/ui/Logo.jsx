@@ -1,4 +1,5 @@
 import tokens from '../../design/tokens';
+import { useTheme } from '../../hooks/useTheme';
 
 const { colors } = tokens;
 
@@ -18,11 +19,17 @@ const ICON_TRANSFORMS = [
 const ICON_H = { sm: 22, md: 28, lg: 36 };
 const MARK_H = { sm: 20, md: 26, lg: 34 };
 
-/** InScape brand mark — three-bar icon, optional full wordmark lockup. */
-export default function Logo({ size = 'md', showText = true, variant = 'light', color, style }) {
+/**
+ * InScape brand mark — three-bar icon, optional full wordmark lockup.
+ * variant: 'light' (white wordmark), 'charcoal' (black wordmark), or 'auto'
+ * (default — follows the app theme so the wordmark stays legible).
+ */
+export default function Logo({ size = 'md', showText = true, variant = 'auto', color, style }) {
+  const { theme } = useTheme();
   if (showText) {
     const h = MARK_H[size] || MARK_H.md;
-    const src = variant === 'charcoal'
+    const resolved = variant === 'auto' ? (theme === 'light' ? 'charcoal' : 'light') : variant;
+    const src = resolved === 'charcoal'
       ? '/brand/inscape-wordmark-charcoal.svg'
       : '/brand/inscape-wordmark-light.svg';
     return <img src={src} alt="InScape" height={h} style={{ height: h, width: 'auto', display: 'block', ...style }} />;

@@ -400,7 +400,9 @@ export default function PublicHome({ onNavigate }) {
       <style>{`
         .lp-inner { max-width: 1200px; margin: 0 auto; width: 100%; }
         .lp-hero { display: grid; grid-template-columns: 1.04fr 0.96fr; gap: 56px; align-items: center; }
-        .lp-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .lp-cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; }
+        .lp-cards > :nth-child(-n+2) { grid-column: span 3; }
+        .lp-cards > :nth-child(n+3) { grid-column: span 2; }
         .lp-offers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
         .lp-bd { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
         .lp-plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
@@ -413,6 +415,7 @@ export default function PublicHome({ onNavigate }) {
         @media (prefers-reduced-motion: reduce) { .lp-marquee-track { animation: none; } }
         @media (max-width: 1023px) {
           .lp-cards, .lp-offers, .lp-bd, .lp-plans { grid-template-columns: repeat(2, 1fr) !important; }
+          .lp-cards > * { grid-column: auto !important; }
         }
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
@@ -544,8 +547,9 @@ export default function PublicHome({ onNavigate }) {
             </div>
           </Reveal>
 
+          {/* Five campaigns a month: two larger cards up top, three smaller beneath */}
           <div className="lp-cards">
-            {CAMPAIGNS.map((c, i) => (
+            {CAMPAIGNS.slice(0, 5).map((c, i) => (
               <Reveal key={c.id} delay={i * 90}>
                 <CampaignCardLight c={c} onClick={() => onNavigate('signup')} />
               </Reveal>

@@ -31,7 +31,7 @@ export default function Card({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        background: gradient ? 'linear-gradient(160deg,#13161b,#0a0c0f)' : colors.bg3,
+        background: gradient ? 'linear-gradient(160deg, var(--bg5), var(--bg2))' : colors.bg3,
         border: `1px solid ${lift ? colors.borderStrong : colors.border}`,
         borderTop: accent ? `2px solid ${accent}` : undefined,
         borderRadius: radius.xl,

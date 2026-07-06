@@ -42,6 +42,14 @@ export default function Offers({ onNavigate }) {
           }
         />
 
+        {/* Direct-partner offers are phase two — visible but clearly not yet live */}
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: 999, padding: '6px 14px', marginBottom: 18 }}>
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.info }} />
+          <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>
+            Affiliate partner offers live now · <strong style={{ color: colors.text, fontWeight: 600 }}>Direct partner offers — Coming Soon</strong>
+          </span>
+        </div>
+
         {/* Category / brand filter */}
         <div style={{ display: 'flex', gap: 8, marginBottom: 24, overflowX: 'auto', paddingBottom: 4, scrollbarWidth: 'none' }}>
           {CATEGORIES.map((c) => (

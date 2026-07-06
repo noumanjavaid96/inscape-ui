@@ -10,7 +10,9 @@ const pad = (n) => String(n).padStart(2, '0');
  * @param {'sm'|'md'|'lg'} size
  * @param {boolean} glass  render each unit on a glass tile
  */
-export default function Countdown({ target, size = 'md', glass = true, color = colors.text }) {
+// Default colour is literal white (not the themed text token) — the countdown
+// always sits on imagery / dark glass tiles in both themes.
+export default function Countdown({ target, size = 'md', glass = true, color = '#ffffff' }) {
   const { days, hours, minutes, seconds, done } = useCountdown(target);
   const sizes = {
     sm: { num: 13, lab: 8, gap: 6, pad: '3px 6px' },
