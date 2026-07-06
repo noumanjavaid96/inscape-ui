@@ -211,7 +211,7 @@ function OfferCardLight({ o }) {
       <div style={{ position: 'relative', height: 150, background: `radial-gradient(90% 120% at 50% 0%, #23262c, ${light.charcoal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <img
           src={`/brand/partners/${o.slug}.png`} alt={o.brand} loading="lazy"
-          style={{ maxWidth: '55%', maxHeight: 56, width: 'auto', height: 'auto', transform: hover ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.4s ease' }}
+          style={{ maxWidth: '72%', maxHeight: 84, width: 'auto', height: 'auto', transform: hover ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.4s ease' }}
           onError={(e) => { e.currentTarget.style.display = 'none'; }}
         />
         <span style={{ position: 'absolute', top: 12, right: 12, background: colors.accent, borderRadius: 999, padding: '6px 13px', font: `700 13px ${font.family}`, color: '#1c1003' }}>{o.offer}</span>

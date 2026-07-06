@@ -34,7 +34,7 @@ function OfferCard({ o, onSelect }) {
           src={`/brand/partners/${o.slug}.png`}
           alt={o.brand}
           loading="lazy"
-          style={{ maxWidth: '52%', maxHeight: 44, width: 'auto', height: 'auto', transform: hover ? 'scale(1.07)' : 'scale(1)', transition: 'transform 0.35s ease' }}
+          style={{ maxWidth: '68%', maxHeight: 66, width: 'auto', height: 'auto', transform: hover ? 'scale(1.07)' : 'scale(1)', transition: 'transform 0.35s ease' }}
           onError={(e) => { e.currentTarget.style.display = 'none'; }}
         />
         <span style={{ position: 'absolute', top: 10, right: 10, background: colors.accent, borderRadius: 999, padding: '5px 11px', font: `700 12px ${font.family}`, color: '#1c1003' }}>{o.offer}</span>
