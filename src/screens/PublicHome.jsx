@@ -363,7 +363,6 @@ export default function PublicHome({ onNavigate }) {
   const [annual, setAnnual] = useState(false);
   const [heroIdx, setHeroIdx] = useState(0);
   const activeCover = HERO_CAMPAIGNS[heroIdx] || HERO_CAMPAIGNS[0];
-  const coverTime = useCountdown(activeCover.closesAt);
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
@@ -391,7 +390,8 @@ export default function PublicHome({ onNavigate }) {
         .lp-bd { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
         .lp-plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
         .lp-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-        .lp-h1 { font-size: clamp(46px, 6vw, 86px); }
+        .lp-h1 { font-size: clamp(52px, 7.4vw, 108px); }
+        @keyframes heroChevron { 0%,100% { transform: translateY(0); opacity: .75; } 50% { transform: translateY(7px); opacity: 1; } }
         @keyframes heroMeta { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
         .lp-marquee { overflow: hidden; width: 100%; -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); }
         .lp-marquee-track { display: flex; width: max-content; animation: lpMarquee 55s linear infinite; }
@@ -406,7 +406,7 @@ export default function PublicHome({ onNavigate }) {
           .mobile-nav-btn { display: inline-flex !important; }
           .lp-hero, .lp-cards, .lp-offers, .lp-bd, .lp-plans, .lp-partner-band { grid-template-columns: 1fr !important; }
           .lp-stats { grid-template-columns: repeat(2, 1fr) !important; }
-          .lp-h1 { font-size: clamp(40px, 12vw, 60px) !important; }
+          .lp-h1 { font-size: clamp(44px, 13vw, 64px) !important; }
           .hero-visual { height: 380px !important; }
         }
       `}</style>
@@ -416,7 +416,7 @@ export default function PublicHome({ onNavigate }) {
 
       {/* HERO — bold editorial / magazine cover, rotating through live campaigns */}
       <section style={{
-        position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'flex-end', overflow: 'hidden',
+        position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden',
         backgroundColor: '#0c0d10',
       }}>
         {/* Cross-fading campaign photos (all preloaded, only the active one visible) */}
@@ -434,7 +434,7 @@ export default function PublicHome({ onNavigate }) {
         }} />
         {/* long, eased dissolve into the white section — no visible edge, kept below the content */}
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 160, zIndex: 1, background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0.9) 82%, #FFFFFF 100%)', pointerEvents: 'none' }} />
-        <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `0 ${PAD} clamp(176px, 21vh, 200px)`, textAlign: 'center' }}>
+        <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `clamp(120px, 15vh, 170px) ${PAD} clamp(64px, 9vh, 96px)`, textAlign: 'center' }}>
           <FadeIn start={introDone} delay={150} duration={800}>
             <button
               onClick={() => onNavigate('campaign-detail', { campaignId: activeCover.id })}
@@ -447,42 +447,57 @@ export default function PublicHome({ onNavigate }) {
           </FadeIn>
 
           <FadeIn start={introDone} delay={300} duration={900}>
-            <h1 className="lp-h1" style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 0.98, letterSpacing: '-0.038em', color: '#fff', margin: '0 auto', maxWidth: 1000, textShadow: '0 2px 40px rgba(0,0,0,0.30)' }}>
-              More access. More experiences. More <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>YOU.</span>
+            {/* Two-line serif statement — regular line over an italic flourish */}
+            <h1 className="lp-h1" style={{ fontFamily: font.display, fontWeight: 500, lineHeight: 0.96, letterSpacing: '-0.015em', color: '#F7F3EC', margin: '0 auto', maxWidth: 1100, textShadow: '0 2px 40px rgba(0,0,0,0.35)' }}>
+              More access, more experiences
+              <span style={{ display: 'block', fontStyle: 'italic', fontWeight: 500 }}>more <span style={{ color: colors.accent }}>you.</span></span>
             </h1>
           </FadeIn>
 
           <FadeIn start={introDone} delay={650} duration={900}>
-            <p style={{ font: `400 18px/1.6 ${font.family}`, color: 'rgba(255,255,255,0.92)', margin: '22px auto 0', maxWidth: 560, textShadow: '0 1px 18px rgba(0,0,0,0.6)' }}>
-              One membership — luxury prize campaigns, members-only offers, and rewards that compound. From <strong style={{ color: '#fff', fontWeight: 600 }}>$14.99/mo</strong>, or start free with 3 Credits.
+            <p style={{ font: `400 18px/1.6 ${font.family}`, color: 'rgba(255,255,255,0.92)', margin: '26px auto 0', maxWidth: 540, textShadow: '0 1px 18px rgba(0,0,0,0.6)' }}>
+              One membership — luxury prize campaigns, members-only offers, and rewards that compound.
             </p>
           </FadeIn>
 
           <FadeIn start={introDone} delay={850} duration={900}>
-            <div style={{ display: 'flex', gap: 14, marginTop: 32, flexWrap: 'wrap', justifyContent: 'center' }}>
-              <PrimaryCTA onClick={() => onNavigate('signup')}>
-                Become a member <Icon name="arrowRight" size={17} color="#1c1003" />
-              </PrimaryCTA>
-              <GhostCTA dark onClick={() => onNavigate('campaigns')}>Browse live campaigns</GhostCTA>
+            <div style={{ display: 'flex', marginTop: 34, justifyContent: 'center' }}>
+              <MagneticButton
+                onClick={() => onNavigate('signup')}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 10, height: 52, padding: '0 28px', borderRadius: 999, background: '#F7F3EC', border: 'none', color: '#1c1712', font: `600 15px ${font.family}`, boxShadow: '0 16px 40px rgba(0,0,0,0.35)' }}
+              >
+                Preview membership
+                <span style={{ width: 24, height: 24, borderRadius: '50%', background: '#1c1712', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icon name="arrowRight" size={13} color="#F7F3EC" />
+                </span>
+              </MagneticButton>
             </div>
           </FadeIn>
 
-          <FadeIn start={introDone} delay={1100} duration={900}>
-            <div className="hero-ticker" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 16, flexWrap: 'wrap', marginTop: 40, paddingTop: 18, borderTop: '1px solid rgba(255,255,255,0.18)' }}>
-              {/* clickable dots — which cover is showing, jump on click */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                {HERO_CAMPAIGNS.map((c, i) => (
-                  <button key={c.id} aria-label={`Show ${c.title}`} onClick={() => setHeroIdx(i)}
-                    style={{ width: i === heroIdx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', padding: 0, cursor: 'pointer', background: i === heroIdx ? colors.accent : 'rgba(255,255,255,0.4)', transition: 'all 0.3s ease' }} />
-                ))}
-              </div>
-              <span style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.2)' }} />
-              <span key={activeCover.id} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, animation: 'heroMeta 0.7s ease both' }}>
-                <span style={{ font: `500 14px ${font.family}`, color: '#fff' }}>{activeCover.title}</span>
-                <span style={{ color: 'rgba(255,255,255,0.3)' }}>·</span>
-                <span style={{ font: `500 14px ${font.family}`, color: 'rgba(255,255,255,0.7)' }}>{activeCover.prize} value</span>
-              </span>
-              <span key={`t-${activeCover.id}`} className="hero-ticker-close" style={{ font: `600 13px ${font.family}`, color: colors.accent, animation: 'heroMeta 0.7s ease both' }}>closes in {closesLabel(coverTime).replace(' left', '')}</span>
+          <FadeIn start={introDone} delay={1050} duration={900}>
+            {/* cover dots — which campaign is on the cover */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 26 }}>
+              {HERO_CAMPAIGNS.map((c, i) => (
+                <button key={c.id} aria-label={`Show ${c.title}`} onClick={() => setHeroIdx(i)}
+                  style={{ width: i === heroIdx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', padding: 0, cursor: 'pointer', background: i === heroIdx ? colors.accent : 'rgba(255,255,255,0.4)', transition: 'all 0.3s ease' }} />
+              ))}
+            </div>
+          </FadeIn>
+
+          <FadeIn start={introDone} delay={1250} duration={1000}>
+            {/* partner logos inside the hero, FoundersCard-style */}
+            <div className="hero-logos" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(34px, 5vw, 72px)', flexWrap: 'wrap', marginTop: 'clamp(40px, 6vh, 64px)' }}>
+              {PARTNER_OFFERS.slice(0, 6).map(p => (
+                <img key={p.slug} src={`/brand/partners/${p.slug}.png`} alt={p.brand}
+                  style={{ height: 34, width: 'auto', opacity: 0.55, filter: 'grayscale(1)' }}
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 26 }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ animation: 'heroChevron 2.2s ease-in-out infinite' }}>
+                <path d="M6 9l6 6 6-6" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </div>
           </FadeIn>
         </div>
