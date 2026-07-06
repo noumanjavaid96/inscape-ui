@@ -200,25 +200,28 @@ function OfferCardLight({ o }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        background: light.panel, border: `1px solid ${light.line}`, borderRadius: 18,
-        padding: '22px 22px 20px', display: 'flex', flexDirection: 'column', gap: 14,
-        boxShadow: hover ? light.cardShadow : 'none',
-        transform: hover ? 'translateY(-3px)' : 'none',
-        transition: 'all 0.3s ease',
+        background: light.panel, border: `1px solid ${light.line}`, borderRadius: 20,
+        overflow: 'hidden', display: 'flex', flexDirection: 'column',
+        boxShadow: hover ? light.cardShadowHover : light.cardShadow,
+        transform: hover ? 'translateY(-4px)' : 'none',
+        transition: 'transform 0.3s cubic-bezier(.2,.7,.2,1), box-shadow 0.3s ease',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ width: 52, height: 52, borderRadius: 14, background: light.charcoal, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <img src={`/brand/partners/${o.slug}.png`} alt={o.brand} style={{ maxWidth: 32, maxHeight: 20, width: 'auto', height: 'auto' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-        </div>
-        <span style={{ font: `600 10px ${font.family}`, letterSpacing: '.08em', color: light.dim, textTransform: 'uppercase' }}>{o.category}</span>
+      {/* Logo hero — the brand IS the image (affiliate APIs don't provide product shots) */}
+      <div style={{ position: 'relative', height: 150, background: `radial-gradient(90% 120% at 50% 0%, #23262c, ${light.charcoal})`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <img
+          src={`/brand/partners/${o.slug}.png`} alt={o.brand} loading="lazy"
+          style={{ maxWidth: '55%', maxHeight: 56, width: 'auto', height: 'auto', transform: hover ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.4s ease' }}
+          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+        />
+        <span style={{ position: 'absolute', top: 12, right: 12, background: colors.accent, borderRadius: 999, padding: '6px 13px', font: `700 13px ${font.family}`, color: '#1c1003' }}>{o.offer}</span>
+        <span style={{ position: 'absolute', top: 12, left: 12, font: `600 10px ${font.family}`, letterSpacing: '.08em', color: 'rgba(255,255,255,0.65)', textTransform: 'uppercase' }}>{o.category}</span>
       </div>
-      <div>
-        <div style={{ font: `600 15px ${font.family}`, color: light.ink }}>{o.brand}</div>
-        <div style={{ font: `700 22px ${font.family}`, color: colors.accent, marginTop: 2 }}>{o.offer}</div>
+      <div style={{ padding: '18px 20px 18px', display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
+        <span style={{ font: `600 16px ${font.family}`, color: light.ink }}>{o.brand}</span>
+        <p style={{ font: `400 13px/1.55 ${font.family}`, color: light.body, margin: 0, flex: 1 }}>{o.detail}</p>
+        <span style={{ alignSelf: 'flex-start', font: `500 11px ${font.family}`, color: light.dim, background: light.soft, borderRadius: 999, padding: '4px 10px' }}>{o.type}</span>
       </div>
-      <p style={{ font: `400 13px/1.55 ${font.family}`, color: light.body, margin: 0, flex: 1 }}>{o.detail}</p>
-      <span style={{ alignSelf: 'flex-start', font: `500 11px ${font.family}`, color: light.dim, background: light.soft, borderRadius: 999, padding: '4px 10px' }}>{o.type}</span>
     </div>
   );
 }

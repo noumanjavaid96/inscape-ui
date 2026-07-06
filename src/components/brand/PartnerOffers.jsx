@@ -20,28 +20,33 @@ function OfferCard({ o, onSelect }) {
         background: colors.bg3,
         border: `1px solid ${hover ? colors.borderStrong : colors.border}`,
         borderRadius: radius.lg,
-        padding: '18px 18px 16px',
+        overflow: 'hidden',
         transition: 'transform 0.2s ease, border-color 0.2s ease',
         transform: hover ? 'translateY(-3px)' : 'none',
         cursor: clickable ? 'pointer' : 'default',
         display: 'flex',
         flexDirection: 'column',
-        gap: 12,
-        minHeight: 150,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+      {/* Logo hero — the brand IS the image; discount badge overlaid like a campaign card */}
+      <div style={{ position: 'relative', height: 120, background: 'radial-gradient(90% 130% at 50% 0%, #1d2026, #101216)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         <img
           src={`/brand/partners/${o.slug}.png`}
           alt={o.brand}
-          style={{ height: 22, width: 'auto', maxWidth: 110, objectFit: 'contain', opacity: 0.95 }}
+          loading="lazy"
+          style={{ maxWidth: '52%', maxHeight: 44, width: 'auto', height: 'auto', transform: hover ? 'scale(1.07)' : 'scale(1)', transition: 'transform 0.35s ease' }}
+          onError={(e) => { e.currentTarget.style.display = 'none'; }}
         />
-        <span style={{ font: `700 16px ${font.family}`, color: colors.accent, whiteSpace: 'nowrap' }}>{o.offer}</span>
+        <span style={{ position: 'absolute', top: 10, right: 10, background: colors.accent, borderRadius: 999, padding: '5px 11px', font: `700 12px ${font.family}`, color: '#1c1003' }}>{o.offer}</span>
+        <span style={{ position: 'absolute', top: 12, left: 12, font: `600 9.5px ${font.family}`, letterSpacing: '.08em', color: 'rgba(255,255,255,0.6)', textTransform: 'uppercase' }}>{o.category}</span>
       </div>
-      <div style={{ font: `400 12px/1.5 ${font.family}`, color: colors.textDim, flex: 1 }}>{o.detail}</div>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <span style={{ font: `500 11px ${font.family}`, color: colors.textFaint }}>{o.category}</span>
-        <Badge label={o.type} color={o.type === 'Promo code' ? 'orange' : 'blue'} size="sm" />
+      <div style={{ padding: '14px 16px 14px', display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
+        <span style={{ font: `600 15px ${font.family}`, color: colors.text }}>{o.brand}</span>
+        <div style={{ font: `400 12px/1.5 ${font.family}`, color: colors.textDim, flex: 1 }}>{o.detail}</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Badge label={o.type} color={o.type === 'Promo code' ? 'orange' : 'blue'} size="sm" />
+          {clickable && <span style={{ font: `600 12px ${font.family}`, color: colors.accent }}>View offer</span>}
+        </div>
       </div>
     </div>
   );
