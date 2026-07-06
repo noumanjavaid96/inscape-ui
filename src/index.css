@@ -178,3 +178,25 @@ button, a, input, [role="button"], [tabindex] { outline-color: #FF8000; }
   --overlay: rgba(250,248,244,0.7);
 }
 :root[data-theme='light'] input::placeholder { color: #8C867D; }
+
+/* Glass surfaces follow the theme; over-image tiles pin their own dark bg inline. */
+:root[data-theme='light'] .liquid-glass { background: rgba(255,255,255,0.72); }
+
+/* Skeleton shimmer for data-heavy cards while their data loads. */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg4);
+  border: 1px solid var(--border-faint);
+  border-radius: 16px;
+}
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, var(--surface-hover), transparent);
+  animation: shimmerSweep 1.3s ease-in-out infinite;
+}
+@keyframes shimmerSweep { to { transform: translateX(100%); } }
+@media (prefers-reduced-motion: reduce) { .shimmer::after { animation: none; } }

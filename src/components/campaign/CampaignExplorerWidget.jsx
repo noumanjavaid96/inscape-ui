@@ -41,7 +41,7 @@ export default function CampaignExplorerWidget({ joined = 0, target = 5, nextRew
           const reached = m <= joined;
           return (
             <div key={m} style={{ flex: 1, textAlign: 'center' }}>
-              <div style={{ height: 3, borderRadius: 2, background: reached ? colors.accent : '#1a1e25', marginBottom: 5 }} />
+              <div style={{ height: 3, borderRadius: 2, background: reached ? colors.accent : colors.line, marginBottom: 5 }} />
               <span style={{ font: `500 10px ${font.family}`, color: reached ? colors.accent : colors.textGhost }}>{m}</span>
             </div>
           );

@@ -47,12 +47,12 @@ export default function SignUp({ onNavigate }) {
         </>
       ) : (
         <>
-          <div className="liquid-glass" style={{ width: 56, height: 56, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20, border: `1px solid ${colors.accentBorder}` }}>
+          <div style={{ width: 56, height: 56, borderRadius: '50%', background: colors.accentSoft, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20, border: `1px solid ${colors.accentBorder}` }}>
             <Icon name="sparkle" size={28} color={colors.accent} />
           </div>
           <h1 style={{ font: `700 26px/1.1 ${font.family}`, color: colors.text, margin: '0 0 6px', letterSpacing: '-.01em' }}>Almost there</h1>
           <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 24px' }}>Review and confirm to claim your 3 free Credits.</p>
-          <div className="liquid-glass" style={{ borderRadius: radius.md, padding: '18px 20px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ background: colors.bg4, border: `1px solid ${colors.border}`, borderRadius: radius.md, padding: '18px 20px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 16 }}>
             <div style={{ width: 44, height: 44, borderRadius: radius.md, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Icon name="gift" size={22} color={colors.accent} />
             </div>

@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import tokens from '../design/tokens';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import Card from '../components/ui/Card';
@@ -45,6 +46,36 @@ export default function Dashboard({ onNavigate }) {
   const { isMobile, isDesktop } = useBreakpoint();
   const pad = isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px';
   const v = VARIANTS[MEMBER_STATE] || VARIANTS.member;
+
+  // Shimmer while the dashboard's data-heavy cards load. Wire to real API
+  // readiness later; the brief timeout demos the skeleton state.
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const t = setTimeout(() => setLoading(false), 700);
+    return () => clearTimeout(t);
+  }, []);
+
+  if (loading) {
+    return (
+      <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto', padding: pad }}>
+          <div className="shimmer" style={{ height: 54, width: 260, marginBottom: 28 }} />
+          <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 340px' : '1fr', gap: 24 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+              <div className="shimmer" style={{ height: 220 }} />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
+                {[0, 1, 2].map((i) => <div key={i} className="shimmer" style={{ height: 110 }} />)}
+              </div>
+              <div className="shimmer" style={{ height: 300 }} />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              {[0, 1, 2].map((i) => <div key={i} className="shimmer" style={{ height: 150 }} />)}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>

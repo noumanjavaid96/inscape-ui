@@ -21,7 +21,7 @@ export default function ProgressBar({
           <span style={{ font: `700 13px ${font.family}`, color }}>{pct}%</span>
         </div>
       )}
-      <div style={{ height, borderRadius: height / 2, background: '#191c20', overflow: 'hidden' }}>
+      <div style={{ height, borderRadius: height / 2, background: colors.line, overflow: 'hidden' }}>
         <div
           style={{
             width: `${pct}%`,

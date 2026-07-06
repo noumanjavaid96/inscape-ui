@@ -26,7 +26,7 @@ export default function Referral() {
 
         <PageHeader title="Referral Centre" subtitle="Share your code. Earn when friends qualify." />
 
-        <div style={{ background: 'linear-gradient(135deg,#0d1422,#080c14)', border: `1px solid ${colors.info}33`, borderRadius: radius.xl, padding: '28px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ background: colors.bg3, border: `1px solid ${colors.info}33`, borderRadius: radius.xl, padding: '28px', marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
           <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(50% 60% at 80% 20%, rgba(71,199,252,0.08), transparent)', pointerEvents: 'none' }} />
           <div style={{ position: 'relative' }}>
             <div style={{ font: `500 13px ${font.family}`, color: colors.textDim, marginBottom: 6 }}>Your referral code</div>
@@ -36,7 +36,7 @@ export default function Referral() {
             </div>
             <div style={{ display: 'flex', gap: 8, marginTop: 22, flexWrap: 'wrap' }}>
               <button style={{ flex: 1, minWidth: 140, height: 46, borderRadius: radius.md, background: colors.info, border: 'none', cursor: 'pointer', font: `600 14px ${font.family}`, color: colors.bg }}>Share invite link</button>
-              <button style={{ flex: 1, minWidth: 140, height: 46, borderRadius: radius.md, background: 'rgba(255,255,255,0.05)', border: `1px solid ${colors.borderStrong}`, cursor: 'pointer', font: `600 14px ${font.family}`, color: colors.text }}>Share via WhatsApp</button>
+              <button style={{ flex: 1, minWidth: 140, height: 46, borderRadius: radius.md, background: colors.surfaceHover, border: `1px solid ${colors.borderStrong}`, cursor: 'pointer', font: `600 14px ${font.family}`, color: colors.text }}>Share via WhatsApp</button>
             </div>
           </div>
         </div>

@@ -40,7 +40,7 @@ export default function Membership({ onNavigate }) {
           {PLANS.map(p => (
             <div
               key={p.name}
-              style={{ background: p.highlight ? 'linear-gradient(160deg,#1a1206,#0f0c04)' : colors.bg2, border: `1px solid ${p.highlight ? colors.accentBorder : colors.border}`, borderRadius: radius.xl, padding: '28px 26px', position: 'relative', boxShadow: p.highlight ? '0 0 60px rgba(255,128,0,0.1)' : 'none', transition: 'transform 0.2s' }}
+              style={{ background: p.highlight ? colors.accentSoft : colors.bg2, border: `1px solid ${p.highlight ? colors.accentBorder : colors.border}`, borderRadius: radius.xl, padding: '28px 26px', position: 'relative', boxShadow: p.highlight ? '0 0 60px rgba(255,128,0,0.1)' : 'none', transition: 'transform 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-3px)'}
               onMouseLeave={e => e.currentTarget.style.transform = 'none'}
             >

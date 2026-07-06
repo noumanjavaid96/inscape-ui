@@ -13,8 +13,8 @@ function variantStyle(variant) {
   switch (variant) {
     case 'secondary':
       return {
-        base: { background: 'rgba(255,255,255,0.05)', border: `1px solid ${colors.borderStrong}`, color: colors.text, boxShadow: 'none' },
-        hover: { background: 'rgba(255,255,255,0.09)', boxShadow: 'none' },
+        base: { background: colors.surfaceHover, border: `1px solid ${colors.borderStrong}`, color: colors.text, boxShadow: 'none' },
+        hover: { background: colors.border, boxShadow: 'none' },
       };
     case 'ghost':
       return {

@@ -43,10 +43,12 @@ export default function Countdown({ target, size = 'md', glass = true, color = '
             borderRadius: radius.sm,
             padding: glass ? s.pad : 0,
             minWidth: size === 'lg' ? 40 : 30,
+            // tiles sit over imagery — pin the dark glass regardless of theme
+            background: glass ? 'rgba(8,10,12,0.55)' : undefined,
           }}
         >
           <div style={{ font: `700 ${s.num}px ${font.family}`, color, lineHeight: 1, fontVariantNumeric: 'tabular-nums' }}>{pad(u.v)}</div>
-          <div style={{ font: `600 ${s.lab}px ${font.family}`, color: colors.textDim, letterSpacing: '.1em', marginTop: 3 }}>{u.l}</div>
+          <div style={{ font: `600 ${s.lab}px ${font.family}`, color: glass ? 'rgba(255,255,255,0.65)' : colors.textDim, letterSpacing: '.1em', marginTop: 3 }}>{u.l}</div>
         </div>
       ))}
     </div>

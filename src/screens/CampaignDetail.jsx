@@ -49,7 +49,8 @@ export default function CampaignDetail({ onNavigate, params = {} }) {
         )}
       </div>
 
-      <div style={{ maxWidth: 1200, margin: '0 auto', padding: isDesktop ? '0 48px 60px' : isMobile ? '0 20px 100px' : '0 32px 60px' }}>
+      {/* positioned + zIndex so the column pulled up over the hero paints above its fade */}
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: isDesktop ? '0 48px 60px' : isMobile ? '0 20px 100px' : '0 32px 60px', position: 'relative', zIndex: 1 }}>
         <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 380px' : '1fr', gap: 40, marginTop: isDesktop ? -40 : 0 }}>
 
           {/* Main */}

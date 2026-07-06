@@ -40,7 +40,7 @@ export default function Boost({ onNavigate, params = {} }) {
                 key={p.name}
                 onClick={() => setSelected(i)}
                 style={{
-                  background: active ? 'linear-gradient(135deg,#1a1206,#0f0c04)' : colors.bg3,
+                  background: active ? colors.accentSoft : colors.bg3,
                   border: `1px solid ${active ? colors.accentBorder : colors.border}`,
                   borderRadius: radius.lg,
                   padding: '20px 18px',

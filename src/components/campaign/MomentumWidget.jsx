@@ -37,7 +37,7 @@ export default function MomentumWidget({ value = 0, nextReward, nextThreshold, r
             const reached = m <= value;
             return (
               <div key={m} style={{ flex: 1, textAlign: 'center' }}>
-                <div style={{ height: 3, borderRadius: 2, background: reached ? colors.info : '#1a1e25', marginBottom: 5 }} />
+                <div style={{ height: 3, borderRadius: 2, background: reached ? colors.info : colors.line, marginBottom: 5 }} />
                 <span style={{ font: `500 10px ${font.family}`, color: reached ? colors.info : colors.textGhost }}>{m}%</span>
               </div>
             );
