@@ -7,15 +7,16 @@ import Icon from './ui/Icon';
 
 const { colors, radius, transition, font } = tokens;
 
+// My Campaigns and Winners were removed from the column to keep the
+// navigation clean (client feedback) — both remain reachable from the
+// dashboard and the Campaigns tabs.
 const NAV = [
   { id: 'dashboard', label: 'Dashboard', icon: 'home' },
   { id: 'campaigns', label: 'Campaigns', icon: 'grid' },
-  { id: 'my-campaigns', label: 'My Campaigns', icon: 'target' },
-  { id: 'winners', label: 'Winners', icon: 'trophy' },
+  { id: 'offers', label: 'Offers Hub', icon: 'star' },
   { id: 'wallet', label: 'Wallet', icon: 'wallet' },
   { id: 'referral', label: 'Referrals', icon: 'users' },
   { id: 'insights', label: 'Insights', icon: 'chart' },
-  { id: 'offers', label: 'Offers Hub', icon: 'star' },
 ];
 
 // Home and user icons are not in the shared set — define inline
@@ -79,12 +80,16 @@ function NavItem({ item, isActive, collapsed, onNavigate }) {
 export default function Sidebar({ active, onNavigate }) {
   const { sidebarFull } = useBreakpoint();
   const { theme, toggle } = useTheme();
-  // Expanded by default; the user can collapse it. Narrow viewports force compact.
+  // Expanded by default; the user can collapse it (narrow viewports force
+  // compact). Hovering a collapsed rail expands it temporarily.
   const [userCollapsed, setUserCollapsed] = useState(false);
-  const collapsed = !sidebarFull || userCollapsed;
+  const [hovered, setHovered] = useState(false);
+  const collapsed = (!sidebarFull || userCollapsed) && !hovered;
 
   return (
     <aside
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
       style={{
         width: collapsed ? 68 : 240,
         flexShrink: 0,
@@ -105,11 +110,11 @@ export default function Sidebar({ active, onNavigate }) {
         <Logo size="md" showText={!collapsed} />
         {sidebarFull && !collapsed && (
           <button
-            aria-label="Collapse sidebar"
-            onClick={() => setUserCollapsed(true)}
+            aria-label={userCollapsed ? 'Keep sidebar expanded' : 'Collapse sidebar'}
+            onClick={() => setUserCollapsed(u => !u)}
             style={{ width: 28, height: 28, borderRadius: 8, background: 'none', border: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
           >
-            <Icon name="arrowLeft" size={13} color={colors.textDim} />
+            <Icon name={userCollapsed ? 'arrowRight' : 'arrowLeft'} size={13} color={colors.textDim} />
           </button>
         )}
       </div>

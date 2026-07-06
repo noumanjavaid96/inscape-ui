@@ -65,7 +65,6 @@ export default function CampaignDetail({ onNavigate, params = {} }) {
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 28 }}>
               {[
                 { label: 'Prize value', value: c.prize, color: colors.text },
-                { label: 'Participants', value: c.participants, color: colors.text },
                 { label: 'Cost to join', value: `${c.cost} cr`, color: colors.accent },
                 { label: 'Draw', value: c.drawDate, color: colors.warning },
               ].map((s) => (

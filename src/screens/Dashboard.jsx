@@ -11,13 +11,14 @@ import Section from '../components/layout/Section';
 import CampaignCard from '../components/campaign/CampaignCard';
 import MomentumWidget from '../components/campaign/MomentumWidget';
 import CampaignExplorerWidget from '../components/campaign/CampaignExplorerWidget';
+import PartnerOffers from '../components/brand/PartnerOffers';
 import { CAMPAIGNS } from '../data/campaigns';
 
 const { colors, font, radius } = tokens;
 
 // Five campaigns run in a month — one cinematic featured card, the rest beneath.
 const FEATURED = CAMPAIGNS[0];
-const MONTH_CAMPAIGNS = CAMPAIGNS.slice(1, 5).map((c, i) => ({ ...c, allocations: i === 0 ? 4 : 0 }));
+const MONTH_CAMPAIGNS = CAMPAIGNS.slice(1, 5);
 
 // Soonest-closing campaigns for the urgency rail.
 const CLOSING_SOON = [...CAMPAIGNS]
@@ -296,6 +297,20 @@ export default function Dashboard({ onNavigate }) {
               ))}
             </Card>
           </div>
+        </div>
+
+        {/* Featured partner offers — full-width shelf at the foot of the dashboard */}
+        <div style={{ marginTop: 28 }}>
+          <Section
+            title="Featured partner offers"
+            action={<Button onClick={() => onNavigate('offers')} variant="ghost" size="sm">Offers Hub</Button>}
+          >
+            <PartnerOffers
+              limit={isDesktop ? 4 : 2}
+              columns={isDesktop ? 'repeat(4,1fr)' : isMobile ? '1fr' : 'repeat(2,1fr)'}
+              onSelect={(o) => onNavigate('offer-detail', { slug: o.slug })}
+            />
+          </Section>
         </div>
       </div>
     </div>

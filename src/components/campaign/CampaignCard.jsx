@@ -105,15 +105,10 @@ export default function CampaignCard({ campaign, onClick, size = 'md', style }) 
             borderTop: `1px solid ${colors.borderFaint}`,
           }}
         >
-          {c.allocations != null ? (
-            <span style={{ font: `600 13px ${font.family}`, color: colors.textMuted }}>
-              Joined: <span style={{ color: colors.accent }}>{c.allocations}</span>
-            </span>
-          ) : (
-            <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>
-              {c.participants} participants{c.cost ? ` · ${c.cost} cr to join` : ''}
-            </span>
-          )}
+          {/* Participant / allocation counts stay hidden by design decision. */}
+          <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>
+            {c.cost ? `${c.cost} ${c.cost === 1 ? 'Credit' : 'Credits'} to join` : `Draw ${c.drawDate}`}
+          </span>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, font: `600 13px ${font.family}`, color: colors.accent }}>
             Join
             <Icon name="arrowRight" size={14} color={colors.accent} />

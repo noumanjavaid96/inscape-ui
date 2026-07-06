@@ -172,7 +172,7 @@ function CampaignCardLight({ c, onClick }) {
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8, font: `500 11.5px ${font.family}` }}>
               <span style={{ color: light.ink }}>{c.sold}% allocated</span>
-              <span style={{ color: light.dim }}>{c.participants} joined</span>
+              <span style={{ color: light.dim }}>From {c.cost} {c.cost === 1 ? 'Credit' : 'Credits'}</span>
             </div>
           </div>
         )}
@@ -265,7 +265,7 @@ const NAV_LINKS = [
 
 const EXPLORE_LINKS = [
   { label: 'About Us', href: '#how' },
-  { label: 'Partnership', href: '#how' },
+  { label: 'Partnership', href: '#partner' },
   { label: 'FAQ', href: '#how' },
   { label: 'Merch (Coming Soon)', href: '#', soon: true },
 ];
@@ -423,7 +423,7 @@ export default function PublicHome({ onNavigate }) {
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .mobile-nav-btn { display: inline-flex !important; }
-          .lp-hero, .lp-cards, .lp-offers, .lp-bd, .lp-plans { grid-template-columns: 1fr !important; }
+          .lp-hero, .lp-cards, .lp-offers, .lp-bd, .lp-plans, .lp-partner-band { grid-template-columns: 1fr !important; }
           .lp-stats { grid-template-columns: repeat(2, 1fr) !important; }
           .lp-h1 { font-size: clamp(40px, 12vw, 60px) !important; }
           .hero-visual { height: 380px !important; }
@@ -742,6 +742,42 @@ export default function PublicHome({ onNavigate }) {
               </Reveal>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* BECOME A PARTNER — simple FoundersCard-style band */}
+      <section id="partner" style={{ background: light.charcoal, padding: `clamp(64px, 8vw, 100px) ${PAD}`, position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '78%', transform: 'translate(-50%,-50%)', width: 700, height: 420, background: 'radial-gradient(circle, rgba(255,128,0,0.07), transparent 70%)', pointerEvents: 'none' }} />
+        <div className="lp-inner" style={{ position: 'relative' }}>
+          <Reveal>
+            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 0.85fr)', gap: 48, alignItems: 'center' }} className="lp-partner-band">
+              <div>
+                <div style={{ marginBottom: 18 }}><Eyebrow label="FOR BRANDS" dark /></div>
+                <h2 style={{ font: `400 clamp(30px, 3.8vw, 48px)/1.06 ${font.family}`, letterSpacing: '-0.03em', color: '#fff', margin: '0 0 16px' }}>
+                  Become an InScape <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>partner.</span>
+                </h2>
+                <p style={{ font: `400 16px/1.7 ${font.family}`, color: 'rgba(255,255,255,0.68)', margin: 0, maxWidth: 480 }}>
+                  Put your brand in front of a premium, high-intent membership. Offers go live through our
+                  partner network with tracked redemptions and transparent reporting.
+                </p>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {['Reach 50,000+ engaged members', 'Tracked links, codes and in-store QR', 'Onboarding handled by our team'].map((b) => (
+                  <div key={b} style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                    <span style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(255,128,0,0.14)', border: '1px solid rgba(255,128,0,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon name="check" size={12} color={colors.accent} />
+                    </span>
+                    <span style={{ font: `500 14.5px ${font.family}`, color: 'rgba(255,255,255,0.85)' }}>{b}</span>
+                  </div>
+                ))}
+                <div style={{ marginTop: 10 }}>
+                  <GhostCTA dark onClick={() => onNavigate('signup')} size="md">
+                    Apply to partner <Icon name="arrowRight" size={15} color="#fff" />
+                  </GhostCTA>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
