@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import tokens from '../design/tokens';
 import { useBreakpoint } from '../hooks/useBreakpoint';
+import { useCountdown } from '../hooks/useCountdown';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Stat from '../components/ui/Stat';
-import Badge from '../components/ui/Badge';
 import Icon from '../components/ui/Icon';
 import PageHeader from '../components/layout/PageHeader';
 import Section from '../components/layout/Section';
@@ -13,11 +13,17 @@ import MomentumWidget from '../components/campaign/MomentumWidget';
 import CampaignExplorerWidget from '../components/campaign/CampaignExplorerWidget';
 import { CAMPAIGNS } from '../data/campaigns';
 
-const { colors, font } = tokens;
+const { colors, font, radius } = tokens;
 
-// Five campaigns run in a month — one hero card edge-to-edge, the rest beneath.
-const HERO_CAMPAIGN = { ...CAMPAIGNS[0], allocations: 2 };
+// Five campaigns run in a month — one cinematic featured card, the rest beneath.
+const FEATURED = CAMPAIGNS[0];
 const MONTH_CAMPAIGNS = CAMPAIGNS.slice(1, 5).map((c, i) => ({ ...c, allocations: i === 0 ? 4 : 0 }));
+
+// Soonest-closing campaigns for the urgency rail.
+const CLOSING_SOON = [...CAMPAIGNS]
+  .filter((c) => c.closesAt && c.status !== 'UPCOMING')
+  .sort((a, b) => a.closesAt - b.closesAt)
+  .slice(0, 3);
 
 // High-level summary only — detailed breakdowns live in Insights.
 const SUMMARY_STATS = [
@@ -37,10 +43,60 @@ const TRANSACTIONS = [
 const MEMBER_STATE = 'member';
 
 const VARIANTS = {
-  free: { balance: '3', tier: 'Free', tierColor: 'gray', cta: 'Become a member', ctaAction: 'membership' },
-  member: { balance: '124', tier: 'Premium', tierColor: 'orange', cta: 'Boost Credits', ctaAction: 'boost' },
-  'past-due': { balance: '124', tier: 'Past due', tierColor: 'yellow', cta: 'Update payment', ctaAction: 'membership' },
+  free: { balance: '3', tier: 'Free', cta: 'Become a member', ctaAction: 'membership' },
+  member: { balance: '124', tier: 'Premium', cta: 'Boost Credits', ctaAction: 'boost' },
+  'past-due': { balance: '124', tier: 'Past due', cta: 'Update payment', ctaAction: 'membership' },
 };
+
+const closesIn = (t) => {
+  if (!t) return '—';
+  const ms = t - Date.now();
+  const d = Math.floor(ms / 86400000);
+  const h = Math.floor((ms % 86400000) / 3600000);
+  return d > 0 ? `${d}d ${h}h` : `${h}h`;
+};
+
+/** Cinematic featured campaign — full-bleed image, serif title, join CTA. */
+function FeaturedHero({ c, onNavigate, compact }) {
+  const t = useCountdown(c.closesAt);
+  return (
+    <div style={{ position: 'relative', borderRadius: radius.xl, overflow: 'hidden', minHeight: compact ? 380 : 520, display: 'flex', alignItems: 'flex-end', background: c.gradient, border: `1px solid ${colors.border}` }}>
+      {c.image && (
+        <img src={c.image.replace('w=1000', 'w=1600')} alt={c.title}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          onError={(e) => { e.currentTarget.style.display = 'none'; }} />
+      )}
+      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,12,10,0.92) 0%, rgba(15,12,10,0.55) 40%, rgba(15,12,10,0.18) 70%, rgba(15,12,10,0.30) 100%)' }} />
+      <div style={{ position: 'absolute', top: 22, left: 24, display: 'inline-flex', alignItems: 'center', gap: 8, font: `600 11px ${font.family}`, letterSpacing: '.16em', color: 'rgba(255,255,255,0.9)' }}>
+        <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} />
+        LIVE THIS WEEK
+      </div>
+      <div style={{ position: 'relative', padding: compact ? '0 22px 24px' : '0 28px 30px', width: '100%' }}>
+        <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent, textTransform: 'uppercase', marginBottom: 8 }}>{c.category}</div>
+        <h2 style={{ font: `700 clamp(30px, 3.4vw, 44px)/1.02 ${font.display}`, color: '#fff', margin: '0 0 10px', letterSpacing: '-.01em' }}>{c.title}</h2>
+        <p style={{ font: `400 14px/1.6 ${font.family}`, color: 'rgba(255,255,255,0.82)', margin: '0 0 20px', maxWidth: 480 }}>{c.blurb}</p>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 18, flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: 30 }}>
+            <div>
+              <div style={{ font: `600 10px ${font.family}`, letterSpacing: '.14em', color: 'rgba(255,255,255,0.55)', marginBottom: 4 }}>CLOSES IN</div>
+              <div style={{ font: `600 22px/1 ${font.display}`, color: '#fff' }}>{t.days > 0 ? `${t.days}d ${t.hours}h` : `${t.hours}h ${t.minutes}m`}</div>
+            </div>
+            <div>
+              <div style={{ font: `600 10px ${font.family}`, letterSpacing: '.14em', color: 'rgba(255,255,255,0.55)', marginBottom: 4 }}>COST TO JOIN</div>
+              <div style={{ font: `600 22px/1 ${font.display}`, color: '#fff' }}>{c.cost} {c.cost === 1 ? 'Credit' : 'Credits'}</div>
+            </div>
+          </div>
+          <button
+            onClick={() => onNavigate('campaign-detail', { campaignId: c.id })}
+            style={{ height: 48, padding: '0 26px', borderRadius: 999, background: '#F4EFE7', border: 'none', cursor: 'pointer', font: `600 14px ${font.family}`, color: '#1c1712', display: 'inline-flex', alignItems: 'center', gap: 9 }}
+          >
+            Join for {c.cost} {c.cost === 1 ? 'Credit' : 'Credits'} <Icon name="arrowRight" size={15} color="#1c1712" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Dashboard({ onNavigate }) {
   const { isMobile, isDesktop } = useBreakpoint();
@@ -62,11 +118,10 @@ export default function Dashboard({ onNavigate }) {
           <div className="shimmer" style={{ height: 54, width: 260, marginBottom: 28 }} />
           <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 340px' : '1fr', gap: 24 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-              <div className="shimmer" style={{ height: 220 }} />
+              <div className="shimmer" style={{ height: 420 }} />
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
                 {[0, 1, 2].map((i) => <div key={i} className="shimmer" style={{ height: 110 }} />)}
               </div>
-              <div className="shimmer" style={{ height: 300 }} />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               {[0, 1, 2].map((i) => <div key={i} className="shimmer" style={{ height: 150 }} />)}
@@ -92,17 +147,6 @@ export default function Dashboard({ onNavigate }) {
           </div>
         )}
 
-        {MEMBER_STATE === 'free' && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, borderRadius: 14, padding: '14px 18px', marginBottom: 20 }}>
-            <Icon name="sparkle" size={18} color={colors.accent} />
-            <div style={{ flex: 1, font: `500 13px ${font.family}`, color: colors.text }}>
-              You’re on the free plan.
-              <span style={{ color: colors.textDim }}> Become a member for monthly Credits, Momentum bonuses and exclusive access.</span>
-            </div>
-            <Button onClick={() => onNavigate('membership')} size="sm">See plans</Button>
-          </div>
-        )}
-
         <PageHeader
           title="Alex Mercer"
           subtitle="Good evening"
@@ -120,33 +164,9 @@ export default function Dashboard({ onNavigate }) {
         <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? '1fr 340px' : '1fr', gap: 24 }}>
 
           {/* Left column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
 
-            {/* Balance hero card */}
-            <Card gradient padding="lg" style={{ position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', top: -60, right: -60, width: 220, height: 220, background: 'radial-gradient(50% 50%, rgba(255,128,0,0.08), transparent)', pointerEvents: 'none' }} />
-              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
-                <div>
-                  <div style={{ font: `500 12px ${font.family}`, letterSpacing: '.1em', textTransform: 'uppercase', color: colors.textDim }}>Available balance</div>
-                  <div style={{ display: 'flex', alignItems: 'flex-end', gap: 8, marginTop: 8 }}>
-                    <span style={{ font: `700 56px/0.9 ${font.family}`, color: colors.text, letterSpacing: '-.03em' }}>{v.balance}</span>
-                    <span style={{ font: `500 16px ${font.family}`, color: colors.textDim, paddingBottom: 8 }}>Credits</span>
-                  </div>
-                </div>
-                <Badge label={v.tier} color={v.tierColor} dot />
-              </div>
-
-              <div style={{ display: 'flex', gap: 28, marginTop: 20, paddingTop: 20, borderTop: `1px solid ${colors.borderFaint}` }}>
-                <Stat label="In play" value="6 cr" />
-                <Stat label="Bonus earned" value="+20 cr" color={colors.success} />
-                <Stat label="Next Credits" value={MEMBER_STATE === 'free' ? '—' : '12 days'} />
-              </div>
-
-              <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
-                <Button onClick={() => onNavigate(v.ctaAction)} size="md" style={{ flex: 1 }}>{v.cta}</Button>
-                <Button onClick={() => onNavigate('wallet')} variant="secondary" size="md">Wallet</Button>
-              </div>
-            </Card>
+            <FeaturedHero c={FEATURED} onNavigate={onNavigate} compact={isMobile} />
 
             {/* High-level analytics — details live in Insights */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
@@ -156,24 +176,19 @@ export default function Dashboard({ onNavigate }) {
                     <Icon name={s.icon} size={16} color={colors.accent} />
                   </div>
                   <div>
-                    <div style={{ font: `700 24px ${font.family}`, color: colors.text, letterSpacing: '-.02em' }}>{s.value}</div>
-                    <div style={{ font: `400 11px ${font.family}`, color: colors.textFaint, marginTop: 2 }}>{s.label}</div>
+                    <div style={{ font: `600 28px/1 ${font.display}`, color: colors.text }}>{s.value}</div>
+                    <div style={{ font: `400 11px ${font.family}`, color: colors.textFaint, marginTop: 4 }}>{s.label}</div>
                   </div>
                 </Card>
               ))}
             </div>
 
-            {/* This month's campaigns — hero card edge-to-edge, the rest beneath */}
+            {/* Rest of this month's campaigns */}
             <Section
-              title="This month's campaigns"
+              title="More this month"
               action={<Button onClick={() => onNavigate('campaigns')} variant="ghost" size="sm">View all</Button>}
             >
-              <CampaignCard
-                campaign={HERO_CAMPAIGN}
-                size="lg"
-                onClick={() => onNavigate('campaign-detail', { campaignId: HERO_CAMPAIGN.id })}
-              />
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14, marginTop: 14 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }}>
                 {MONTH_CAMPAIGNS.map(c => (
                   <CampaignCard
                     key={c.title}
@@ -189,9 +204,40 @@ export default function Dashboard({ onNavigate }) {
           {/* Right column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
 
+            {/* Wallet */}
+            <Card gradient padding="md">
+              <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.textDim, marginBottom: 10 }}>YOUR WALLET</div>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: 9 }}>
+                <span style={{ font: `600 52px/0.9 ${font.display}`, color: colors.text }}>{v.balance}</span>
+                <span style={{ font: `400 14px ${font.family}`, color: colors.textDim }}>credits available</span>
+              </div>
+              <div style={{ display: 'flex', gap: 10, marginTop: 20 }}>
+                <button
+                  onClick={() => onNavigate('boost')}
+                  style={{ flex: 1, height: 42, borderRadius: 999, background: '#F4EFE7', border: 'none', cursor: 'pointer', font: `600 13px ${font.family}`, color: '#1c1712' }}
+                >Top up</button>
+                <button
+                  onClick={() => onNavigate('membership')}
+                  style={{ flex: 1, height: 42, borderRadius: 999, background: 'transparent', border: `1px solid ${colors.borderStrong}`, cursor: 'pointer', font: `600 13px ${font.family}`, color: colors.text }}
+                >{MEMBER_STATE === 'free' ? 'Upgrade' : 'Manage plan'}</button>
+              </div>
+            </Card>
+
             <MomentumWidget value={72} nextReward="+25 cr" nextThreshold={75} remaining="12 pts left" resets="in 6 days" />
 
             <CampaignExplorerWidget joined={3} target={5} nextReward="+10 cr" />
+
+            {MEMBER_STATE === 'free' && (
+              <Card padding="md" style={{ border: `1px solid ${colors.accentBorder}`, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', top: -30, right: -30, width: 140, height: 140, background: 'radial-gradient(circle, rgba(255,128,0,0.10), transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent, marginBottom: 8 }}>BECOME A MEMBER</div>
+                <div style={{ font: `600 24px/1.1 ${font.display}`, color: colors.text, marginBottom: 8 }}>Unlock 120 credits, monthly.</div>
+                <p style={{ font: `400 13px/1.55 ${font.family}`, color: colors.textDim, margin: '0 0 12px' }}>Premium members get monthly Credits, priority access, and the full Offers Hub.</p>
+                <button onClick={() => onNavigate('membership')} style={{ display: 'inline-flex', alignItems: 'center', gap: 7, background: 'none', border: 'none', cursor: 'pointer', font: `600 13px ${font.family}`, color: colors.accent, padding: 0 }}>
+                  See plans <Icon name="arrowRight" size={14} color={colors.accent} />
+                </button>
+              </Card>
+            )}
 
             {/* Referral rewards — navigation already covers quick actions */}
             <Card padding="md">
@@ -204,10 +250,33 @@ export default function Dashboard({ onNavigate }) {
                 <Stat label="Qualified" value="1" color={colors.success} />
                 <Stat label="Earned" value="+10 cr" color={colors.accent} />
               </div>
-              <p style={{ font: `400 12px/1.5 ${font.family}`, color: colors.textDim, margin: '0 0 14px' }}>
-                Invite friends — earn bonus Credits when they join InScape.
-              </p>
               <Button onClick={() => onNavigate('referral')} variant="secondary" size="sm" fullWidth>Invite a friend</Button>
+            </Card>
+
+            {/* Closing soon — urgency rail */}
+            <Card padding="md">
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                <Icon name="clock" size={15} color={colors.accent} />
+                <h3 style={{ font: `600 12px ${font.family}`, letterSpacing: '.12em', color: colors.textDim, margin: 0 }}>CLOSING SOON</h3>
+              </div>
+              {CLOSING_SOON.map((c, i) => (
+                <button
+                  key={c.id}
+                  onClick={() => onNavigate('campaign-detail', { campaignId: c.id })}
+                  style={{ display: 'flex', alignItems: 'center', gap: 12, width: '100%', background: 'none', border: 'none', padding: '9px 0', cursor: 'pointer', borderBottom: i < CLOSING_SOON.length - 1 ? `1px solid ${colors.borderFaint}` : 'none', textAlign: 'left' }}
+                >
+                  <div style={{ width: 44, height: 44, borderRadius: 10, overflow: 'hidden', background: c.gradient, flexShrink: 0 }}>
+                    {c.image && <img src={c.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />}
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ font: `600 13px ${font.family}`, color: colors.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.title}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, font: `400 11px ${font.family}`, color: colors.textFaint, marginTop: 2 }}>
+                      <Icon name="clock" size={11} color={colors.textFaint} /> Closes in {closesIn(c.closesAt)}
+                    </div>
+                  </div>
+                  <Icon name="chevronRight" size={13} color={colors.textGhost} />
+                </button>
+              ))}
             </Card>
 
             {/* Recent activity */}
