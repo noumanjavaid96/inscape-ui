@@ -3,10 +3,11 @@ import Icon from './ui/Icon';
 
 const { colors, font } = tokens;
 
+// Offers must stay reachable on mobile; Winners lives inside Campaigns' tabs.
 const TABS = [
   { id: 'dashboard', label: 'Home', icon: 'home' },
   { id: 'campaigns', label: 'Campaigns', icon: 'grid' },
-  { id: 'winners', label: 'Winners', icon: 'trophy' },
+  { id: 'offers', label: 'Offers', icon: 'star' },
   { id: 'wallet', label: 'Wallet', icon: 'wallet' },
   { id: 'profile', label: 'Profile', icon: 'user' },
 ];

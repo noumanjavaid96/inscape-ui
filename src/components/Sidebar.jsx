@@ -77,7 +77,9 @@ function NavItem({ item, isActive, collapsed, onNavigate }) {
 
 export default function Sidebar({ active, onNavigate }) {
   const { sidebarFull } = useBreakpoint();
-  const collapsed = !sidebarFull;
+  // Expanded by default; the user can collapse it. Narrow viewports force compact.
+  const [userCollapsed, setUserCollapsed] = useState(false);
+  const collapsed = !sidebarFull || userCollapsed;
 
   return (
     <aside
@@ -97,9 +99,27 @@ export default function Sidebar({ active, onNavigate }) {
         overflowX: 'hidden',
       }}
     >
-      <div style={{ paddingLeft: collapsed ? 0 : 4, marginBottom: 40, display: 'flex', justifyContent: collapsed ? 'center' : 'flex-start' }}>
+      <div style={{ paddingLeft: collapsed ? 0 : 4, marginBottom: 40, display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : 'space-between' }}>
         <Logo size="md" showText={!collapsed} />
+        {sidebarFull && !collapsed && (
+          <button
+            aria-label="Collapse sidebar"
+            onClick={() => setUserCollapsed(true)}
+            style={{ width: 28, height: 28, borderRadius: 8, background: 'none', border: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+          >
+            <Icon name="arrowLeft" size={13} color={colors.textDim} />
+          </button>
+        )}
       </div>
+      {sidebarFull && collapsed && (
+        <button
+          aria-label="Expand sidebar"
+          onClick={() => setUserCollapsed(false)}
+          style={{ width: 28, height: 28, borderRadius: 8, background: 'none', border: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', margin: '-24px auto 20px', flexShrink: 0 }}
+        >
+          <Icon name="arrowRight" size={13} color={colors.textDim} />
+        </button>
+      )}
 
       <nav style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
         {NAV.map(item => (

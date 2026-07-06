@@ -407,6 +407,10 @@ export default function PublicHome({ onNavigate }) {
         .lp-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
         .lp-h1 { font-size: clamp(46px, 6vw, 86px); }
         @keyframes heroMeta { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
+        .lp-marquee { overflow: hidden; width: 100%; -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); }
+        .lp-marquee-track { display: flex; width: max-content; animation: lpMarquee 46s linear infinite; }
+        @keyframes lpMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @media (prefers-reduced-motion: reduce) { .lp-marquee-track { animation: none; } }
         @media (max-width: 1023px) {
           .lp-cards, .lp-offers, .lp-bd, .lp-plans { grid-template-columns: repeat(2, 1fr) !important; }
         }
@@ -457,7 +461,7 @@ export default function PublicHome({ onNavigate }) {
 
           <FadeIn start={introDone} delay={300} duration={900}>
             <h1 className="lp-h1" style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 0.98, letterSpacing: '-0.038em', color: '#fff', margin: 0, maxWidth: 1000, textShadow: '0 2px 40px rgba(0,0,0,0.30)' }}>
-              More access. More experiences. More <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>you.</span>
+              More access. More experiences. More <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>YOU.</span>
             </h1>
           </FadeIn>
 
@@ -497,23 +501,33 @@ export default function PublicHome({ onNavigate }) {
         </div>
       </section>
 
-      {/* PARTNER LOGO STRIP */}
-      <section style={{ padding: `clamp(28px, 4vw, 52px) ${PAD} clamp(40px, 5vw, 56px)`, background: light.page }}>
-        <div className="lp-inner">
-          <Reveal>
-            <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.16em', textTransform: 'uppercase', color: light.dim, textAlign: 'center', marginBottom: 30 }}>In good company — offers from leading brands</div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(28px, 5vw, 60px)', flexWrap: 'wrap', rowGap: 26 }}>
-              {PARTNER_OFFERS.map(p => (
-                <img key={p.slug} src={`/brand/partners/${p.slug}.png`} alt={p.brand}
-                  style={{ height: 44, width: 'auto', filter: 'brightness(0)', opacity: 0.72, transition: 'opacity 0.2s ease' }}
-                  onMouseEnter={e => e.currentTarget.style.opacity = 1}
-                  onMouseLeave={e => e.currentTarget.style.opacity = 0.72}
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                />
-              ))}
+      {/* PARTNER BRAND SHELVES — two rolling carousels in opposite directions */}
+      <section style={{ padding: `clamp(32px, 4.5vw, 60px) 0 clamp(44px, 5vw, 64px)`, background: light.page, overflow: 'hidden' }}>
+        <Reveal>
+          <div style={{ textAlign: 'center', marginBottom: 34, padding: `0 ${PAD}` }}>
+            <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.16em', textTransform: 'uppercase', color: light.dim, marginBottom: 10 }}>In good company</div>
+            <h2 style={{ font: `400 clamp(24px, 2.8vw, 34px)/1.1 ${font.family}`, letterSpacing: '-0.02em', color: light.ink, margin: 0 }}>
+              Exceptional benefits. <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>World-leading</span> brands.
+            </h2>
+          </div>
+          {[false, true].map((reverse) => (
+            <div key={String(reverse)} className="lp-marquee" style={{ marginTop: reverse ? 26 : 0 }}>
+              <div className="lp-marquee-track" style={{ animationDirection: reverse ? 'reverse' : 'normal' }}>
+                {/* content duplicated so the loop is seamless */}
+                {[0, 1].map((dup) => (
+                  <div key={dup} aria-hidden={dup === 1} style={{ display: 'flex', alignItems: 'center', gap: 'clamp(44px, 6vw, 88px)', paddingRight: 'clamp(44px, 6vw, 88px)' }}>
+                    {(reverse ? [...PARTNER_OFFERS].reverse() : PARTNER_OFFERS).map(p => (
+                      <img key={p.slug} src={`/brand/partners/${p.slug}.png`} alt={dup === 0 ? p.brand : ''}
+                        style={{ height: 52, width: 'auto', filter: 'brightness(0)', opacity: 0.75, flexShrink: 0 }}
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
-          </Reveal>
-        </div>
+          ))}
+        </Reveal>
       </section>
 
       {/* LIVE CAMPAIGNS — Airbnb-style browse */}
@@ -622,7 +636,7 @@ export default function PublicHome({ onNavigate }) {
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: 56 }}>
               <div style={{ marginBottom: 14, display: 'flex', justifyContent: 'center' }}><Eyebrow label="HOW IT WORKS" /></div>
-              <h2 style={{ font: `400 clamp(34px, 4.4vw, 52px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Three steps to extraordinary</h2>
+              <h2 style={{ font: `400 clamp(34px, 4.4vw, 52px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Three steps to <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>extraordinary</span></h2>
             </div>
           </Reveal>
           <div className="lp-bd">

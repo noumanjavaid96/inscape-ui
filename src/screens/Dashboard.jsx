@@ -14,16 +14,15 @@ import { CAMPAIGNS } from '../data/campaigns';
 
 const { colors, font } = tokens;
 
-const ACTIVE_CAMPAIGNS = [
-  { ...CAMPAIGNS[0], allocations: 2 },
-  { ...CAMPAIGNS[1], allocations: 4 },
-];
+// Five campaigns run in a month — one hero card edge-to-edge, the rest beneath.
+const HERO_CAMPAIGN = { ...CAMPAIGNS[0], allocations: 2 };
+const MONTH_CAMPAIGNS = CAMPAIGNS.slice(1, 5).map((c, i) => ({ ...c, allocations: i === 0 ? 4 : 0 }));
 
-const QUICK_ACTIONS = [
-  { label: 'Allocate credits', sub: 'Browse campaigns', action: 'campaigns', icon: 'grid' },
-  { label: 'View wallet', sub: '124 credits', action: 'wallet', icon: 'wallet' },
-  { label: 'Referral centre', sub: '4 invited · 1 qualified', action: 'referral', icon: 'users' },
-  { label: 'Partner offers', sub: '2 member offers', action: 'offers', icon: 'star' },
+// High-level summary only — detailed breakdowns live in Insights.
+const SUMMARY_STATS = [
+  { label: 'Earned credits', value: '164', icon: 'bolt' },
+  { label: 'Campaigns joined', value: '9', icon: 'grid' },
+  { label: 'Bonus credits', value: '+20', icon: 'sparkle' },
 ];
 
 const TRANSACTIONS = [
@@ -118,13 +117,33 @@ export default function Dashboard({ onNavigate }) {
               </div>
             </Card>
 
-            {/* Active campaigns */}
+            {/* High-level analytics — details live in Insights */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
+              {SUMMARY_STATS.map((s) => (
+                <Card key={s.label} padding="md" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 9, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Icon name={s.icon} size={16} color={colors.accent} />
+                  </div>
+                  <div>
+                    <div style={{ font: `700 24px ${font.family}`, color: colors.text, letterSpacing: '-.02em' }}>{s.value}</div>
+                    <div style={{ font: `400 11px ${font.family}`, color: colors.textFaint, marginTop: 2 }}>{s.label}</div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            {/* This month's campaigns — hero card edge-to-edge, the rest beneath */}
             <Section
-              title="Your campaigns"
-              action={<Button onClick={() => onNavigate('my-campaigns')} variant="ghost" size="sm">View all</Button>}
+              title="This month's campaigns"
+              action={<Button onClick={() => onNavigate('campaigns')} variant="ghost" size="sm">View all</Button>}
             >
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }}>
-                {ACTIVE_CAMPAIGNS.map(c => (
+              <CampaignCard
+                campaign={HERO_CAMPAIGN}
+                size="lg"
+                onClick={() => onNavigate('campaign-detail', { campaignId: HERO_CAMPAIGN.id })}
+              />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14, marginTop: 14 }}>
+                {MONTH_CAMPAIGNS.map(c => (
                   <CampaignCard
                     key={c.title}
                     campaign={c}
@@ -134,10 +153,6 @@ export default function Dashboard({ onNavigate }) {
                 ))}
               </div>
             </Section>
-
-            <Button onClick={() => onNavigate('campaigns')} variant="secondary" fullWidth>
-              Browse all live campaigns
-            </Button>
           </div>
 
           {/* Right column */}
@@ -147,25 +162,21 @@ export default function Dashboard({ onNavigate }) {
 
             <CampaignExplorerWidget joined={3} target={5} nextReward="+10 cr" />
 
-            {/* Quick actions */}
+            {/* Referral rewards — navigation already covers quick actions */}
             <Card padding="md">
-              <h3 style={{ font: `600 15px ${font.family}`, color: colors.text, margin: '0 0 14px' }}>Quick actions</h3>
-              {QUICK_ACTIONS.map((a, i) => (
-                <button
-                  key={a.label}
-                  onClick={() => onNavigate(a.action)}
-                  style={{ display: 'flex', alignItems: 'center', gap: 12, width: '100%', background: 'none', border: 'none', padding: '10px 0', cursor: 'pointer', borderBottom: i < QUICK_ACTIONS.length - 1 ? `1px solid ${colors.borderFaint}` : 'none' }}
-                >
-                  <div style={{ width: 36, height: 36, borderRadius: 10, background: colors.bg5, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Icon name={a.icon} size={18} color={colors.accent} />
-                  </div>
-                  <div style={{ flex: 1, textAlign: 'left' }}>
-                    <div style={{ font: `500 13px ${font.family}`, color: colors.text }}>{a.label}</div>
-                    <div style={{ font: `400 11px ${font.family}`, color: colors.textFaint, marginTop: 1 }}>{a.sub}</div>
-                  </div>
-                  <Icon name="chevronRight" size={14} color={colors.textGhost} />
-                </button>
-              ))}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <h3 style={{ font: `600 15px ${font.family}`, color: colors.text, margin: 0 }}>Referral rewards</h3>
+                <Icon name="users" size={16} color={colors.accent} />
+              </div>
+              <div style={{ display: 'flex', gap: 20, marginBottom: 14 }}>
+                <Stat label="Invited" value="4" />
+                <Stat label="Qualified" value="1" color={colors.success} />
+                <Stat label="Earned" value="+10 cr" color={colors.accent} />
+              </div>
+              <p style={{ font: `400 12px/1.5 ${font.family}`, color: colors.textDim, margin: '0 0 14px' }}>
+                Invite friends — earn bonus Credits when they join InScape.
+              </p>
+              <Button onClick={() => onNavigate('referral')} variant="secondary" size="sm" fullWidth>Invite a friend</Button>
             </Card>
 
             {/* Recent activity */}
