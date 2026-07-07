@@ -142,12 +142,12 @@ button, a, input, [role="button"], [tabindex] { outline-color: #EE8C46; }
 :root {
   /* Warm espresso dark — lighter than pure black, cream text instead of
      stark white to avoid glare (per client design review). */
-  --bg: #211C17;
-  --bg1: #262019;
-  --bg2: #2B241D;
-  --bg3: #302921;
-  --bg4: #372F26;
-  --bg5: #3F362C;
+  --bg: #2A241E;
+  --bg1: #2F2821;
+  --bg2: #342C25;
+  --bg3: #3A322A;
+  --bg4: #423931;
+  --bg5: #4B4138;
   --text: #F4EFE7;
   --text-muted: #C9C0B2;
   --text-dim: #9A9081;
