@@ -390,7 +390,7 @@ export default function PublicHome({ onNavigate }) {
         .lp-bd { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
         .lp-plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
         .lp-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
-        .lp-h1 { font-size: clamp(52px, 7.4vw, 108px); }
+        .lp-h1 { font-size: clamp(46px, 6vw, 86px); }
         @keyframes heroChevron { 0%,100% { transform: translateY(0); opacity: .75; } 50% { transform: translateY(7px); opacity: 1; } }
         @keyframes heroMeta { from { opacity: 0; transform: translateY(7px); } to { opacity: 1; transform: none; } }
         .lp-marquee { overflow: hidden; width: 100%; -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent); }
@@ -406,7 +406,7 @@ export default function PublicHome({ onNavigate }) {
           .mobile-nav-btn { display: inline-flex !important; }
           .lp-hero, .lp-cards, .lp-offers, .lp-bd, .lp-plans, .lp-partner-band { grid-template-columns: 1fr !important; }
           .lp-stats { grid-template-columns: repeat(2, 1fr) !important; }
-          .lp-h1 { font-size: clamp(44px, 13vw, 64px) !important; }
+          .lp-h1 { font-size: clamp(40px, 12vw, 60px) !important; }
           .hero-visual { height: 380px !important; }
         }
       `}</style>
@@ -447,10 +447,8 @@ export default function PublicHome({ onNavigate }) {
           </FadeIn>
 
           <FadeIn start={introDone} delay={300} duration={900}>
-            {/* Two-line serif statement — regular line over an italic flourish */}
-            <h1 className="lp-h1" style={{ fontFamily: font.display, fontWeight: 500, lineHeight: 0.96, letterSpacing: '-0.015em', color: '#F7F3EC', margin: '0 auto', maxWidth: 1100, textShadow: '0 2px 40px rgba(0,0,0,0.35)' }}>
-              More access, more experiences
-              <span style={{ display: 'block', fontStyle: 'italic', fontWeight: 500 }}>more <span style={{ color: colors.accent }}>you.</span></span>
+            <h1 className="lp-h1" style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 0.98, letterSpacing: '-0.038em', color: '#fff', margin: '0 auto', maxWidth: 1000, textShadow: '0 2px 40px rgba(0,0,0,0.30)' }}>
+              More access. More experiences. More <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>You.</span>
             </h1>
           </FadeIn>
 
