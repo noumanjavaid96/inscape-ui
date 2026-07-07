@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import tokens from '../design/tokens';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import Card from '../components/ui/Card';
@@ -6,11 +7,137 @@ import Stat from '../components/ui/Stat';
 import Icon from '../components/ui/Icon';
 import StatusPill from '../components/campaign/StatusPill';
 import Countdown from '../components/campaign/Countdown';
+import CheckoutSheet from '../components/flow/CheckoutSheet';
 import { findCampaign } from '../data/campaigns';
 
 const { colors, font, radius } = tokens;
 
 const ELIGIBILITY = ['US residents 18+', 'Minimum 1 Credit', 'No purchase necessary', 'Official Rules apply'];
+
+// Quick top-up packs shown inline when a member wants (or needs) more Credits.
+const TOPUP_PACKS = [
+  { name: 'Silver', credits: 8, price: '$10' },
+  { name: 'Gold', credits: 25, price: '$30', popular: true },
+  { name: 'Platinum', credits: 100, price: '$100' },
+];
+
+const STARTING_BALANCE = 124;
+
+/**
+ * Join panel with an inline top-up. If the member is short on Credits (or just
+ * wants more) they buy right here via the checkout sheet overlay — no page
+ * change, the balance updates in place and they can join immediately.
+ */
+function JoinPanel({ c, drawDetails, style }) {
+  const [balance, setBalance] = useState(STARTING_BALANCE);
+  const [showTopUp, setShowTopUp] = useState(false);
+  const [pack, setPack] = useState(null); // package being checked out
+  const [joined, setJoined] = useState(false);
+
+  const insufficient = balance < c.cost;
+
+  const join = () => {
+    if (insufficient) { setShowTopUp(true); return; }
+    setBalance((b) => b - c.cost);
+    setJoined(true);
+  };
+
+  return (
+    <Card gradient padding="md" style={{ boxShadow: '0 20px 48px rgba(0,0,0,0.4)', ...style }}>
+      <div style={{ font: `600 16px ${font.family}`, color: colors.text, marginBottom: 6 }}>Join this campaign</div>
+      <div style={{ font: `400 13px ${font.family}`, color: colors.textDim, marginBottom: 18 }}>
+        {c.cost} Credit{c.cost > 1 ? 's' : ''} per participation in the draw
+      </div>
+
+      <div style={{ marginBottom: 18 }}>
+        <div style={{ font: `600 11px ${font.family}`, color: colors.textFaint, letterSpacing: '.08em', marginBottom: 8 }}>CLOSES IN</div>
+        <Countdown target={c.closesAt} size="md" />
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+        <span style={{ font: `500 14px ${font.family}`, color: colors.textMuted }}>Your balance</span>
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ font: `700 18px ${font.family}`, color: insufficient ? colors.warning : colors.text }}>{balance} Credits</span>
+          <button
+            onClick={() => setShowTopUp((s) => !s)}
+            style={{ font: `600 12px ${font.family}`, color: colors.accent, background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
+          >
+            {showTopUp ? 'Hide' : 'Top up'}
+          </button>
+        </span>
+      </div>
+
+      {insufficient && !joined && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'rgba(240,180,60,0.08)', border: `1px solid ${colors.warning}44`, borderRadius: radius.sm, padding: '8px 11px', marginBottom: 14 }}>
+          <Icon name="bolt" size={14} color={colors.warning} />
+          <span style={{ font: `500 12px/1.4 ${font.family}`, color: colors.textMuted }}>
+            You need {c.cost - balance} more Credit{c.cost - balance > 1 ? 's' : ''} to join. Top up below.
+          </span>
+        </div>
+      )}
+
+      {(showTopUp || insufficient) && !joined && (
+        <div style={{ marginBottom: 16 }}>
+          <div style={{ font: `600 11px ${font.family}`, color: colors.textFaint, letterSpacing: '.08em', marginBottom: 8 }}>ADD CREDITS</div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+            {TOPUP_PACKS.map((p) => (
+              <button
+                key={p.name}
+                onClick={() => setPack(p)}
+                style={{ position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, padding: '12px 6px', borderRadius: radius.md, background: colors.bg3, border: `1px solid ${p.popular ? colors.accentBorder : colors.border}`, cursor: 'pointer' }}
+              >
+                {p.popular && <span style={{ position: 'absolute', top: -7, font: `700 8px ${font.family}`, letterSpacing: '.06em', color: '#1c1712', background: colors.accent, borderRadius: 999, padding: '2px 6px' }}>POPULAR</span>}
+                <span style={{ font: `700 18px/1 ${font.display}`, color: colors.text }}>{p.credits}</span>
+                <span style={{ font: `400 10px ${font.family}`, color: colors.textFaint }}>credits</span>
+                <span style={{ font: `600 12px ${font.family}`, color: colors.accent, marginTop: 2 }}>{p.price}</span>
+              </button>
+            ))}
+          </div>
+          <div style={{ font: `400 11px ${font.family}`, color: colors.textGhost, textAlign: 'center', marginTop: 8 }}>Credits never expire · secured checkout</div>
+        </div>
+      )}
+
+      {joined ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(91,208,138,0.10)', border: '1px solid rgba(91,208,138,0.3)', borderRadius: radius.md, padding: '13px 15px', marginBottom: 12 }}>
+          <Icon name="check" size={18} color={colors.success} />
+          <div style={{ font: `600 13px ${font.family}`, color: colors.text }}>You're in — good luck! <span style={{ color: colors.textDim, fontWeight: 400 }}>{c.cost} Credit{c.cost > 1 ? 's' : ''} allocated.</span></div>
+        </div>
+      ) : (
+        <Button onClick={join} fullWidth size="lg" style={{ marginBottom: 12 }}>
+          {insufficient ? 'Top up to join' : 'Join Campaign'}
+        </Button>
+      )}
+
+      <p style={{ font: `400 11px/1.6 ${font.family}`, color: colors.textGhost, textAlign: 'center', margin: 0 }}>
+        By joining you agree to the Official Rules. US residents 18+ only.
+      </p>
+
+      <div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${colors.borderFaint}` }}>
+        <div style={{ font: `600 11px ${font.family}`, color: colors.textFaint, letterSpacing: '.08em', marginBottom: 10 }}>DRAW DETAILS</div>
+        {drawDetails.map(([l, v]) => (
+          <div key={l} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+            <span style={{ font: `400 12px ${font.family}`, color: colors.textFaint }}>{l}</span>
+            <span style={{ font: `500 12px ${font.family}`, color: colors.textMuted }}>{v}</span>
+          </div>
+        ))}
+      </div>
+
+      {pack && (
+        <CheckoutSheet
+          title={`Add ${pack.credits} Credits`}
+          subtitle={`${pack.name} pack · Credits post to your balance instantly`}
+          lines={[['Package', pack.name], ['Credits', `+${pack.credits}`]]}
+          total={pack.price}
+          cta={`Pay ${pack.price}`}
+          successTitle="Credits added"
+          successBody={`${pack.credits} Credits are now in your balance. You can join right away.`}
+          onSuccess={() => { setBalance((b) => b + pack.credits); setPack(null); }}
+          onClose={() => setPack(null)}
+        />
+      )}
+    </Card>
+  );
+}
 
 export default function CampaignDetail({ onNavigate, params = {} }) {
   const { isMobile, isDesktop } = useBreakpoint();
@@ -92,44 +219,14 @@ export default function CampaignDetail({ onNavigate, params = {} }) {
             </Card>
 
             {isMobile && (
-              <Button onClick={() => onNavigate('allocate', { campaignId: c.id })} fullWidth size="lg" style={{ marginTop: 24 }}>
-                Join Campaign
-              </Button>
+              <JoinPanel c={c} drawDetails={drawDetails} style={{ marginTop: 24 }} />
             )}
           </div>
 
           {/* Sticky join panel */}
           {!isMobile && (
             <div style={{ position: isDesktop ? 'sticky' : 'static', top: 24, alignSelf: 'start' }}>
-              <Card gradient padding="md" style={{ boxShadow: '0 20px 48px rgba(0,0,0,0.4)' }}>
-                <div style={{ font: `600 16px ${font.family}`, color: colors.text, marginBottom: 6 }}>Join this campaign</div>
-                <div style={{ font: `400 13px ${font.family}`, color: colors.textDim, marginBottom: 18 }}>
-                  {c.cost} Credit{c.cost > 1 ? 's' : ''} per participation in the draw
-                </div>
-                <div style={{ marginBottom: 18 }}>
-                  <div style={{ font: `600 11px ${font.family}`, color: colors.textFaint, letterSpacing: '.08em', marginBottom: 8 }}>CLOSES IN</div>
-                  <Countdown target={c.closesAt} size="md" />
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
-                  <span style={{ font: `500 14px ${font.family}`, color: colors.textMuted }}>Your balance</span>
-                  <span style={{ font: `700 18px ${font.family}`, color: colors.text }}>124 Credits</span>
-                </div>
-                <Button onClick={() => onNavigate('allocate', { campaignId: c.id })} fullWidth size="lg" style={{ marginBottom: 12 }}>
-                  Join Campaign
-                </Button>
-                <p style={{ font: `400 11px/1.6 ${font.family}`, color: colors.textGhost, textAlign: 'center', margin: 0 }}>
-                  By joining you agree to the Official Rules. US residents 18+ only.
-                </p>
-                <div style={{ marginTop: 20, paddingTop: 20, borderTop: `1px solid ${colors.borderFaint}` }}>
-                  <div style={{ font: `600 11px ${font.family}`, color: colors.textFaint, letterSpacing: '.08em', marginBottom: 10 }}>DRAW DETAILS</div>
-                  {drawDetails.map(([l, v]) => (
-                    <div key={l} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                      <span style={{ font: `400 12px ${font.family}`, color: colors.textFaint }}>{l}</span>
-                      <span style={{ font: `500 12px ${font.family}`, color: colors.textMuted }}>{v}</span>
-                    </div>
-                  ))}
-                </div>
-              </Card>
+              <JoinPanel c={c} drawDetails={drawDetails} />
             </div>
           )}
         </div>
