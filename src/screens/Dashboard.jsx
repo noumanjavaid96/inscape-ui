@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import tokens from '../design/tokens';
 import { useBreakpoint } from '../hooks/useBreakpoint';
-import { useCountdown } from '../hooks/useCountdown';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
 import Stat from '../components/ui/Stat';
@@ -9,12 +8,13 @@ import Icon from '../components/ui/Icon';
 import PageHeader from '../components/layout/PageHeader';
 import Section from '../components/layout/Section';
 import CampaignCard from '../components/campaign/CampaignCard';
+import FeaturedCampaign from '../components/campaign/FeaturedCampaign';
 import MomentumWidget from '../components/campaign/MomentumWidget';
 import CampaignExplorerWidget from '../components/campaign/CampaignExplorerWidget';
 import PartnerOffers from '../components/brand/PartnerOffers';
 import { CAMPAIGNS } from '../data/campaigns';
 
-const { colors, font, radius } = tokens;
+const { colors, font } = tokens;
 
 // Five campaigns run in a month — one cinematic featured card, the rest beneath.
 const FEATURED = CAMPAIGNS[0];
@@ -56,48 +56,6 @@ const closesIn = (t) => {
   const h = Math.floor((ms % 86400000) / 3600000);
   return d > 0 ? `${d}d ${h}h` : `${h}h`;
 };
-
-/** Cinematic featured campaign — full-bleed image, serif title, join CTA. */
-function FeaturedHero({ c, onNavigate, compact }) {
-  const t = useCountdown(c.closesAt);
-  return (
-    <div style={{ position: 'relative', borderRadius: radius.xl, overflow: 'hidden', minHeight: compact ? 380 : 520, display: 'flex', alignItems: 'flex-end', background: c.gradient, border: `1px solid ${colors.border}` }}>
-      {c.image && (
-        <img src={c.image.replace('w=1000', 'w=1600')} alt={c.title}
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-          onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-      )}
-      <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15,12,10,0.92) 0%, rgba(15,12,10,0.55) 40%, rgba(15,12,10,0.18) 70%, rgba(15,12,10,0.30) 100%)' }} />
-      <div style={{ position: 'absolute', top: 22, left: 24, display: 'inline-flex', alignItems: 'center', gap: 8, font: `600 11px ${font.family}`, letterSpacing: '.16em', color: 'rgba(255,255,255,0.9)' }}>
-        <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} />
-        LIVE THIS WEEK
-      </div>
-      <div style={{ position: 'relative', padding: compact ? '0 22px 24px' : '0 28px 30px', width: '100%' }}>
-        <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent, textTransform: 'uppercase', marginBottom: 8 }}>{c.category}</div>
-        <h2 style={{ font: `700 clamp(30px, 3.4vw, 44px)/1.02 ${font.display}`, color: '#fff', margin: '0 0 10px', letterSpacing: '-.01em' }}>{c.title}</h2>
-        <p style={{ font: `400 14px/1.6 ${font.family}`, color: 'rgba(255,255,255,0.82)', margin: '0 0 20px', maxWidth: 480 }}>{c.blurb}</p>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 18, flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', gap: 30 }}>
-            <div>
-              <div style={{ font: `600 10px ${font.family}`, letterSpacing: '.14em', color: 'rgba(255,255,255,0.55)', marginBottom: 4 }}>CLOSES IN</div>
-              <div style={{ font: `600 22px/1 ${font.display}`, color: '#fff' }}>{t.days > 0 ? `${t.days}d ${t.hours}h` : `${t.hours}h ${t.minutes}m`}</div>
-            </div>
-            <div>
-              <div style={{ font: `600 10px ${font.family}`, letterSpacing: '.14em', color: 'rgba(255,255,255,0.55)', marginBottom: 4 }}>COST TO JOIN</div>
-              <div style={{ font: `600 22px/1 ${font.display}`, color: '#fff' }}>{c.cost} {c.cost === 1 ? 'Credit' : 'Credits'}</div>
-            </div>
-          </div>
-          <button
-            onClick={() => onNavigate('campaign-detail', { campaignId: c.id })}
-            style={{ height: 48, padding: '0 26px', borderRadius: 999, background: '#F4EFE7', border: 'none', cursor: 'pointer', font: `600 14px ${font.family}`, color: '#1c1712', display: 'inline-flex', alignItems: 'center', gap: 9 }}
-          >
-            Join for {c.cost} {c.cost === 1 ? 'Credit' : 'Credits'} <Icon name="arrowRight" size={15} color="#1c1712" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function Dashboard({ onNavigate }) {
   const { isMobile, isDesktop } = useBreakpoint();
@@ -167,9 +125,7 @@ export default function Dashboard({ onNavigate }) {
           {/* Left column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
 
-            <FeaturedHero c={FEATURED} onNavigate={onNavigate} compact={isMobile} />
-
-            {/* High-level analytics — details live in Insights */}
+            {/* High-level analytics on top — details live in Insights */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
               {SUMMARY_STATS.map((s) => (
                 <Card key={s.label} padding="md" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
@@ -184,20 +140,23 @@ export default function Dashboard({ onNavigate }) {
               ))}
             </div>
 
-            {/* Rest of this month's campaigns */}
+            {/* Campaigns together: one featured cover, the rest beneath */}
             <Section
-              title="More this month"
+              title="This month's campaigns"
               action={<Button onClick={() => onNavigate('campaigns')} variant="ghost" size="sm">View all</Button>}
             >
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }}>
-                {MONTH_CAMPAIGNS.map(c => (
-                  <CampaignCard
-                    key={c.title}
-                    campaign={c}
-                    size="sm"
-                    onClick={() => onNavigate('campaign-detail', { campaignId: c.id })}
-                  />
-                ))}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                <FeaturedCampaign campaign={FEATURED} compact={isMobile} onOpen={() => onNavigate('campaign-detail', { campaignId: FEATURED.id })} />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }}>
+                  {MONTH_CAMPAIGNS.map(c => (
+                    <CampaignCard
+                      key={c.title}
+                      campaign={c}
+                      size="sm"
+                      onClick={() => onNavigate('campaign-detail', { campaignId: c.id })}
+                    />
+                  ))}
+                </div>
               </div>
             </Section>
           </div>

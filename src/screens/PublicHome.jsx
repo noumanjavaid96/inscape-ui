@@ -7,6 +7,7 @@ import FadeIn from '../components/cinematic/FadeIn';
 import Reveal from '../components/cinematic/Reveal';
 import MagneticButton from '../components/cinematic/MagneticButton';
 import { useCountdown } from '../hooks/useCountdown';
+import FeaturedCampaign from '../components/campaign/FeaturedCampaign';
 import { CAMPAIGNS, PAST_WINNERS } from '../data/campaigns';
 import { PARTNER_OFFERS } from '../data/offers';
 
@@ -163,8 +164,9 @@ function CampaignCardLight({ c, onClick }) {
             <Icon name="clock" size={13} color={light.dim} />
             {upcoming ? (c.startsIn || 'Opening soon') : closesLabel(t)}
           </span>
-          <span style={{ font: `600 12px ${font.family}`, color: light.ink }}>
-            {c.cost} {c.cost === 1 ? 'credit' : 'credits'}
+          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, font: `600 12px ${font.family}`, color: colors.accent }}>
+            Join for {c.cost} {c.cost === 1 ? 'Credit' : 'Credits'}
+            <Icon name="arrowRight" size={13} color={colors.accent} />
           </span>
         </div>
       </div>
@@ -376,6 +378,7 @@ export default function PublicHome({ onNavigate }) {
         .lp-cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 24px; }
         .lp-cards > :nth-child(-n+2) { grid-column: span 3; }
         .lp-cards > :nth-child(n+3) { grid-column: span 2; }
+        .lp-sub { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .lp-offers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
         .lp-bd { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
         .lp-plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
@@ -388,13 +391,13 @@ export default function PublicHome({ onNavigate }) {
         @keyframes lpMarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
         @media (prefers-reduced-motion: reduce) { .lp-marquee-track { animation: none; } }
         @media (max-width: 1023px) {
-          .lp-cards, .lp-offers, .lp-bd, .lp-plans { grid-template-columns: repeat(2, 1fr) !important; }
+          .lp-cards, .lp-offers, .lp-bd, .lp-plans, .lp-sub { grid-template-columns: repeat(2, 1fr) !important; }
           .lp-cards > * { grid-column: auto !important; }
         }
         @media (max-width: 768px) {
           .desktop-nav { display: none !important; }
           .mobile-nav-btn { display: inline-flex !important; }
-          .lp-hero, .lp-cards, .lp-offers, .lp-bd, .lp-plans, .lp-partner-band { grid-template-columns: 1fr !important; }
+          .lp-hero, .lp-cards, .lp-offers, .lp-bd, .lp-plans, .lp-partner-band, .lp-sub { grid-template-columns: 1fr !important; }
           .lp-stats { grid-template-columns: repeat(2, 1fr) !important; }
           .lp-h1 { font-size: clamp(40px, 12vw, 60px) !important; }
           .hero-visual { height: 380px !important; }
@@ -503,9 +506,14 @@ export default function PublicHome({ onNavigate }) {
             </div>
           </Reveal>
 
-          {/* Five campaigns a month: two larger cards up top, three smaller beneath */}
-          <div className="lp-cards">
-            {CAMPAIGNS.slice(0, 5).map((c, i) => (
+          {/* One featured cover on top, four cards beneath */}
+          <Reveal>
+            <div style={{ marginBottom: 22 }}>
+              <FeaturedCampaign campaign={CAMPAIGNS[0]} onOpen={() => onNavigate('signup')} kicker="LIVE NOW" />
+            </div>
+          </Reveal>
+          <div className="lp-sub">
+            {CAMPAIGNS.slice(1, 5).map((c, i) => (
               <Reveal key={c.id} delay={i * 90}>
                 <CampaignCardLight c={c} onClick={() => onNavigate('signup')} />
               </Reveal>

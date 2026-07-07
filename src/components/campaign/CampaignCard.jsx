@@ -2,21 +2,16 @@ import { useState } from 'react';
 import tokens from '../../design/tokens';
 import Icon from '../ui/Icon';
 import StatusPill from './StatusPill';
+import { useCountdown } from '../../hooks/useCountdown';
 
 const { colors, radius, font } = tokens;
 
-// Days remaining, floored — the card shows one calm "Xd left" line instead of
-// a ticking multi-tile countdown (the detail page keeps the live countdown).
-const daysLeft = (t) => {
-  if (!t) return null;
-  const d = Math.floor((t - Date.now()) / 86400000);
-  return `${Math.max(d, 0)}d left`;
-};
+const pad2 = (n) => String(n).padStart(2, '0');
 
 /**
- * Campaign card — deliberately minimal: tall image, category eyebrow, title,
- * and a single "time left / credits" footer row. Status pills only appear for
- * non-live states; everything else lives on the campaign detail page.
+ * Campaign card: tall image with a live countdown overlaid, category eyebrow,
+ * title, and a "Join for X Credits" CTA. Status pills only appear for non-live
+ * states.
  *
  * @param {'sm'|'md'|'lg'} size  sm - compact grids · md/lg - taller feature grids
  */
@@ -25,7 +20,8 @@ export default function CampaignCard({ campaign, onClick, size = 'md', style }) 
   const c = campaign;
   const glow = c.glow || 'rgba(238,140,70,0.12)';
   const upcoming = c.status === 'UPCOMING';
-  const timeLabel = upcoming ? (c.startsIn || 'Opening soon') : daysLeft(c.closesAt) || c.timeLeft || '';
+  const t = useCountdown(c.closesAt);
+  const small = size === 'sm';
 
   return (
     <div
@@ -46,8 +42,8 @@ export default function CampaignCard({ campaign, onClick, size = 'md', style }) 
         ...style,
       }}
     >
-      {/* Tall editorial image */}
-      <div style={{ position: 'relative', aspectRatio: size === 'sm' ? '4 / 3.4' : '4 / 4.4', background: c.gradient, overflow: 'hidden' }}>
+      {/* Tall editorial image with the live countdown over a bottom scrim */}
+      <div style={{ position: 'relative', aspectRatio: small ? '4 / 3.2' : '4 / 4', background: c.gradient, overflow: 'hidden' }}>
         {c.image && (
           <img
             src={c.image}
@@ -57,30 +53,45 @@ export default function CampaignCard({ campaign, onClick, size = 'md', style }) 
             onError={(e) => { e.currentTarget.style.display = 'none'; }}
           />
         )}
-        {/* Only surface a pill when the state is not the default LIVE */}
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,8,6,0.72) 0%, rgba(10,8,6,0) 42%)' }} />
+        {/* Status pill only for non-default states */}
         {c.status && c.status !== 'LIVE' && (
           <div style={{ position: 'absolute', top: 12, left: 12, zIndex: 2 }}>
             <StatusPill status={c.status} size="sm" />
           </div>
         )}
+        {/* Live countdown timer */}
+        <div style={{ position: 'absolute', left: 12, bottom: 12, zIndex: 2 }}>
+          {upcoming ? (
+            <span style={{ font: `600 12px ${font.family}`, color: '#fff', textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>{c.startsIn || 'Opening soon'}</span>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <Icon name="clock" size={13} color="rgba(255,255,255,0.85)" />
+              <span style={{ font: `700 13px ${font.family}`, color: '#fff', letterSpacing: '.02em', fontVariantNumeric: 'tabular-nums', textShadow: '0 1px 8px rgba(0,0,0,0.6)' }}>
+                {t.days > 0 ? `${t.days}d ` : ''}{pad2(t.hours)}:{pad2(t.minutes)}:{pad2(t.seconds)}
+              </span>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* Minimal body */}
-      <div style={{ padding: size === 'sm' ? '13px 15px 14px' : '15px 17px 16px', display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
+      {/* Body */}
+      <div style={{ padding: small ? '13px 15px 14px' : '15px 17px 16px', display: 'flex', flexDirection: 'column', gap: 4, flex: 1 }}>
         <div style={{ font: `700 10px ${font.family}`, letterSpacing: '.12em', textTransform: 'uppercase', color: colors.accent }}>
           {c.category}
         </div>
-        <div style={{ font: `600 ${size === 'sm' ? 15 : 17}px/1.25 ${font.family}`, color: colors.text }}>
+        <div style={{ font: `600 ${small ? 15 : 17}px/1.25 ${font.family}`, color: colors.text }}>
           {c.title}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 8 }}>
-          <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5, font: `400 12px ${font.family}`, color: colors.textDim }}>
-            <Icon name="clock" size={12} color={colors.textDim} /> {timeLabel}
-          </span>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', paddingTop: 10 }}>
           {c.cost != null && (
-            <span style={{ font: `600 12px ${font.family}`, color: colors.text }}>
-              {c.cost} {c.cost === 1 ? 'credit' : 'credits'}
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6, font: `600 13px ${font.family}`, color: colors.accent }}>
+              Join for {c.cost} {c.cost === 1 ? 'Credit' : 'Credits'}
+              <Icon name="arrowRight" size={14} color={colors.accent} />
             </span>
+          )}
+          {c.prize && (
+            <span style={{ font: `500 12px ${font.family}`, color: colors.textFaint }}>{c.prize}</span>
           )}
         </div>
       </div>

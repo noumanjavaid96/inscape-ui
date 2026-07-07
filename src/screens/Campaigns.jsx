@@ -4,6 +4,7 @@ import { useBreakpoint } from '../hooks/useBreakpoint';
 import Icon from '../components/ui/Icon';
 import PageHeader from '../components/layout/PageHeader';
 import CampaignCard from '../components/campaign/CampaignCard';
+import FeaturedCampaign from '../components/campaign/FeaturedCampaign';
 import { CAMPAIGNS, PAST_WINNERS } from '../data/campaigns';
 
 const { colors, font, radius } = tokens;
@@ -81,11 +82,26 @@ export default function Campaigns({ onNavigate }) {
             ))}
           </div>
         ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? 'repeat(3,1fr)' : isMobile ? '1fr' : 'repeat(2,1fr)', gap: 20 }}>
-            {filtered.map((c) => (
-              <CampaignCard key={c.id} campaign={c} size="md" onClick={() => onNavigate('campaign-detail', { campaignId: c.id })} />
-            ))}
-          </div>
+          /* One featured cover on top, the rest as a card grid beneath */
+          <>
+            {filtered[0] && (
+              <div style={{ marginBottom: 20 }}>
+                <FeaturedCampaign
+                  campaign={filtered[0]}
+                  compact={isMobile}
+                  kicker={statusTab === 'Upcoming' ? 'UPCOMING' : 'LIVE NOW'}
+                  onOpen={() => onNavigate('campaign-detail', { campaignId: filtered[0].id })}
+                />
+              </div>
+            )}
+            {filtered.length > 1 && (
+              <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? 'repeat(3,1fr)' : isMobile ? '1fr' : 'repeat(2,1fr)', gap: 20 }}>
+                {filtered.slice(1).map((c) => (
+                  <CampaignCard key={c.id} campaign={c} size="md" onClick={() => onNavigate('campaign-detail', { campaignId: c.id })} />
+                ))}
+              </div>
+            )}
+          </>
         )}
 
         {count === 0 && (
