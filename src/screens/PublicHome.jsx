@@ -361,21 +361,11 @@ export default function PublicHome({ onNavigate }) {
   const [scrolled, setScrolled] = useState(false);
   const [introDone, setIntroDone] = useState(false);
   const [annual, setAnnual] = useState(false);
-  const [heroIdx, setHeroIdx] = useState(0);
-  const activeCover = HERO_CAMPAIGNS[heroIdx] || HERO_CAMPAIGNS[0];
 
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
     window.addEventListener('scroll', handler);
     return () => window.removeEventListener('scroll', handler);
-  }, []);
-
-  // Advance the hero cover; respects reduced-motion by staying on the first.
-  useEffect(() => {
-    if (HERO_CAMPAIGNS.length < 2) return undefined;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
-    const t = setInterval(() => setHeroIdx((i) => (i + 1) % HERO_CAMPAIGNS.length), 5500);
-    return () => clearInterval(t);
   }, []);
 
   return (
@@ -434,23 +424,10 @@ export default function PublicHome({ onNavigate }) {
           position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
           backgroundImage: 'linear-gradient(rgba(10,8,6,0.34), rgba(10,8,6,0.34)), linear-gradient(to top, rgba(6,8,12,0.88) 0%, rgba(6,8,12,0.55) 26%, rgba(6,8,12,0.18) 55%, rgba(6,8,12,0.05) 80%, rgba(6,8,12,0.22) 100%), linear-gradient(135deg, rgba(20,10,2,0.20) 0%, rgba(10,8,12,0.08) 48%, rgba(8,10,20,0.20) 100%)',
         }} />
-        {/* long, eased dissolve into the white section — no visible edge, kept below the content */}
-        <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 160, zIndex: 1, background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0.9) 82%, #FFFFFF 100%)', pointerEvents: 'none' }} />
         <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `clamp(120px, 15vh, 170px) ${PAD} clamp(64px, 9vh, 96px)`, textAlign: 'center' }}>
-          <FadeIn start={introDone} delay={150} duration={800}>
-            <button
-              onClick={() => onNavigate('campaign-detail', { campaignId: activeCover.id })}
-              key={activeCover.id}
-              style={{ display: 'inline-flex', alignItems: 'center', gap: 9, font: `600 11px ${font.family}`, letterSpacing: '.16em', color: 'rgba(255,255,255,0.92)', marginBottom: 18, textShadow: '0 1px 14px rgba(0,0,0,0.6)', background: 'none', border: 'none', padding: 0, cursor: 'pointer', animation: 'heroMeta 0.7s ease both' }}
-            >
-              <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} />
-              ON THE COVER · {activeCover.title.toUpperCase()} · {activeCover.prize} — {activeCover.status}
-            </button>
-          </FadeIn>
-
           <FadeIn start={introDone} delay={300} duration={900}>
             <h1 className="lp-h1" style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 0.98, letterSpacing: '-0.038em', color: '#fff', margin: '0 auto', maxWidth: 1000, textShadow: '0 2px 40px rgba(0,0,0,0.30)' }}>
-              More access. More experiences. More <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>You.</span>
+              More access. More experiences. More <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>you.</span>
             </h1>
           </FadeIn>
 
@@ -474,17 +451,8 @@ export default function PublicHome({ onNavigate }) {
             </div>
           </FadeIn>
 
-          <FadeIn start={introDone} delay={1250} duration={1000}>
-            {/* partner logos inside the hero, FoundersCard-style */}
-            <div className="hero-logos" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'clamp(34px, 5vw, 72px)', flexWrap: 'wrap', marginTop: 'clamp(40px, 6vh, 64px)' }}>
-              {PARTNER_OFFERS.slice(0, 6).map(p => (
-                <img key={p.slug} src={`/brand/partners/${p.slug}.png`} alt={p.brand}
-                  style={{ height: 34, width: 'auto', opacity: 0.55, filter: 'grayscale(1)' }}
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                />
-              ))}
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 26 }}>
+          <FadeIn start={introDone} delay={1100} duration={1000}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'clamp(48px, 8vh, 80px)' }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ animation: 'heroChevron 2.2s ease-in-out infinite' }}>
                 <path d="M6 9l6 6 6-6" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
