@@ -16,7 +16,7 @@ export default function Allocate({ onNavigate, params = {} }) {
 
   return (
     <div style={{ background: colors.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(50% 40% at 50% 60%, rgba(255,128,0,0.06), transparent)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(50% 40% at 50% 60%, rgba(245,133,46,0.06), transparent)', pointerEvents: 'none' }} />
       <div style={{ width: '100%', maxWidth: 480, position: 'relative' }}>
 
         <button onClick={() => onNavigate('campaign-detail', { campaignId: campaign.id })} style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'none', border: 'none', cursor: 'pointer', font: `500 14px ${font.family}`, color: colors.textDim, marginBottom: 24 }}>

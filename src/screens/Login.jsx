@@ -38,7 +38,7 @@ export default function Login({ onNavigate }) {
   const set = field => e => setForm(f => ({ ...f, [field]: e.target.value }));
 
   return (
-    <AuthShell glow="rgba(255,128,0,0.05)">
+    <AuthShell glow="rgba(245,133,46,0.05)">
       <h1 style={{ font: `700 26px/1.1 ${font.family}`, color: colors.text, margin: '0 0 6px', letterSpacing: '-.01em' }}>Welcome back</h1>
       <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 28px' }}>Sign in to your InScape account.</p>
 

@@ -47,7 +47,7 @@ export default function Boost({ onNavigate, params = {} }) {
                   cursor: 'pointer',
                   position: 'relative',
                   transition: 'all 0.2s',
-                  boxShadow: active ? '0 0 28px rgba(255,128,0,0.12)' : 'none',
+                  boxShadow: active ? '0 0 28px rgba(245,133,46,0.12)' : 'none',
                 }}
               >
                 {p.badge && (

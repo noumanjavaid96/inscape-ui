@@ -18,7 +18,7 @@ function Orb({ icon, accent, reduced }) {
   const blue = accent === colors.info;
   return (
     <div style={{ position: 'relative', width: 120, height: 120, margin: '0 auto 36px' }}>
-      <div style={{ position: 'absolute', inset: -10, borderRadius: '50%', background: `radial-gradient(circle, ${blue ? 'rgba(71,199,252,0.18)' : 'rgba(255,128,0,0.18)'}, transparent 70%)`, filter: 'blur(4px)' }} />
+      <div style={{ position: 'absolute', inset: -10, borderRadius: '50%', background: `radial-gradient(circle, ${blue ? 'rgba(71,199,252,0.18)' : 'rgba(245,133,46,0.18)'}, transparent 70%)`, filter: 'blur(4px)' }} />
       <div
         className="liquid-glass"
         style={{
@@ -43,7 +43,7 @@ export default function Onboarding({ onNavigate }) {
 
   return (
     <div style={{ background: colors.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(60% 50% at 50% 38%, ${blueTheme ? 'rgba(71,199,252,0.09)' : 'rgba(255,128,0,0.10)'}, transparent)`, transition: 'background 0.6s ease', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', inset: 0, background: `radial-gradient(60% 50% at 50% 38%, ${blueTheme ? 'rgba(71,199,252,0.09)' : 'rgba(245,133,46,0.10)'}, transparent)`, transition: 'background 0.6s ease', pointerEvents: 'none' }} />
       <FilmGrain />
 
       <button onClick={() => onNavigate('campaigns')} style={{ position: 'absolute', top: 24, right: 24, background: 'none', border: 'none', font: `500 14px ${font.family}`, color: colors.textDim, cursor: 'pointer', zIndex: 2 }}>Skip</button>

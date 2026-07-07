@@ -30,10 +30,10 @@ export const tokens = deepFreeze({
     bg4: 'var(--bg4)', // brand "Elevated Surface"
     bg5: 'var(--bg5)',
 
-    // Brand accent — shared across themes, kept literal so string
-    // concatenations like `${colors.warning}55` keep working.
-    accent: '#FF8000',
-    accentDark: '#cc6600',
+    // Brand accent — softened from the raw #FF8000 to a warmer, less neon
+    // orange so it reads calmer on the dark surfaces (shared across themes).
+    accent: '#F5852E',
+    accentDark: '#D9701F',
 
     // Semantic — shared across themes.
     info: '#47C7FC',
@@ -55,8 +55,8 @@ export const tokens = deepFreeze({
     borderFaint: 'var(--border-faint)',
     surfaceHover: 'var(--surface-hover)',
     overlay: 'var(--overlay)',
-    accentSoft: 'rgba(255,128,0,0.1)',
-    accentBorder: 'rgba(255,128,0,0.3)',
+    accentSoft: 'rgba(245,133,46,0.1)',
+    accentBorder: 'rgba(245,133,46,0.3)',
   },
 
   // Light "editorial premium" palette — warm cream/white surfaces, ink type,
@@ -78,8 +78,8 @@ export const tokens = deepFreeze({
     charcoalSoft: '#211E18',
     glass: 'rgba(255,255,255,0.82)',
     glassBorder: 'rgba(255,255,255,0.9)',
-    accentSoft: 'rgba(255,128,0,0.10)',
-    accentBorder: 'rgba(255,128,0,0.28)',
+    accentSoft: 'rgba(245,133,46,0.10)',
+    accentBorder: 'rgba(245,133,46,0.28)',
     cardShadow: '0 18px 44px rgba(20,17,12,0.10)',
     cardShadowHover: '0 30px 70px rgba(20,17,12,0.16)',
     floatShadow: '0 24px 60px rgba(20,17,12,0.16)',
@@ -97,8 +97,8 @@ export const tokens = deepFreeze({
   shadow: {
     card: '0 20px 48px rgba(0,0,0,0.4)',
     float: '0 32px 80px rgba(0,0,0,0.5)',
-    glow: '0 8px 24px rgba(255,128,0,0.35)',
-    glowStrong: '0 16px 40px rgba(255,128,0,0.5)',
+    glow: '0 8px 24px rgba(245,133,46,0.35)',
+    glowStrong: '0 16px 40px rgba(245,133,46,0.5)',
     glowBlue: '0 8px 24px rgba(71,199,252,0.3)',
   },
 

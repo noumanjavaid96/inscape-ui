@@ -23,7 +23,7 @@ export default function Input({
   const borderColor = error
     ? colors.danger
     : focused
-      ? 'rgba(255,128,0,0.5)'
+      ? 'rgba(245,133,46,0.5)'
       : 'rgba(255,255,255,0.1)';
 
   return (

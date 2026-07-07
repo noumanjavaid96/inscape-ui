@@ -28,8 +28,8 @@
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes orbGlow {
-  0%, 100% { box-shadow: 0 0 50px rgba(255,128,0,0.18); }
-  50%      { box-shadow: 0 0 80px rgba(255,128,0,0.30); }
+  0%, 100% { box-shadow: 0 0 50px rgba(245,133,46,0.18); }
+  50%      { box-shadow: 0 0 80px rgba(245,133,46,0.30); }
 }
 
 /* Scroll-cue dot travelling down the hairline */
@@ -81,7 +81,7 @@
   background: linear-gradient(180deg,
     rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 22%,
     rgba(255,255,255,0) 45%, rgba(255,255,255,0) 60%,
-    rgba(255,128,0,0.10) 82%, rgba(255,128,0,0.28) 100%);
+    rgba(245,133,46,0.10) 82%, rgba(245,133,46,0.28) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
 }
@@ -122,17 +122,17 @@ button, input, select, textarea {
 }
 
 input::placeholder { color: #4a4f57; }
-input { caret-color: #FF8000; }
+input { caret-color: #F5852E; }
 
 a { color: inherit; }
 
 /* Visible keyboard focus (does not show on mouse click) */
 :focus-visible {
-  outline: 2px solid #FF8000;
+  outline: 2px solid #F5852E;
   outline-offset: 2px;
   border-radius: 4px;
 }
-button, a, input, [role="button"], [tabindex] { outline-color: #FF8000; }
+button, a, input, [role="button"], [tabindex] { outline-color: #F5852E; }
 
 /* ---------------------------------------------------------------------------
  * Theme variables. Dark is the default; [data-theme="light"] flips the member
@@ -142,12 +142,12 @@ button, a, input, [role="button"], [tabindex] { outline-color: #FF8000; }
 :root {
   /* Warm espresso dark — lighter than pure black, cream text instead of
      stark white to avoid glare (per client design review). */
-  --bg: #171310;
-  --bg1: #1B1714;
-  --bg2: #1F1A16;
-  --bg3: #231D18;
-  --bg4: #28211B;
-  --bg5: #2E2620;
+  --bg: #211C17;
+  --bg1: #262019;
+  --bg2: #2B241D;
+  --bg3: #302921;
+  --bg4: #372F26;
+  --bg5: #3F362C;
   --text: #F4EFE7;
   --text-muted: #C9C0B2;
   --text-dim: #9A9081;

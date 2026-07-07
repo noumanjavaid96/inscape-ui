@@ -64,7 +64,7 @@ export default function VideoBackdrop({ src, poster, overlay = true }) {
 
   const fallbackBg = poster
     ? `url("${poster}") center/cover no-repeat`
-    : 'radial-gradient(120% 90% at 75% 20%, rgba(255,128,0,0.18), transparent 55%),' +
+    : 'radial-gradient(120% 90% at 75% 20%, rgba(245,133,46,0.18), transparent 55%),' +
       'radial-gradient(90% 80% at 15% 90%, rgba(71,199,252,0.08), transparent 60%),' +
       'linear-gradient(160deg, #14110b 0%, #0a0a0c 45%, #050505 100%)';
 
