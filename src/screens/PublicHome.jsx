@@ -414,23 +414,25 @@ export default function PublicHome({ onNavigate }) {
       <IntroSplash onDone={() => setIntroDone(true)} hold={1500} lift={700} />
       <NavBar onNavigate={onNavigate} scrolled={scrolled} />
 
-      {/* HERO — bold editorial / magazine cover, rotating through live campaigns */}
+      {/* HERO — cinematic brand film backdrop */}
       <section style={{
         position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden',
         backgroundColor: '#0c0d10',
       }}>
-        {/* Cross-fading campaign photos (all preloaded, only the active one visible) */}
-        {HERO_CAMPAIGNS.map((c, i) => (
-          <div key={c.id} aria-hidden="true" style={{
-            position: 'absolute', inset: 0, zIndex: 0,
-            backgroundImage: `url(${heroImg(c)})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat',
-            opacity: i === heroIdx ? 1 : 0, transition: 'opacity 1.1s ease-in-out',
-          }} />
-        ))}
-        {/* Image-independent legibility scrims + brand tint — keep text readable on any photo */}
+        {/* Looping brand film. Poster = featured campaign still so first paint is never empty. */}
+        <video
+          autoPlay muted loop playsInline preload="auto"
+          poster={heroImg(HERO_CAMPAIGNS[0])}
+          aria-hidden="true"
+          style={{ position: 'absolute', inset: 0, zIndex: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+          onError={(e) => { e.currentTarget.style.display = 'none'; }}
+        >
+          <source src="https://res.cloudinary.com/dcjnzvmwc/video/upload/v1783424497/inscape_glztpd.mp4" type="video/mp4" />
+        </video>
+        {/* Mild uniform darken + legibility scrims + brand tint — keeps white text readable over any frame */}
         <div aria-hidden="true" style={{
           position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-          backgroundImage: 'linear-gradient(to right, rgba(6,8,12,0.50) 0%, rgba(6,8,12,0) 62%), linear-gradient(to top, rgba(6,8,12,0.94) 0%, rgba(6,8,12,0.80) 22%, rgba(6,8,12,0.55) 42%, rgba(6,8,12,0.28) 62%, rgba(6,8,12,0.08) 80%, rgba(6,8,12,0) 100%), linear-gradient(135deg, rgba(20,10,2,0.26) 0%, rgba(10,8,12,0.10) 48%, rgba(8,10,20,0.26) 100%)',
+          backgroundImage: 'linear-gradient(rgba(10,8,6,0.34), rgba(10,8,6,0.34)), linear-gradient(to top, rgba(6,8,12,0.88) 0%, rgba(6,8,12,0.55) 26%, rgba(6,8,12,0.18) 55%, rgba(6,8,12,0.05) 80%, rgba(6,8,12,0.22) 100%), linear-gradient(135deg, rgba(20,10,2,0.20) 0%, rgba(10,8,12,0.08) 48%, rgba(8,10,20,0.20) 100%)',
         }} />
         {/* long, eased dissolve into the white section — no visible edge, kept below the content */}
         <div style={{ position: 'absolute', left: 0, right: 0, bottom: 0, height: 160, zIndex: 1, background: 'linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 55%, rgba(255,255,255,0.9) 82%, #FFFFFF 100%)', pointerEvents: 'none' }} />
@@ -469,16 +471,6 @@ export default function PublicHome({ onNavigate }) {
                   <Icon name="arrowRight" size={13} color="#F7F3EC" />
                 </span>
               </MagneticButton>
-            </div>
-          </FadeIn>
-
-          <FadeIn start={introDone} delay={1050} duration={900}>
-            {/* cover dots — which campaign is on the cover */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 26 }}>
-              {HERO_CAMPAIGNS.map((c, i) => (
-                <button key={c.id} aria-label={`Show ${c.title}`} onClick={() => setHeroIdx(i)}
-                  style={{ width: i === heroIdx ? 22 : 8, height: 8, borderRadius: 999, border: 'none', padding: 0, cursor: 'pointer', background: i === heroIdx ? colors.accent : 'rgba(255,255,255,0.4)', transition: 'all 0.3s ease' }} />
-              ))}
             </div>
           </FadeIn>
 
