@@ -230,7 +230,7 @@ export default function Dashboard({ onNavigate }) {
 
             {MEMBER_STATE === 'free' && (
               <Card padding="md" style={{ border: `1px solid ${colors.accentBorder}`, position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', top: -30, right: -30, width: 140, height: 140, background: 'radial-gradient(circle, rgba(245,133,46,0.10), transparent 70%)', pointerEvents: 'none' }} />
+                <div style={{ position: 'absolute', top: -30, right: -30, width: 140, height: 140, background: 'radial-gradient(circle, rgba(238,140,70,0.10), transparent 70%)', pointerEvents: 'none' }} />
                 <div style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent, marginBottom: 8 }}>BECOME A MEMBER</div>
                 <div style={{ font: `600 24px/1.1 ${font.display}`, color: colors.text, marginBottom: 8 }}>Unlock 120 credits, monthly.</div>
                 <p style={{ font: `400 13px/1.55 ${font.family}`, color: colors.textDim, margin: '0 0 12px' }}>Premium members get monthly Credits, priority access, and the full Offers Hub.</p>

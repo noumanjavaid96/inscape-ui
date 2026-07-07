@@ -7,7 +7,7 @@ const { colors, radius, shadow } = tokens;
  * Centred auth layout: full-screen dark background, ambient glow, logo and a
  * max-width card wrapper. Shared by SignUp and Login.
  */
-export default function AuthShell({ children, maxWidth = 440, glow = 'rgba(245,133,46,0.06)' }) {
+export default function AuthShell({ children, maxWidth = 440, glow = 'rgba(238,140,70,0.06)' }) {
   return (
     <div
       style={{

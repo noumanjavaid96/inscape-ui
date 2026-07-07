@@ -23,7 +23,7 @@ const daysLeft = (t) => {
 export default function CampaignCard({ campaign, onClick, size = 'md', style }) {
   const [hovered, setHovered] = useState(false);
   const c = campaign;
-  const glow = c.glow || 'rgba(245,133,46,0.12)';
+  const glow = c.glow || 'rgba(238,140,70,0.12)';
   const upcoming = c.status === 'UPCOMING';
   const timeLabel = upcoming ? (c.startsIn || 'Opening soon') : daysLeft(c.closesAt) || c.timeLeft || '';
 

@@ -27,7 +27,7 @@ export default function Wallet({ onNavigate }) {
         <PageHeader title="Wallet" subtitle="Credits, history and top-ups" />
 
         <Card gradient padding="lg" style={{ marginBottom: 24, position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', top: -40, right: -40, width: 180, height: 180, background: 'radial-gradient(50% 50%, rgba(245,133,46,0.08), transparent)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: -40, right: -40, width: 180, height: 180, background: 'radial-gradient(50% 50%, rgba(238,140,70,0.08), transparent)', pointerEvents: 'none' }} />
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 16 }}>
             <div>
               <div style={{ font: `500 12px ${font.family}`, letterSpacing: '.1em', textTransform: 'uppercase', color: colors.textDim, marginBottom: 8 }}>Available balance</div>

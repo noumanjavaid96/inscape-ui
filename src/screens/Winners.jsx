@@ -26,7 +26,7 @@ export default function Winners() {
 
         {/* Featured winner */}
         <Card padding="lg" gradient style={{ marginBottom: 28, overflow: 'hidden', position: 'relative' }}>
-          <div style={{ position: 'absolute', top: -40, right: -40, width: 220, height: 220, background: 'radial-gradient(50% 50%, rgba(245,133,46,0.12), transparent)', pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', top: -40, right: -40, width: 220, height: 220, background: 'radial-gradient(50% 50%, rgba(238,140,70,0.12), transparent)', pointerEvents: 'none' }} />
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
             <Icon name="trophy" size={20} color={colors.accent} />
             <span style={{ font: `600 11px ${font.family}`, letterSpacing: '.14em', color: colors.accent }}>LATEST WINNER</span>

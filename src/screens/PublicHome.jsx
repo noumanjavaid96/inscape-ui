@@ -76,7 +76,7 @@ function PrimaryCTA({ children, onClick, size = 'lg', style }) {
         height: h, padding: '0 30px', borderRadius: 14,
         background: colors.accent, border: 'none', color: '#1c1003',
         font: `600 ${size === 'lg' ? 16 : 15}px ${font.family}`,
-        boxShadow: '0 14px 30px rgba(245,133,46,0.30)',
+        boxShadow: '0 14px 30px rgba(238,140,70,0.30)',
         ...style,
       }}
     >
@@ -548,7 +548,7 @@ export default function PublicHome({ onNavigate }) {
 
       {/* DARK EDITORIAL BAND — the value proposition */}
       <section style={{ background: light.charcoal, padding: `clamp(72px, 9vw, 120px) ${PAD}`, position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: 900, height: 500, background: 'radial-gradient(circle, rgba(245,133,46,0.05), transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%,-50%)', width: 900, height: 500, background: 'radial-gradient(circle, rgba(238,140,70,0.05), transparent 70%)', pointerEvents: 'none' }} />
         <div className="lp-inner" style={{ position: 'relative', zIndex: 2 }}>
           <Reveal>
             <div style={{ textAlign: 'center', marginBottom: 56 }}>
@@ -565,7 +565,7 @@ export default function PublicHome({ onNavigate }) {
             {BENEFITS.map((b, i) => (
               <Reveal key={b.title} delay={i * 110}>
                 <div style={{ background: light.charcoalSoft, border: '1px solid rgba(255,255,255,0.07)', borderRadius: 22, padding: '32px 30px', height: '100%' }}>
-                  <div style={{ width: 54, height: 54, borderRadius: 15, background: 'rgba(245,133,46,0.12)', border: '1px solid rgba(245,133,46,0.28)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
+                  <div style={{ width: 54, height: 54, borderRadius: 15, background: 'rgba(238,140,70,0.12)', border: '1px solid rgba(238,140,70,0.28)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
                     <Icon name={b.icon} size={26} color={colors.accent} />
                   </div>
                   <h3 style={{ font: `500 21px ${font.family}`, color: '#fff', margin: '0 0 10px' }}>{b.title}</h3>
@@ -702,7 +702,7 @@ export default function PublicHome({ onNavigate }) {
                   border: `1px solid ${p.highlight ? light.accentBorder : light.line}`,
                   borderRadius: 22, padding: '34px 30px', position: 'relative', height: '100%',
                   display: 'flex', flexDirection: 'column',
-                  boxShadow: p.highlight ? '0 20px 50px rgba(245,133,46,0.12)' : 'none',
+                  boxShadow: p.highlight ? '0 20px 50px rgba(238,140,70,0.12)' : 'none',
                 }}>
                   {p.highlight && (
                     <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)', background: colors.accent, borderRadius: 999, padding: '5px 15px', font: `700 11px ${font.family}`, color: '#1c1003', letterSpacing: '.06em', whiteSpace: 'nowrap' }}>MOST POPULAR</div>
@@ -735,7 +735,7 @@ export default function PublicHome({ onNavigate }) {
 
       {/* BECOME A PARTNER — simple FoundersCard-style band */}
       <section id="partner" style={{ background: light.charcoal, padding: `clamp(64px, 8vw, 100px) ${PAD}`, position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '50%', left: '78%', transform: 'translate(-50%,-50%)', width: 700, height: 420, background: 'radial-gradient(circle, rgba(245,133,46,0.07), transparent 70%)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '50%', left: '78%', transform: 'translate(-50%,-50%)', width: 700, height: 420, background: 'radial-gradient(circle, rgba(238,140,70,0.07), transparent 70%)', pointerEvents: 'none' }} />
         <div className="lp-inner" style={{ position: 'relative' }}>
           <Reveal>
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.15fr) minmax(0, 0.85fr)', gap: 48, alignItems: 'center' }} className="lp-partner-band">
@@ -752,7 +752,7 @@ export default function PublicHome({ onNavigate }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                 {['Reach 50,000+ engaged members', 'Tracked links, codes and in-store QR', 'Onboarding handled by our team'].map((b) => (
                   <div key={b} style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
-                    <span style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(245,133,46,0.14)', border: '1px solid rgba(245,133,46,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span style={{ width: 22, height: 22, borderRadius: '50%', background: 'rgba(238,140,70,0.14)', border: '1px solid rgba(238,140,70,0.35)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       <Icon name="check" size={12} color={colors.accent} />
                     </span>
                     <span style={{ font: `500 14.5px ${font.family}`, color: 'rgba(255,255,255,0.85)' }}>{b}</span>

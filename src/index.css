@@ -28,8 +28,8 @@
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes orbGlow {
-  0%, 100% { box-shadow: 0 0 50px rgba(245,133,46,0.18); }
-  50%      { box-shadow: 0 0 80px rgba(245,133,46,0.30); }
+  0%, 100% { box-shadow: 0 0 50px rgba(238,140,70,0.18); }
+  50%      { box-shadow: 0 0 80px rgba(238,140,70,0.30); }
 }
 
 /* Scroll-cue dot travelling down the hairline */
@@ -81,7 +81,7 @@
   background: linear-gradient(180deg,
     rgba(255,255,255,0.28) 0%, rgba(255,255,255,0.08) 22%,
     rgba(255,255,255,0) 45%, rgba(255,255,255,0) 60%,
-    rgba(245,133,46,0.10) 82%, rgba(245,133,46,0.28) 100%);
+    rgba(238,140,70,0.10) 82%, rgba(238,140,70,0.28) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude; pointer-events: none;
 }
@@ -122,17 +122,17 @@ button, input, select, textarea {
 }
 
 input::placeholder { color: #4a4f57; }
-input { caret-color: #F5852E; }
+input { caret-color: #EE8C46; }
 
 a { color: inherit; }
 
 /* Visible keyboard focus (does not show on mouse click) */
 :focus-visible {
-  outline: 2px solid #F5852E;
+  outline: 2px solid #EE8C46;
   outline-offset: 2px;
   border-radius: 4px;
 }
-button, a, input, [role="button"], [tabindex] { outline-color: #F5852E; }
+button, a, input, [role="button"], [tabindex] { outline-color: #EE8C46; }
 
 /* ---------------------------------------------------------------------------
  * Theme variables. Dark is the default; [data-theme="light"] flips the member

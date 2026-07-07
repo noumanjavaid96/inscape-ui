@@ -17,13 +17,13 @@ export default function Welcome({ onNavigate }) {
   const reduced = useReducedMotion();
   return (
     <div style={{ background: colors.bg, minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 20px', position: 'relative', overflow: 'hidden' }}>
-      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(60% 50% at 50% 36%, rgba(245,133,46,0.12), transparent)', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(60% 50% at 50% 36%, rgba(238,140,70,0.12), transparent)', pointerEvents: 'none' }} />
       <FilmGrain />
       <div style={{ width: '100%', maxWidth: 460, textAlign: 'center', position: 'relative', zIndex: 1 }}>
 
         <FadeIn delay={100} duration={800}>
           <div style={{ position: 'relative', width: 104, height: 104, margin: '0 auto 26px' }}>
-            <div style={{ position: 'absolute', inset: -8, borderRadius: '50%', background: 'radial-gradient(circle, rgba(245,133,46,0.22), transparent 70%)', filter: 'blur(4px)' }} />
+            <div style={{ position: 'absolute', inset: -8, borderRadius: '50%', background: 'radial-gradient(circle, rgba(238,140,70,0.22), transparent 70%)', filter: 'blur(4px)' }} />
             <div className="liquid-glass" style={{ position: 'absolute', inset: 0, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: `1px solid ${colors.accentBorder}`, animation: reduced ? 'none' : 'orbGlow 4s ease-in-out infinite' }}>
               <Icon name="sparkle" size={44} color={colors.accent} />
             </div>

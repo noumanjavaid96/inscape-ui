@@ -40,7 +40,7 @@ export default function Membership({ onNavigate }) {
           {PLANS.map(p => (
             <div
               key={p.name}
-              style={{ background: p.highlight ? colors.accentSoft : colors.bg2, border: `1px solid ${p.highlight ? colors.accentBorder : colors.border}`, borderRadius: radius.xl, padding: '28px 26px', position: 'relative', boxShadow: p.highlight ? '0 0 60px rgba(245,133,46,0.1)' : 'none', transition: 'transform 0.2s' }}
+              style={{ background: p.highlight ? colors.accentSoft : colors.bg2, border: `1px solid ${p.highlight ? colors.accentBorder : colors.border}`, borderRadius: radius.xl, padding: '28px 26px', position: 'relative', boxShadow: p.highlight ? '0 0 60px rgba(238,140,70,0.1)' : 'none', transition: 'transform 0.2s' }}
               onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-3px)'}
               onMouseLeave={e => e.currentTarget.style.transform = 'none'}
             >
@@ -56,7 +56,7 @@ export default function Membership({ onNavigate }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: 9, marginBottom: 24 }}>
                 {p.features.map(f => (
                   <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
-                    <span style={{ width: 18, height: 18, borderRadius: '50%', background: p.highlight ? 'rgba(245,133,46,0.12)' : colors.surfaceHover, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <span style={{ width: 18, height: 18, borderRadius: '50%', background: p.highlight ? 'rgba(238,140,70,0.12)' : colors.surfaceHover, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                       <Icon name="check" size={11} color={p.highlight ? colors.accent : colors.textFaint} />
                     </span>
                     <span style={{ font: `400 13px ${font.family}`, color: p.highlight ? colors.textMuted : colors.textDim }}>{f}</span>

@@ -21,7 +21,7 @@ export const CAMPAIGNS = [
     closesAt: inH(62),
     drawDate: 'Nov 15, 2026',
     gradient: 'linear-gradient(135deg,#1a2030,#0c1018)',
-    glow: 'rgba(245,133,46,0.16)',
+    glow: 'rgba(238,140,70,0.16)',
     blurb: 'Win a brand-new Range Rover Sport in Santorini Black, fully loaded, delivered anywhere in the mainland US.',
   },
   {
@@ -81,7 +81,7 @@ export const CAMPAIGNS = [
     closesAt: inH(170),
     drawDate: 'Oct 28, 2026',
     gradient: 'linear-gradient(135deg,#16161a,#0a0a0c)',
-    glow: 'rgba(245,133,46,0.12)',
+    glow: 'rgba(238,140,70,0.12)',
     blurb: 'The iconic Omega Speedmaster Professional Moonwatch, boxed with full papers.',
   },
   {
