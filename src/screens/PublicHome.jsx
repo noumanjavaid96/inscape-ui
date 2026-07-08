@@ -3,6 +3,7 @@ import tokens from '../design/tokens';
 import Logo from '../components/ui/Logo';
 import Icon from '../components/ui/Icon';
 import IntroSplash from '../components/cinematic/IntroSplash';
+import HeroVideo from '../components/cinematic/HeroVideo';
 import FadeIn from '../components/cinematic/FadeIn';
 import Reveal from '../components/cinematic/Reveal';
 import MagneticButton from '../components/cinematic/MagneticButton';
@@ -412,22 +413,24 @@ export default function PublicHome({ onNavigate }) {
         position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden',
         backgroundColor: '#0c0d10',
       }}>
-        {/* Looping brand film. Poster = featured campaign still so first paint is never empty. */}
-        <video
-          autoPlay muted loop playsInline preload="auto"
+        {/* Ping-pong brand film. Poster = featured campaign still so first paint is never empty. */}
+        <HeroVideo
+          src="https://res.cloudinary.com/dcjnzvmwc/video/upload/v1783424497/inscape_glztpd.mp4"
           poster={heroImg(HERO_CAMPAIGNS[0])}
-          aria-hidden="true"
-          style={{ position: 'absolute', inset: 0, zIndex: 0, width: '100%', height: '100%', objectFit: 'cover' }}
-          onError={(e) => { e.currentTarget.style.display = 'none'; }}
-        >
-          <source src="https://res.cloudinary.com/dcjnzvmwc/video/upload/v1783424497/inscape_glztpd.mp4" type="video/mp4" />
-        </video>
-        {/* Mild uniform darken + legibility scrims + brand tint — keeps white text readable over any frame */}
+        />
+        {/* Legibility scrims + brand tint + a faint vignette — keeps white text crisp over any frame */}
         <div aria-hidden="true" style={{
           position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-          backgroundImage: 'linear-gradient(rgba(10,8,6,0.34), rgba(10,8,6,0.34)), linear-gradient(to top, rgba(6,8,12,0.88) 0%, rgba(6,8,12,0.55) 26%, rgba(6,8,12,0.18) 55%, rgba(6,8,12,0.05) 80%, rgba(6,8,12,0.22) 100%), linear-gradient(135deg, rgba(20,10,2,0.20) 0%, rgba(10,8,12,0.08) 48%, rgba(8,10,20,0.20) 100%)',
+          backgroundImage: 'radial-gradient(120% 90% at 50% 40%, transparent 40%, rgba(6,6,8,0.45) 100%), linear-gradient(rgba(10,8,6,0.32), rgba(10,8,6,0.32)), linear-gradient(to top, rgba(6,8,12,0.9) 0%, rgba(6,8,12,0.55) 26%, rgba(6,8,12,0.16) 55%, rgba(6,8,12,0.04) 80%, rgba(6,8,12,0.24) 100%)',
         }} />
         <div className="lp-inner" style={{ position: 'relative', zIndex: 2, width: '100%', padding: `clamp(120px, 15vh, 170px) ${PAD} clamp(64px, 9vh, 96px)`, textAlign: 'center' }}>
+          <FadeIn start={introDone} delay={150} duration={800}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 9, padding: '7px 16px', borderRadius: 999, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.16)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)', marginBottom: 26 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.accent, animation: 'livePulse 2s ease-in-out infinite' }} />
+              <span style={{ font: `600 11px ${font.family}`, letterSpacing: '.18em', color: 'rgba(255,255,255,0.9)' }}>THE PREMIUM MEMBERSHIP FOR MORE</span>
+            </div>
+          </FadeIn>
+
           <FadeIn start={introDone} delay={300} duration={900}>
             <h1 className="lp-h1" style={{ fontFamily: font.family, fontWeight: 300, lineHeight: 0.98, letterSpacing: '-0.038em', color: '#fff', margin: '0 auto', maxWidth: 1000, textShadow: '0 2px 40px rgba(0,0,0,0.30)' }}>
               More access. More experiences. More <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>you.</span>
@@ -441,21 +444,31 @@ export default function PublicHome({ onNavigate }) {
           </FadeIn>
 
           <FadeIn start={introDone} delay={850} duration={900}>
-            <div style={{ display: 'flex', marginTop: 34, justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: 14, marginTop: 36, justifyContent: 'center', flexWrap: 'wrap' }}>
               <MagneticButton
                 onClick={() => onNavigate('signup')}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 10, height: 52, padding: '0 28px', borderRadius: 999, background: '#F7F3EC', border: 'none', color: '#1c1712', font: `600 15px ${font.family}`, boxShadow: '0 16px 40px rgba(0,0,0,0.35)' }}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 10, height: 54, padding: '0 30px', borderRadius: 999, background: `linear-gradient(135deg, ${colors.accent}, ${colors.accentDark})`, border: 'none', color: '#1c1003', font: `600 15px ${font.family}`, boxShadow: '0 16px 44px rgba(238,140,70,0.42)' }}
               >
-                Preview membership
-                <span style={{ width: 24, height: 24, borderRadius: '50%', background: '#1c1712', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Icon name="arrowRight" size={13} color="#F7F3EC" />
-                </span>
+                Become a member
+                <Icon name="arrowRight" size={17} color="#1c1003" />
               </MagneticButton>
+              <button
+                onClick={() => onNavigate('campaigns')}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 9, height: 54, padding: '0 26px', borderRadius: 999, background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.28)', color: '#fff', font: `600 15px ${font.family}`, cursor: 'pointer', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' }}
+              >
+                Explore campaigns
+              </button>
             </div>
           </FadeIn>
 
-          <FadeIn start={introDone} delay={1100} duration={1000}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'clamp(48px, 8vh, 80px)' }}>
+          <FadeIn start={introDone} delay={1050} duration={900}>
+            <p style={{ font: `500 13px ${font.family}`, color: 'rgba(255,255,255,0.72)', margin: '18px 0 0', textShadow: '0 1px 12px rgba(0,0,0,0.6)' }}>
+              Start free with <strong style={{ color: '#fff', fontWeight: 700 }}>3 Credits</strong> — no card required.
+            </p>
+          </FadeIn>
+
+          <FadeIn start={introDone} delay={1250} duration={1000}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'clamp(40px, 6vh, 68px)' }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true" style={{ animation: 'heroChevron 2.2s ease-in-out infinite' }}>
                 <path d="M6 9l6 6 6-6" stroke="rgba(255,255,255,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

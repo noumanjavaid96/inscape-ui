@@ -56,7 +56,9 @@ export default function IntroSplash({ onDone, hold = 1900, lift = 800, name = ''
         position: 'fixed',
         inset: 0,
         zIndex: 1000,
-        background: colors.bg,
+        // Theme-independent dark brand reveal so it reads the same (and stays
+        // high-contrast) in both light and dark mode.
+        background: 'radial-gradient(120% 120% at 50% 38%, #241d16 0%, #14100c 60%, #0d0a08 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -71,10 +73,10 @@ export default function IntroSplash({ onDone, hold = 1900, lift = 800, name = ''
         <svg height={40} viewBox="-4 -4 287 242" fill={colors.accent} style={{ display: 'block' }} aria-hidden="true">
           {ICON_PATHS.map((d, i) => <path key={i} transform={ICON_TRANSFORMS[i]} d={d} />)}
         </svg>
-        <span style={{ font: `600 30px ${font.display}`, letterSpacing: '.18em', color: colors.text }}>INSCAPE</span>
+        <span style={{ font: `600 30px ${font.display}`, letterSpacing: '.18em', color: '#F4EFE7' }}>INSCAPE</span>
       </div>
       {firstName && (
-        <div style={{ font: `400 19px ${font.family}`, color: 'rgba(255,255,255,0.6)', letterSpacing: '.01em', textAlign: 'center', animation: reduced ? 'none' : 'introLogo 800ms 480ms cubic-bezier(.2,.7,.2,1) both' }}>
+        <div style={{ font: `400 19px ${font.family}`, color: 'rgba(244,239,231,0.72)', letterSpacing: '.01em', textAlign: 'center', animation: reduced ? 'none' : 'introLogo 800ms 480ms cubic-bezier(.2,.7,.2,1) both' }}>
           Welcome, <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, fontSize: 25, color: colors.accent }}>{firstName}</span>
         </div>
       )}

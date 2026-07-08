@@ -108,7 +108,7 @@ function JoinPanel({ c, drawDetails, style }) {
         </Button>
       )}
 
-      <p style={{ font: `400 11px/1.6 ${font.family}`, color: colors.textGhost, textAlign: 'center', margin: 0 }}>
+      <p style={{ font: `400 11px/1.6 ${font.family}`, color: colors.textDim, textAlign: 'center', margin: 0 }}>
         By joining you agree to the Official Rules. US residents 18+ only.
       </p>
 
