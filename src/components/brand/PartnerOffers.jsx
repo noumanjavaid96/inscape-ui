@@ -28,13 +28,15 @@ function OfferCard({ o, onSelect }) {
         flexDirection: 'column',
       }}
     >
-      {/* Logo hero — the brand IS the image; discount badge overlaid like a campaign card */}
-      <div style={{ position: 'relative', height: 120, background: 'radial-gradient(90% 130% at 50% 0%, #1d2026, #101216)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+      {/* Logo hero — the brand IS the image. mixBlendMode:screen drops the black
+          ground baked into each PNG so the mark floats on the gradient (matches
+          the landing offer cards). */}
+      <div style={{ position: 'relative', height: 132, background: 'radial-gradient(90% 120% at 50% 0%, #23262c, #16140F)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         <img
           src={`/brand/partners/${o.slug}.png`}
           alt={o.brand}
           loading="lazy"
-          style={{ maxWidth: '68%', maxHeight: 66, width: 'auto', height: 'auto', transform: hover ? 'scale(1.07)' : 'scale(1)', transition: 'transform 0.35s ease' }}
+          style={{ maxWidth: '82%', maxHeight: 86, width: 'auto', height: 'auto', mixBlendMode: 'screen', transform: hover ? 'scale(1.06)' : 'scale(1)', transition: 'transform 0.35s ease' }}
           onError={(e) => { e.currentTarget.style.display = 'none'; }}
         />
         <span style={{ position: 'absolute', top: 10, right: 10, background: colors.accent, borderRadius: 999, padding: '5px 11px', font: `700 12px ${font.family}`, color: '#1c1003' }}>{o.offer}</span>

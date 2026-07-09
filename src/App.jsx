@@ -24,8 +24,9 @@ import Winners from './screens/Winners';
 import Insights from './screens/Insights';
 import MembershipManage from './screens/MembershipManage';
 import Support from './screens/Support';
+import Merch from './screens/Merch';
 
-const PUBLIC_SCREENS = new Set(['public-home', 'signup', 'login', 'welcome', 'onboarding', 'allocate', 'allocation-success']);
+const PUBLIC_SCREENS = new Set(['public-home', 'signup', 'login', 'welcome', 'onboarding', 'allocate', 'allocation-success', 'merch']);
 
 const SCREENS = {
   'public-home': PublicHome,
@@ -51,6 +52,7 @@ const SCREENS = {
   insights: Insights,
   'membership-manage': MembershipManage,
   support: Support,
+  merch: Merch,
 };
 
 // Screens that, when they hand off to the dashboard, earn a brand reveal.

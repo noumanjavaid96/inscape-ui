@@ -98,6 +98,14 @@ const PATHS = {
   ),
   moon: (c) => <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z" stroke={c} strokeWidth="1.6" strokeLinejoin="round" />,
   close: (c) => <path d="M6 6l12 12M18 6 6 18" stroke={c} strokeWidth="1.8" strokeLinecap="round" />,
+  diamond: (c) => <path d="M6 5h12l4 5-10 11L2 10z" stroke={c} strokeWidth="1.6" strokeLinejoin="round" />,
+  lock: (c) => (
+    <>
+      <rect x="5" y="11" width="14" height="10" rx="2" stroke={c} strokeWidth="1.6" />
+      <path d="M8 11V7a4 4 0 0 1 8 0v4" stroke={c} strokeWidth="1.6" strokeLinecap="round" />
+    </>
+  ),
+  activity: (c) => <path d="M3 12h4l3-9 5 18 3-9h3" stroke={c} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />,
 };
 
 export default function Icon({ name, size = 20, color = colors.textFaint, style }) {

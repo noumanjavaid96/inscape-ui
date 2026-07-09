@@ -4,8 +4,20 @@ import AuthShell from '../components/auth/AuthShell';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Divider from '../components/ui/Divider';
+import Icon from '../components/ui/Icon';
 
 const { colors, font, radius } = tokens;
+
+// Eye toggle for the password field (open = revealed).
+function EyeIcon({ open, color }) {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ color }} aria-hidden="true">
+      <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.6" />
+      {!open && <path d="M4 4l16 16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />}
+    </svg>
+  );
+}
 
 // Derive a friendly first name from the email local-part for the welcome splash.
 function nameFromEmail(email) {
@@ -34,6 +46,8 @@ function AppleIcon() {
 
 export default function Login({ onNavigate }) {
   const [form, setForm] = useState({ email: '', password: '' });
+  const [showPw, setShowPw] = useState(false);
+  const [remember, setRemember] = useState(true);
   const valid = form.email && form.password.length >= 6;
   const set = field => e => setForm(f => ({ ...f, [field]: e.target.value }));
 
@@ -44,13 +58,32 @@ export default function Login({ onNavigate }) {
 
       <Input label="Email address" type="email" value={form.email} onChange={set('email')} placeholder="you@example.com" />
 
-      <div style={{ marginBottom: 20 }}>
+      <div style={{ marginBottom: 16 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 7 }}>
           <label style={{ font: `500 13px ${font.family}`, color: colors.textMuted }}>Password</label>
           <button style={{ font: `500 12px ${font.family}`, color: colors.accent, background: 'none', border: 'none', cursor: 'pointer' }}>Forgot?</button>
         </div>
-        <Input type="password" value={form.password} onChange={set('password')} style={{ marginBottom: 0 }} />
+        <div style={{ position: 'relative' }}>
+          <Input type={showPw ? 'text' : 'password'} value={form.password} onChange={set('password')} style={{ marginBottom: 0 }} inputStyle={{ paddingRight: 48 }} />
+          <button
+            type="button"
+            aria-label={showPw ? 'Hide password' : 'Show password'}
+            onClick={() => setShowPw(s => !s)}
+            style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 6 }}
+          >
+            <EyeIcon open={showPw} color={colors.textDim} />
+          </button>
+        </div>
       </div>
+
+      {/* Remember me — keeps the session so members don't sign in every visit */}
+      <label style={{ display: 'inline-flex', alignItems: 'center', gap: 9, cursor: 'pointer', marginBottom: 20, userSelect: 'none' }}>
+        <input type="checkbox" checked={remember} onChange={e => setRemember(e.target.checked)} style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }} />
+        <span style={{ width: 18, height: 18, borderRadius: 5, flexShrink: 0, border: `1.5px solid ${remember ? colors.accent : colors.borderStrong}`, background: remember ? colors.accent : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.15s ease' }}>
+          {remember && <Icon name="check" size={12} color={colors.bg} />}
+        </span>
+        <span style={{ font: `500 13px ${font.family}`, color: colors.textDim }}>Remember me</span>
+      </label>
 
       <Button onClick={() => valid && onNavigate('dashboard', { name: nameFromEmail(form.email) })} fullWidth size="lg" disabled={!valid} style={{ marginBottom: 20 }}>
         Sign in

@@ -104,7 +104,9 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: #050505;
+  background-color: #16140F;
+  background-image: radial-gradient(circle at 78% 50%, rgba(238,140,70,0.07), transparent 60%);
+  background-attachment: fixed;
   color: #fff;
   font-family: 'Inter', sans-serif;
   min-height: 100vh;
@@ -140,14 +142,13 @@ button, a, input, [role="button"], [tabindex] { outline-color: #EE8C46; }
  * across themes and stay literal in tokens.js.
  * ------------------------------------------------------------------------- */
 :root {
-  /* Warm espresso dark — lighter than pure black, cream text instead of
-     stark white to avoid glare (per client design review). */
-  --bg: #2A241E;
-  --bg1: #2F2821;
-  --bg2: #342C25;
-  --bg3: #3A322A;
-  --bg4: #423931;
-  --bg5: #4B4138;
+  /* Dark charcoal — pure immersive dark mode based on the editorial splash. */
+  --bg: #16140F;
+  --bg1: #1B1813;
+  --bg2: #211E18;
+  --bg3: #27231C;
+  --bg4: #2D2921;
+  --bg5: #342F26;
   --text: #F4EFE7;
   --text-muted: #C9C0B2;
   --text-dim: #9A9081;

@@ -25,11 +25,10 @@ export default function Offers({ onNavigate }) {
 
   return (
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
 
         <PageHeader
-          title="Offers Hub"
-          subtitle="Members-only savings from leading brands — direct & affiliate partners."
+          title="Partner Offers"
           actions={
             <div style={{ display: 'flex', background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: 10, padding: 3 }}>
               {[['member', 'Member view'], ['free', 'Free view']].map(([v, label]) => (
@@ -100,9 +99,9 @@ export default function Offers({ onNavigate }) {
           <PartnerOffers offers={filtered} columns={columns} onSelect={(o) => onNavigate('offer-detail', { slug: o.slug })} />
         )}
 
-        <p style={{ font: `400 12px/1.6 ${font.family}`, color: colors.textGhost, marginTop: 24 }}>
-          Offers are provided by direct partners and approved affiliate networks, exclusive to current InScape members. InScape is not responsible for offer availability or terms.
-        </p>
+        <div style={{ marginTop: 60, paddingTop: 30, borderTop: `1px solid ${colors.border}`, font: `400 12px/1.6 ${font.family}`, color: colors.textFaint, textAlign: 'center', maxWidth: 600, margin: '60px auto 0' }}>
+          Partner Offers are available to eligible InScape members and are subject to Partner terms, conditions and availability.
+        </div>
       </div>
     </div>
   );

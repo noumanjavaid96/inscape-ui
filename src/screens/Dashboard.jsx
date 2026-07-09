@@ -16,9 +16,10 @@ import { CAMPAIGNS } from '../data/campaigns';
 
 const { colors, font } = tokens;
 
-// Five campaigns run in a month — one cinematic featured card, the rest beneath.
+// The dashboard shows a preview only — one featured cover + two cards — then a
+// "Show more" button routes to the full Campaigns page (client feedback).
 const FEATURED = CAMPAIGNS[0];
-const MONTH_CAMPAIGNS = CAMPAIGNS.slice(1, 5);
+const MONTH_CAMPAIGNS = CAMPAIGNS.slice(1, 3);
 
 // Soonest-closing campaigns for the urgency rail.
 const CLOSING_SOON = [...CAMPAIGNS]
@@ -28,9 +29,16 @@ const CLOSING_SOON = [...CAMPAIGNS]
 
 // High-level summary only — detailed breakdowns live in Insights.
 const SUMMARY_STATS = [
-  { label: 'Earned credits', value: '164', icon: 'bolt' },
-  { label: 'Campaigns joined', value: '9', icon: 'grid' },
-  { label: 'Bonus credits', value: '+20', icon: 'sparkle' },
+  { label: 'Earned credits', value: '164', icon: 'bolt', trend: '+24 this month', trendShort: '+24' },
+  { label: 'Campaigns joined', value: '9', icon: 'grid', trend: '+2 this month', trendShort: '+2' },
+  { label: 'Bonus credits', value: '+20', icon: 'sparkle', trend: 'Momentum tier', trendShort: 'Active', flat: true },
+];
+
+// Referral funnel — shown as a stepped progress rail on the dashboard.
+const REFERRAL_STEPS = [
+  { value: '4', label: 'Invited', done: true },
+  { value: '1', label: 'Qualified', done: true },
+  { value: '+10', label: 'Earned', done: false },
 ];
 
 const TRANSACTIONS = [
@@ -126,28 +134,40 @@ export default function Dashboard({ onNavigate }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
 
             {/* High-level analytics on top — details live in Insights */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 14 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: isMobile ? 10 : 14 }}>
               {SUMMARY_STATS.map((s) => (
-                <Card key={s.label} padding="md" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: 9, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Icon name={s.icon} size={16} color={colors.accent} />
+                <Card key={s.label} padding="md" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: isDesktop ? 178 : 132 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div style={{ width: isDesktop ? 46 : 40, height: isDesktop ? 46 : 40, borderRadius: 12, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon name={s.icon} size={isDesktop ? 23 : 20} color={colors.accent} />
+                    </div>
+                    <span style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 4,
+                      font: `600 ${isDesktop ? 12 : 10.5}px ${font.family}`, letterSpacing: '.01em',
+                      color: s.flat ? colors.textDim : colors.success,
+                      background: s.flat ? colors.bg4 : 'rgba(91,208,138,0.10)',
+                      border: `1px solid ${s.flat ? colors.border : 'rgba(91,208,138,0.22)'}`,
+                      borderRadius: 999, padding: isDesktop ? '4px 11px' : '3px 9px', whiteSpace: 'nowrap',
+                    }}>
+                      {!s.flat && <Icon name="arrowUp" size={isDesktop ? 12 : 11} color={colors.success} />}
+                      {isMobile ? s.trendShort : s.trend}
+                    </span>
                   </div>
                   <div>
-                    <div style={{ font: `600 28px/1 ${font.display}`, color: colors.text }}>{s.value}</div>
-                    <div style={{ font: `400 11px ${font.family}`, color: colors.textFaint, marginTop: 4 }}>{s.label}</div>
+                    <div style={{ font: `600 ${isDesktop ? 46 : 30}px/1 ${font.display}`, color: colors.text, letterSpacing: '-0.01em' }}>{s.value}</div>
+                    <div style={{ font: `500 ${isDesktop ? 13.5 : 12}px ${font.family}`, color: colors.textDim, marginTop: isDesktop ? 8 : 6 }}>{s.label}</div>
                   </div>
                 </Card>
               ))}
             </div>
 
-            {/* Campaigns together: one featured cover, the rest beneath */}
-            <Section
-              title="This month's campaigns"
-              action={<Button onClick={() => onNavigate('campaigns')} variant="ghost" size="sm">View all</Button>}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+            {/* Campaigns preview: one featured cover, two cards. Stretches to fill
+                the column so the cards bottom-align with the right rail (the two
+                cards absorb any slack via their flex:1 bodies). */}
+            <Section title="This month's campaigns" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14, flex: 1 }}>
                 <FeaturedCampaign campaign={FEATURED} compact={isMobile} onOpen={() => onNavigate('campaign-detail', { campaignId: FEATURED.id })} />
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 14 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gridTemplateRows: isDesktop ? 'minmax(0, 1fr)' : 'auto', gap: 14, flex: isDesktop ? 1 : 'none' }}>
                   {MONTH_CAMPAIGNS.map(c => (
                     <CampaignCard
                       key={c.title}
@@ -162,7 +182,7 @@ export default function Dashboard({ onNavigate }) {
           </div>
 
           {/* Right column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
 
             {/* Wallet */}
             <Card gradient padding="md">
@@ -199,64 +219,76 @@ export default function Dashboard({ onNavigate }) {
               </Card>
             )}
 
-            {/* Referral rewards — navigation already covers quick actions */}
+            {/* Referral rewards — stepped funnel progress */}
             <Card padding="md">
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
                 <h3 style={{ font: `600 15px ${font.family}`, color: colors.text, margin: 0 }}>Referral rewards</h3>
                 <Icon name="users" size={16} color={colors.accent} />
               </div>
-              <div style={{ display: 'flex', gap: 20, marginBottom: 14 }}>
-                <Stat label="Invited" value="4" />
-                <Stat label="Qualified" value="1" color={colors.success} />
-                <Stat label="Earned" value="+10 cr" color={colors.accent} />
+
+              <div style={{ position: 'relative', marginBottom: 20 }}>
+                {/* connecting track */}
+                <div style={{ position: 'absolute', top: 21, left: '16.66%', right: '16.66%', height: 3, background: colors.bg4, borderRadius: 2 }}>
+                  <div style={{ width: '50%', height: '100%', background: `linear-gradient(90deg, ${colors.accent}, ${colors.accentDark})`, borderRadius: 2 }} />
+                </div>
+                {/* milestone nodes */}
+                <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(3,1fr)' }}>
+                  {REFERRAL_STEPS.map((step) => (
+                    <div key={step.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 9 }}>
+                      <div style={{
+                        width: 42, height: 42, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        background: step.done ? colors.accentSoft : colors.bg4,
+                        border: `1.5px solid ${step.done ? colors.accentBorder : colors.border}`,
+                        font: `700 15px ${font.family}`, color: step.done ? colors.accent : colors.textMuted,
+                      }}>
+                        {step.value}
+                      </div>
+                      <span style={{ font: `500 11px ${font.family}`, color: colors.textDim }}>{step.label}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
+
               <Button onClick={() => onNavigate('referral')} variant="secondary" size="sm" fullWidth>Invite a friend</Button>
             </Card>
 
-            {/* Closing soon — urgency rail */}
-            <Card padding="md">
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
-                <Icon name="clock" size={15} color={colors.accent} />
-                <h3 style={{ font: `600 12px ${font.family}`, letterSpacing: '.12em', color: colors.textDim, margin: 0 }}>CLOSING SOON</h3>
-              </div>
-              {CLOSING_SOON.map((c, i) => (
-                <button
-                  key={c.id}
-                  onClick={() => onNavigate('campaign-detail', { campaignId: c.id })}
-                  style={{ display: 'flex', alignItems: 'center', gap: 12, width: '100%', background: 'none', border: 'none', padding: '9px 0', cursor: 'pointer', borderBottom: i < CLOSING_SOON.length - 1 ? `1px solid ${colors.borderFaint}` : 'none', textAlign: 'left' }}
-                >
-                  <div style={{ width: 44, height: 44, borderRadius: 10, overflow: 'hidden', background: c.gradient, flexShrink: 0 }}>
-                    {c.image && <img src={c.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={(e) => { e.currentTarget.style.display = 'none'; }} />}
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ font: `600 13px ${font.family}`, color: colors.text, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{c.title}</div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, font: `400 11px ${font.family}`, color: colors.textFaint, marginTop: 2 }}>
-                      <Icon name="clock" size={11} color={colors.textFaint} /> Closes in {closesIn(c.closesAt)}
-                    </div>
-                  </div>
-                  <Icon name="chevronRight" size={13} color={colors.textGhost} />
-                </button>
-              ))}
-            </Card>
+            {/* Closing Soon removed to prevent redundancy */}
 
-            {/* Recent activity */}
-            <Card padding="md">
+            {/* Recent activity stretches so the rail bottom-aligns with the
+                campaign grid, with a pinned footer link filling the slack */}
+            <Card padding="md" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
               <h3 style={{ font: `600 15px ${font.family}`, color: colors.text, margin: '0 0 14px' }}>Recent activity</h3>
-              {TRANSACTIONS.map((t, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '9px 0', borderBottom: i < TRANSACTIONS.length - 1 ? `1px solid ${colors.borderFaint}` : 'none' }}>
-                  <div style={{ width: 34, height: 34, borderRadius: 9, background: colors.bg5, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Icon name={t.iconName} size={16} color={t.color} />
+              <div>
+                {TRANSACTIONS.map((t, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '9px 0', borderBottom: i < TRANSACTIONS.length - 1 ? `1px solid ${colors.borderFaint}` : 'none' }}>
+                    <div style={{ width: 34, height: 34, borderRadius: 9, background: colors.bg5, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon name={t.iconName} size={16} color={t.color} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ font: `500 13px ${font.family}`, color: colors.text }}>{t.label}</div>
+                      <div style={{ font: `400 11px ${font.family}`, color: colors.textFaint, marginTop: 1 }}>{t.detail}</div>
+                    </div>
+                    <span style={{ font: `600 13px ${font.family}`, color: t.color }}>{t.amount}</span>
                   </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ font: `500 13px ${font.family}`, color: colors.text }}>{t.label}</div>
-                    <div style={{ font: `400 11px ${font.family}`, color: colors.textFaint, marginTop: 1 }}>{t.detail}</div>
-                  </div>
-                  <span style={{ font: `600 13px ${font.family}`, color: t.color }}>{t.amount}</span>
-                </div>
-              ))}
+                ))}
+              </div>
+              <div style={{ marginTop: 'auto', paddingTop: 12 }}>
+                <Button onClick={() => onNavigate('wallet')} variant="ghost" size="sm" fullWidth>View all activity</Button>
+              </div>
             </Card>
           </div>
         </div>
+
+        {/* Show more — full-width so it reads as intentional, not a stray button
+            hanging off the left column */}
+        <button
+          onClick={() => onNavigate('campaigns')}
+          style={{ width: '100%', height: 48, marginTop: 20, borderRadius: 14, background: 'transparent', border: `1px solid ${colors.border}`, color: colors.text, font: `600 14px ${font.family}`, cursor: 'pointer', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'background 0.15s ease' }}
+          onMouseEnter={e => { e.currentTarget.style.background = colors.surfaceHover; }}
+          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+        >
+          Show more campaigns <Icon name="arrowRight" size={15} color={colors.text} />
+        </button>
 
         {/* Featured partner offers — full-width shelf at the foot of the dashboard */}
         <div style={{ marginTop: 28 }}>

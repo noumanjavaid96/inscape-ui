@@ -30,15 +30,14 @@ export default function Campaigns({ onNavigate }) {
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
 
-        <PageHeader
-          title="Campaigns"
-          subtitle={`${count} ${showingWinners ? 'recent winners' : 'campaigns available'}`}
-          actions={
-            <div style={{ width: 42, height: 42, borderRadius: '50%', background: colors.bg4, border: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
-              <Icon name="search" size={19} color={colors.text} />
-            </div>
-          }
-        />
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
+          <h1 style={{ font: `400 36px ${font.display}`, color: colors.text, margin: 0 }}>
+            {statusTab === 'Past Winners' ? 'Past Winners' : `${statusTab} Campaigns`}
+          </h1>
+          <div style={{ width: 42, height: 42, borderRadius: '50%', background: colors.bg4, border: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+            <Icon name="search" size={19} color={colors.text} />
+          </div>
+        </div>
 
         {/* Live / Upcoming / Past Winners toggle */}
         <div style={{ display: 'flex', marginBottom: 28 }}>
@@ -84,19 +83,22 @@ export default function Campaigns({ onNavigate }) {
         ) : (
           /* One featured cover on top, the rest as a card grid beneath */
           <>
-            {filtered[0] && (
-              <div style={{ marginBottom: 20 }}>
-                <FeaturedCampaign
-                  campaign={filtered[0]}
-                  compact={isMobile}
-                  kicker={statusTab === 'Upcoming' ? 'UPCOMING' : 'LIVE NOW'}
-                  onOpen={() => onNavigate('campaign-detail', { campaignId: filtered[0].id })}
-                />
+            {filtered.length > 0 && (
+              <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? 'repeat(2,1fr)' : '1fr', gap: 20, marginBottom: 20 }}>
+                {filtered.slice(0, 2).map((c) => (
+                  <FeaturedCampaign
+                    key={c.id}
+                    campaign={c}
+                    compact={isMobile}
+                    kicker={statusTab === 'Upcoming' ? 'UPCOMING' : 'LIVE NOW'}
+                    onOpen={() => onNavigate('campaign-detail', { campaignId: c.id })}
+                  />
+                ))}
               </div>
             )}
-            {filtered.length > 1 && (
+            {filtered.length > 2 && (
               <div style={{ display: 'grid', gridTemplateColumns: isDesktop ? 'repeat(3,1fr)' : isMobile ? '1fr' : 'repeat(2,1fr)', gap: 20 }}>
-                {filtered.slice(1).map((c) => (
+                {filtered.slice(2).map((c) => (
                   <CampaignCard key={c.id} campaign={c} size="md" onClick={() => onNavigate('campaign-detail', { campaignId: c.id })} />
                 ))}
               </div>
