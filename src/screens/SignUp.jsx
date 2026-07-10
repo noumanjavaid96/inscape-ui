@@ -37,7 +37,7 @@ export default function SignUp({ onNavigate }) {
       {step === 1 ? (
         <>
           <h1 style={{ font: `700 26px/1.1 ${font.family}`, color: colors.text, margin: '0 0 6px', letterSpacing: '-.01em' }}>Create your account</h1>
-          <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 28px' }}>Start with 3 free Credits — no card required.</p>
+          <p style={{ font: `400 14px ${font.family}`, color: colors.textDim, margin: '0 0 28px' }}>Start with 3 free Credits, no card required.</p>
           <Input label="Full name" value={form.name} onChange={set('name')} />
           <Input label="Email address" type="email" value={form.email} onChange={set('email')} />
           <Input label="Password (min. 8 characters)" type="password" value={form.password} onChange={set('password')} style={{ marginBottom: 24 }} />

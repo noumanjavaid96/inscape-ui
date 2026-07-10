@@ -91,7 +91,7 @@ export const CAMPAIGNS = [
     prize: '$12,000',
     prizeValue: 12000,
     cost: 1,
-    participants: '—',
+    participants: 'Soon',
     status: 'UPCOMING',
     closesAt: inH(76),
     startsIn: 'Starts in 3d',

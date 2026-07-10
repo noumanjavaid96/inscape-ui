@@ -41,8 +41,8 @@ export default function MembershipManage({ onNavigate }) {
           </div>
           <div style={{ display: 'flex', gap: 28, flexWrap: 'wrap', paddingTop: 18, borderTop: `1px solid ${colors.borderFaint}` }}>
             <Stat label="Monthly Credits" value="120" />
-            <Stat label="Next renewal" value={state === 'cancelled' ? '—' : 'Jul 1, 2026'} />
-            <Stat label="Next Credits" value={state === 'cancelled' ? '—' : '12 days'} />
+            <Stat label="Next renewal" value={state === 'cancelled' ? 'Not scheduled' : 'Jul 1, 2026'} />
+            <Stat label="Next Credits" value={state === 'cancelled' ? 'Paused' : '12 days'} />
           </div>
         </Card>
 

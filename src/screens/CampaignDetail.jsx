@@ -100,7 +100,7 @@ function JoinPanel({ c, drawDetails, style }) {
       {joined ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'rgba(91,208,138,0.10)', border: '1px solid rgba(91,208,138,0.3)', borderRadius: radius.md, padding: '13px 15px', marginBottom: 12 }}>
           <Icon name="check" size={18} color={colors.success} />
-          <div style={{ font: `600 13px ${font.family}`, color: colors.text }}>You're in — good luck! <span style={{ color: colors.textDim, fontWeight: 400 }}>{c.cost} Credit{c.cost > 1 ? 's' : ''} allocated.</span></div>
+          <div style={{ font: `600 13px ${font.family}`, color: colors.text }}>You're in. Good luck! <span style={{ color: colors.textDim, fontWeight: 400 }}>{c.cost} Credit{c.cost > 1 ? 's' : ''} allocated.</span></div>
         </div>
       ) : (
         <Button onClick={join} fullWidth size="lg" style={{ marginBottom: 12 }}>

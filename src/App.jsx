@@ -58,8 +58,16 @@ const SCREENS = {
 // Screens that, when they hand off to the dashboard, earn a brand reveal.
 const AUTH_ENTRY = new Set(['login', 'signup', 'welcome', 'onboarding']);
 
+// Allow deep-linking to a screen via the URL hash (e.g. #dashboard), which is
+// handy for sharing and QA. Falls back to the public home for anything unknown.
+const initialScreen = () => {
+  if (typeof window === 'undefined') return 'public-home';
+  const h = window.location.hash.replace('#', '');
+  return SCREENS[h] ? h : 'public-home';
+};
+
 export default function App() {
-  const [screen, setScreen] = useState('public-home');
+  const [screen, setScreen] = useState(initialScreen);
   const [params, setParams] = useState({});
   const [history, setHistory] = useState([]);
   const [splashId, setSplashId] = useState(0);

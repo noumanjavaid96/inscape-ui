@@ -45,7 +45,7 @@ export default function Offers({ onNavigate }) {
         <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: colors.bg3, border: `1px solid ${colors.border}`, borderRadius: 999, padding: '6px 14px', marginBottom: 18 }}>
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: colors.info }} />
           <span style={{ font: `500 12px ${font.family}`, color: colors.textDim }}>
-            Affiliate partner offers live now · <strong style={{ color: colors.text, fontWeight: 600 }}>Direct partner offers — Coming Soon</strong>
+            Affiliate partner offers live now · <strong style={{ color: colors.text, fontWeight: 600 }}>Direct partner offers, Coming Soon</strong>
           </span>
         </div>
 
@@ -75,7 +75,7 @@ export default function Offers({ onNavigate }) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
               <Icon name="gift" size={15} color={colors.accent} />
               <span style={{ font: `500 13px ${font.family}`, color: colors.textDim }}>
-                {FREE_TEASER_COUNT} offers free to try — <strong style={{ color: colors.text, fontWeight: 600 }}>500+ more</strong> with any paid membership.
+                {FREE_TEASER_COUNT} offers free to try, with <strong style={{ color: colors.text, fontWeight: 600 }}>500+ more</strong> on any paid membership.
               </span>
             </div>
             <PartnerOffers offers={filtered.slice(0, FREE_TEASER_COUNT)} columns={columns} style={{ marginBottom: 14 }}
@@ -88,7 +88,7 @@ export default function Offers({ onNavigate }) {
                 <div style={{ background: colors.bg2, border: `1px solid ${colors.accentBorder}`, borderRadius: radius.xl, padding: '26px 30px', textAlign: 'center', maxWidth: 420, boxShadow: '0 24px 70px rgba(0,0,0,0.55)' }}>
                   <h3 style={{ font: `700 20px ${font.family}`, color: colors.text, margin: '0 0 8px' }}>Unlock every member offer</h3>
                   <p style={{ font: `400 13.5px/1.6 ${font.family}`, color: colors.textDim, margin: '0 0 18px' }}>
-                    Nike, Lacoste, LG and 500+ more — exclusive savings with any paid membership.
+                    Nike, Lacoste, LG and 500+ more, with exclusive savings on any paid membership.
                   </p>
                   <Button onClick={() => onNavigate('membership')} size="md">Become a member</Button>
                 </div>

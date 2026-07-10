@@ -5,10 +5,10 @@ import PageHeader from '../components/layout/PageHeader';
 const { colors, font, radius } = tokens;
 
 const NOTIFS = [
-  { time: 'Just now', title: 'Monthly Momentum +25', body: 'You hit 75% — 25 bonus credits added to your wallet.', dot: colors.info, fresh: true },
+  { time: 'Just now', title: 'Monthly Momentum +25', body: 'You hit 75%, so 25 bonus credits were added to your wallet.', dot: colors.info, fresh: true },
   { time: '2h ago', title: 'Maldives Escape closes in 9h', body: 'You joined with 4 credits. Final chance to add more.', dot: colors.warning, fresh: false },
-  { time: '1d ago', title: 'Range Rover Sport — winner announced', body: 'Congratulations to Sarah M. from London. Better luck next campaign.', dot: colors.success, fresh: false },
-  { time: '3d ago', title: 'Sam R. qualified — +40 Momentum earned', body: 'Your referral completed their first purchase. Reward posted to wallet.', dot: colors.accent, fresh: false },
+  { time: '1d ago', title: 'Range Rover Sport, winner announced', body: 'Congratulations to Sarah M. from London. Better luck next campaign.', dot: colors.success, fresh: false },
+  { time: '3d ago', title: 'Sam R. qualified, +40 Momentum earned', body: 'Your referral completed their first purchase. Reward posted to wallet.', dot: colors.accent, fresh: false },
   { time: '5d ago', title: '+120 credits added', body: 'Your Premium membership credits for June have been posted.', dot: colors.accent, fresh: false },
 ];
 

@@ -140,7 +140,7 @@ export default function OfferDetail({ onNavigate, onBack, params = {} }) {
               </>
             ) : (
               <div style={{ font: `400 13px/1.5 ${font.family}`, color: colors.textDim, marginBottom: 14 }}>
-                No code needed — your discount applies automatically through the member link below.
+                No code needed. Your discount applies automatically through the member link below.
               </div>
             )}
 

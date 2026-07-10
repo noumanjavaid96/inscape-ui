@@ -106,6 +106,25 @@ const PATHS = {
     </>
   ),
   activity: (c) => <path d="M3 12h4l3-9 5 18 3-9h3" stroke={c} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />,
+  calendar: (c) => (
+    <g stroke={c} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" fill="none">
+      <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
+      <path d="M3.5 9.5h17M8 3v3.5M16 3v3.5" />
+    </g>
+  ),
+  coins: (c) => (
+    <g stroke={c} strokeWidth="1.6" strokeLinejoin="round" fill="none">
+      <ellipse cx="12" cy="6.5" rx="7" ry="2.8" />
+      <path d="M5 6.5v5c0 1.55 3.13 2.8 7 2.8s7-1.25 7-2.8v-5" />
+      <path d="M5 11.5v5c0 1.55 3.13 2.8 7 2.8s7-1.25 7-2.8v-5" />
+    </g>
+  ),
+  trendUp: (c) => (
+    <g stroke={c} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none">
+      <path d="M4 15l5-5 3 3 6-6" />
+      <path d="M15 7h5v5" />
+    </g>
+  ),
 };
 
 export default function Icon({ name, size = 20, color = colors.textFaint, style }) {

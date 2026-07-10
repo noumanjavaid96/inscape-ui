@@ -22,7 +22,7 @@ export default function Winners() {
     <div style={{ background: colors.bg, minHeight: '100vh', fontFamily: font.family }}>
       <div style={{ maxWidth: 1100, margin: '0 auto', padding: isDesktop ? '40px 48px' : isMobile ? '24px 20px 100px' : '32px 32px' }}>
 
-        <PageHeader title="Winners" subtitle="Real members, real prizes — every draw witnessed and audited." />
+        <PageHeader title="Winners" subtitle="Real members, real prizes. Every draw witnessed and audited." />
 
         {/* Featured winner */}
         <Card padding="lg" gradient style={{ marginBottom: 28, overflow: 'hidden', position: 'relative' }}>

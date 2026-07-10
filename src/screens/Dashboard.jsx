@@ -3,7 +3,6 @@ import tokens from '../design/tokens';
 import { useBreakpoint } from '../hooks/useBreakpoint';
 import Card from '../components/ui/Card';
 import Button from '../components/ui/Button';
-import Stat from '../components/ui/Stat';
 import Icon from '../components/ui/Icon';
 import PageHeader from '../components/layout/PageHeader';
 import Section from '../components/layout/Section';
@@ -27,19 +26,30 @@ const CLOSING_SOON = [...CAMPAIGNS]
   .sort((a, b) => a.closesAt - b.closesAt)
   .slice(0, 3);
 
-// High-level summary only — detailed breakdowns live in Insights.
+// High-level summary only — detailed breakdowns live in Insights. Each card
+// carries a headline number plus a month-over-month delta footer.
 const SUMMARY_STATS = [
-  { label: 'Earned credits', value: '164', icon: 'bolt', trend: '+24 this month', trendShort: '+24' },
-  { label: 'Campaigns joined', value: '9', icon: 'grid', trend: '+2 this month', trendShort: '+2' },
-  { label: 'Bonus credits', value: '+20', icon: 'sparkle', trend: 'Momentum tier', trendShort: 'Active', flat: true },
+  { key: 'bonus', label: 'Bonus Credits', value: '+20', sub: 'Credits earned', icon: 'sparkle', tone: colors.accent, deltaIcon: 'trendUp', delta: '+8 this month', note: 'Keep it going' },
+  { key: 'days', label: 'Days Active', value: '14', sub: 'Days logged in this month', icon: 'calendar', tone: colors.info, deltaIcon: 'calendar', delta: '+3 vs last month', note: 'Great consistency' },
+  { key: 'used', label: 'Credits Used', value: '38', sub: 'Credits used this month', icon: 'coins', tone: colors.success, deltaIcon: 'arrowDown', delta: '-12 vs last month', note: 'Smart spending' },
 ];
 
-// Referral funnel — shown as a stepped progress rail on the dashboard.
+// Referral funnel — shown as a stepped progress rail on the dashboard. Green
+// keeps it distinct from the orange used elsewhere on the dashboard.
 const REFERRAL_STEPS = [
   { value: '4', label: 'Invited', done: true },
   { value: '1', label: 'Qualified', done: true },
   { value: '+10', label: 'Earned', done: false },
 ];
+
+// Turn a solid tone into a faint fill for the icon chip backgrounds.
+const toneSoft = (hex) => {
+  const n = hex.replace('#', '');
+  const r = parseInt(n.slice(0, 2), 16);
+  const g = parseInt(n.slice(2, 4), 16);
+  const b = parseInt(n.slice(4, 6), 16);
+  return `rgba(${r},${g},${b},0.13)`;
+};
 
 const TRANSACTIONS = [
   { label: 'Monthly Premium allocation', detail: 'June 1, 2026', amount: '+120', iconName: 'arrowDown', color: colors.success },
@@ -134,28 +144,28 @@ export default function Dashboard({ onNavigate }) {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
 
             {/* High-level analytics on top — details live in Insights */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: isMobile ? 10 : 14 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)', gap: 16 }}>
               {SUMMARY_STATS.map((s) => (
-                <Card key={s.label} padding="md" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: isDesktop ? 178 : 132 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ width: isDesktop ? 46 : 40, height: isDesktop ? 46 : 40, borderRadius: 12, background: colors.accentSoft, border: `1px solid ${colors.accentBorder}`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <Icon name={s.icon} size={isDesktop ? 23 : 20} color={colors.accent} />
+                <Card key={s.key} padding="lg" style={{ display: 'flex', flexDirection: 'column', gap: 18, minHeight: isDesktop ? 178 : undefined }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 11, background: toneSoft(s.tone), border: `1px solid ${s.tone}33`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon name={s.icon} size={19} color={s.tone} />
                     </div>
-                    <span style={{
-                      display: 'inline-flex', alignItems: 'center', gap: 4,
-                      font: `600 ${isDesktop ? 12 : 10.5}px ${font.family}`, letterSpacing: '.01em',
-                      color: s.flat ? colors.textDim : colors.success,
-                      background: s.flat ? colors.bg4 : 'rgba(91,208,138,0.10)',
-                      border: `1px solid ${s.flat ? colors.border : 'rgba(91,208,138,0.22)'}`,
-                      borderRadius: 999, padding: isDesktop ? '4px 11px' : '3px 9px', whiteSpace: 'nowrap',
-                    }}>
-                      {!s.flat && <Icon name="arrowUp" size={isDesktop ? 12 : 11} color={colors.success} />}
-                      {isMobile ? s.trendShort : s.trend}
-                    </span>
+                    <span style={{ font: `700 11px ${font.family}`, letterSpacing: '.1em', textTransform: 'uppercase', color: s.tone }}>{s.label}</span>
                   </div>
                   <div>
-                    <div style={{ font: `600 ${isDesktop ? 46 : 30}px/1 ${font.display}`, color: colors.text, letterSpacing: '-0.01em' }}>{s.value}</div>
-                    <div style={{ font: `500 ${isDesktop ? 13.5 : 12}px ${font.family}`, color: colors.textDim, marginTop: isDesktop ? 8 : 6 }}>{s.label}</div>
+                    <div style={{ font: `800 42px/1 ${font.family}`, letterSpacing: '-0.02em', color: colors.text }}>{s.value}</div>
+                    <div style={{ font: `400 13px ${font.family}`, color: colors.textDim, marginTop: 8 }}>{s.sub}</div>
+                  </div>
+                  <div style={{ height: 1, background: colors.borderFaint }} />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 11 }}>
+                    <div style={{ width: 34, height: 34, borderRadius: '50%', background: toneSoft(s.tone), display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon name={s.deltaIcon} size={15} color={s.tone} />
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <div style={{ font: `700 13px ${font.family}`, color: colors.text }}>{s.delta}</div>
+                      <div style={{ font: `400 12px ${font.family}`, color: colors.textFaint, marginTop: 1 }}>{s.note}</div>
+                    </div>
                   </div>
                 </Card>
               ))}
@@ -219,17 +229,18 @@ export default function Dashboard({ onNavigate }) {
               </Card>
             )}
 
-            {/* Referral rewards — stepped funnel progress */}
+            {/* Referral rewards — stepped funnel progress. Green keeps this rail
+                distinct from the orange used elsewhere on the dashboard. */}
             <Card padding="md">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
                 <h3 style={{ font: `600 15px ${font.family}`, color: colors.text, margin: 0 }}>Referral rewards</h3>
-                <Icon name="users" size={16} color={colors.accent} />
+                <Icon name="users" size={16} color={colors.success} />
               </div>
 
               <div style={{ position: 'relative', marginBottom: 20 }}>
                 {/* connecting track */}
                 <div style={{ position: 'absolute', top: 21, left: '16.66%', right: '16.66%', height: 3, background: colors.bg4, borderRadius: 2 }}>
-                  <div style={{ width: '50%', height: '100%', background: `linear-gradient(90deg, ${colors.accent}, ${colors.accentDark})`, borderRadius: 2 }} />
+                  <div style={{ width: '50%', height: '100%', background: colors.success, borderRadius: 2 }} />
                 </div>
                 {/* milestone nodes */}
                 <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'repeat(3,1fr)' }}>
@@ -237,9 +248,9 @@ export default function Dashboard({ onNavigate }) {
                     <div key={step.label} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 9 }}>
                       <div style={{
                         width: 42, height: 42, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        background: step.done ? colors.accentSoft : colors.bg4,
-                        border: `1.5px solid ${step.done ? colors.accentBorder : colors.border}`,
-                        font: `700 15px ${font.family}`, color: step.done ? colors.accent : colors.textMuted,
+                        background: step.done ? 'rgba(91,208,138,0.14)' : colors.bg4,
+                        border: `1.5px solid ${step.done ? colors.success : colors.border}`,
+                        font: `700 15px ${font.family}`, color: step.done ? colors.success : colors.textMuted,
                       }}>
                         {step.value}
                       </div>

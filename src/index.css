@@ -104,8 +104,8 @@
 html, body {
   margin: 0;
   padding: 0;
-  background-color: #16140F;
-  background-image: radial-gradient(circle at 78% 50%, rgba(238,140,70,0.07), transparent 60%);
+  background-color: #0B0B0D;
+  background-image: radial-gradient(circle at 78% 50%, rgba(238,140,70,0.06), transparent 60%);
   background-attachment: fixed;
   color: #fff;
   font-family: 'Inter', sans-serif;
@@ -142,24 +142,26 @@ button, a, input, [role="button"], [tabindex] { outline-color: #EE8C46; }
  * across themes and stay literal in tokens.js.
  * ------------------------------------------------------------------------- */
 :root {
-  /* Dark charcoal — pure immersive dark mode based on the editorial splash. */
-  --bg: #16140F;
-  --bg1: #1B1813;
-  --bg2: #211E18;
-  --bg3: #27231C;
-  --bg4: #2D2921;
-  --bg5: #342F26;
-  --text: #F4EFE7;
-  --text-muted: #C9C0B2;
-  --text-dim: #9A9081;
-  --text-faint: #6F6659;
-  --text-ghost: #4C453C;
-  --line: #352D25;
-  --border: rgba(244,239,231,0.08);
-  --border-strong: rgba(244,239,231,0.16);
-  --border-faint: rgba(244,239,231,0.055);
-  --surface-hover: rgba(244,239,231,0.045);
-  --overlay: rgba(23,19,16,0.68);
+  /* Neutral charcoal dark — near-black page with gently lifted surfaces, a
+     whisper of warmth so the orange accent still feels at home (per client
+     design review: the espresso brown read too much like chocolate). */
+  --bg: #0B0B0D;
+  --bg1: #101012;
+  --bg2: #141416;
+  --bg3: #18181B;
+  --bg4: #1F1F23;
+  --bg5: #27272C;
+  --text: #F5F3F0;
+  --text-muted: #C4C1BC;
+  --text-dim: #928E88;
+  --text-faint: #66625C;
+  --text-ghost: #45423D;
+  --line: #232327;
+  --border: rgba(245,243,240,0.08);
+  --border-strong: rgba(245,243,240,0.16);
+  --border-faint: rgba(245,243,240,0.05);
+  --surface-hover: rgba(245,243,240,0.045);
+  --overlay: rgba(9,9,11,0.72);
 }
 :root[data-theme='light'] {
   --bg: #FAF8F4;

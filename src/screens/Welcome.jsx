@@ -8,7 +8,7 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
 const { colors, font, radius } = tokens;
 
 const STEPS = [
-  { icon: 'wallet', title: '3 Credits, on us', body: 'No card needed — and your Credits never expire.' },
+  { icon: 'wallet', title: '3 Credits, on us', body: 'No card needed, and your Credits never expire.' },
   { icon: 'grid', title: 'Join campaigns', body: 'Browse live campaigns and join with your Credits.' },
   { icon: 'bolt', title: 'Earn Momentum', body: 'Hit milestones each month for bonus Credits.' },
 ];

@@ -8,9 +8,9 @@ import CheckoutSheet from '../components/flow/CheckoutSheet';
 const { colors, font, radius } = tokens;
 
 const PLANS = [
-  { name: 'Entry', price: { monthly: '$14.99', annual: '$149.99' }, credits: 40, annualCredits: 480, features: ['40 Credits every month', 'Full campaign access', 'Member-only promotions', 'Early campaign alerts'], highlight: false },
-  { name: 'Premium', price: { monthly: '$19.99', annual: '$199.99' }, credits: 120, annualCredits: 1440, features: ['120 Credits every month', 'Priority campaign access', 'Momentum bonuses', 'Full Offers Hub', 'Referral rewards'], highlight: true },
-  { name: 'Elite', price: { monthly: '$24.99', annual: '$249.99' }, credits: 250, annualCredits: 3000, features: ['250 Credits every month', 'Early campaign access', 'Bonus allocation campaigns', 'Exclusive partner offers', 'Priority support'], highlight: false },
+  { name: 'Entry', price: { monthly: '$14.99', annual: '$149.99' }, credits: 40, annualCredits: 480, features: ['Full campaign access', 'Member-only promotions', 'Early campaign alerts'], highlight: false },
+  { name: 'Premium', price: { monthly: '$19.99', annual: '$199.99' }, credits: 120, annualCredits: 1440, features: ['Priority campaign access', 'Momentum bonuses', 'Full Offers Hub', 'Referral rewards'], highlight: true },
+  { name: 'Elite', price: { monthly: '$24.99', annual: '$249.99' }, credits: 250, annualCredits: 3000, features: ['Early campaign access', 'Bonus allocation campaigns', 'Exclusive partner offers', 'Priority support'], highlight: false },
 ];
 
 export default function Membership({ onNavigate }) {
@@ -52,7 +52,7 @@ export default function Membership({ onNavigate }) {
                 <span style={{ font: `700 36px/1 ${font.display}`, color: colors.text }}>{annual ? p.price.annual : p.price.monthly}</span>
                 <span style={{ font: `400 12px ${font.family}`, color: colors.textFaint }}>{annual ? '/yr' : '/mo'}</span>
               </div>
-              <div style={{ font: `500 13px ${font.family}`, color: colors.accent, marginBottom: 22 }}>{annual ? `${p.annualCredits.toLocaleString()} Credits/year` : `${p.credits} Credits/month`}</div>
+              <div style={{ font: `500 13px ${font.family}`, color: colors.accent, marginBottom: 22 }}>{annual ? `${p.annualCredits.toLocaleString()} Campaign Credits per year` : `${p.credits} Campaign Credits per month`}</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 9, marginBottom: 24 }}>
                 {p.features.map(f => (
                   <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 9 }}>
@@ -83,7 +83,9 @@ export default function Membership({ onNavigate }) {
           total={annual ? checkoutPlan.price.annual : checkoutPlan.price.monthly}
           cta="Subscribe"
           successTitle="Membership active"
-          successBody={`Welcome to ${checkoutPlan.name}. Your ${checkoutPlan.credits} monthly Credits have been posted.`}
+          successBody={annual
+            ? `Welcome to ${checkoutPlan.name}. Your ${checkoutPlan.annualCredits.toLocaleString()} Campaign Credits for the year have been posted.`
+            : `Welcome to ${checkoutPlan.name}. Your ${checkoutPlan.credits} monthly Campaign Credits have been posted.`}
           onClose={() => setCheckoutPlan(null)}
           onSuccess={() => onNavigate('dashboard')}
         />

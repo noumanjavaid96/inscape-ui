@@ -58,8 +58,7 @@ export default function IntroSplash({ onDone, hold = 1900, lift = 800, name = ''
         zIndex: 1000,
         // Theme-independent dark brand reveal so it reads the same (and stays
         // high-contrast) in both light and dark mode.
-        backgroundColor: '#16140F',
-        backgroundImage: 'radial-gradient(circle at 78% 50%, rgba(238,140,70,0.07), transparent 60%)',
+        background: 'radial-gradient(120% 120% at 50% 38%, #1b1b1f 0%, #111113 58%, #09090b 100%)',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

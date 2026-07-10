@@ -8,9 +8,9 @@ import { useReducedMotion } from '../hooks/useReducedMotion';
 const { colors, font } = tokens;
 
 const SLIDES = [
-  { icon: 'wallet', kicker: 'CAMPAIGN CREDITS', title: 'Credits are your key', body: 'Joining a campaign costs Credits. You start with 3 free. Membership and top-ups keep you going — and your Credits never expire.', accent: colors.accent },
-  { icon: 'grid', kicker: 'DISCOVER', title: 'Join the campaigns you love', body: 'Browse live campaigns across travel, vehicles, tech and more. One Credit joins you to a campaign — add more to boost your participation.', accent: colors.accent },
-  { icon: 'bolt', kicker: 'MOMENTUM', title: 'Earn as you go', body: 'Reach 25%, 50%, 75% and 100% participation milestones each month and earn bonus Credits automatically — up to 90 every month.', accent: colors.info },
+  { icon: 'wallet', kicker: 'CAMPAIGN CREDITS', title: 'Credits are your key', body: 'Joining a campaign costs Credits. You start with 3 free. Membership and top-ups keep you going, and your Credits never expire.', accent: colors.accent },
+  { icon: 'grid', kicker: 'DISCOVER', title: 'Join the campaigns you love', body: 'Browse live campaigns across travel, vehicles, tech and more. One Credit joins you to a campaign, and you can add more to boost your participation.', accent: colors.accent },
+  { icon: 'bolt', kicker: 'MOMENTUM', title: 'Earn as you go', body: 'Reach 25%, 50%, 75% and 100% participation milestones each month and earn bonus Credits automatically, up to 90 every month.', accent: colors.info },
   { icon: 'users', kicker: 'REFER & EARN', title: 'Bring your friends', body: 'Share your code. When a friend qualifies you earn +40 Momentum plus bonus Credits. There is no cap on referrals.', accent: colors.info },
 ];
 

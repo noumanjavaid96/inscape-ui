@@ -77,7 +77,7 @@ export default function Allocate({ onNavigate, params = {} }) {
           {cost > balance ? (
             <>
               <div style={{ background: 'rgba(240,180,60,0.08)', border: `1px solid ${colors.warning}55`, borderRadius: radius.md, padding: '12px 14px', marginBottom: 14, font: `500 12px/1.5 ${font.family}`, color: colors.text }}>
-                You need {cost - balance} more Credit{cost - balance > 1 ? 's' : ''} to join with {qty} participation{qty > 1 ? 's' : ''}. Top up to continue — your campaign and amount are saved.
+                You need {cost - balance} more Credit{cost - balance > 1 ? 's' : ''} to join with {qty} participation{qty > 1 ? 's' : ''}. Top up to continue, and your campaign and amount are saved.
               </div>
               <Button onClick={() => onNavigate('boost', { campaignId: campaign.id })} fullWidth size="lg" style={{ marginBottom: 14 }}>
                 Top up Credits

@@ -17,7 +17,7 @@ const TOPICS = [
 ];
 
 const RECENT = [
-  { ref: 'INS-PAY-7F3A9C', title: 'Top-up — Gold pack', detail: 'Resolved · Credits posted', color: colors.success },
+  { ref: 'INS-PAY-7F3A9C', title: 'Top-up, Gold pack', detail: 'Resolved · Credits posted', color: colors.success },
   { ref: 'INS-ALLOC-2B91D', title: 'Joined Range Rover Sport', detail: 'Confirmed · receipt available', color: colors.textMuted },
 ];
 

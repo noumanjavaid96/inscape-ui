@@ -19,10 +19,6 @@ const WINNERS = PAST_WINNERS;
 const OFFERS = PARTNER_OFFERS.slice(0, 6);
 
 // The hero rotates through the live campaigns as a "cover" — the background
-// photo cross-fades while the campaign name, status, prize and countdown switch
-// in sync. Featured set = currently live/closing campaigns, capped at five.
-const HERO_CAMPAIGNS = CAMPAIGNS.filter((c) => c.status === 'LIVE' || c.status === 'CLOSING SOON').slice(0, 5);
-
 const CAROUSEL_BRANDS = [
   "945 Industries.png", "ASICS.png", "ASUS.jpg", "Adidas.png", "Belkin.png", "Beretta.png",
   "Black + Decker.png", "Bowers & Wilkins.png", "Braun.png", "Bulova.png", "Calvin Klein.png",
@@ -44,9 +40,6 @@ const CAROUSEL_BRANDS_2 = CAROUSEL_BRANDS.slice(28);
 const TILE_BRANDS = CAROUSEL_BRANDS.filter((b) => b.endsWith('.png'));
 const TILE_ROWS = [0, 1, 2].map((r) => TILE_BRANDS.filter((_, i) => i % 3 === r));
 
-// A larger crop of each campaign photo for the full-bleed hero (cards use w=1000).
-const heroImg = (c) => (c.image ? c.image.replace('w=1000', 'w=2400').replace('q=70', 'q=80') : '');
-
 // The core message: one membership, three concrete benefits.
 const BENEFITS = [
   { icon: 'star', title: 'Premium prize campaigns', body: 'Join live campaigns for luxury cars, travel, tech and tax-free cash — using Credits, from just one per campaign.' },
@@ -61,9 +54,9 @@ const STEPS = [
 ];
 
 const PLANS = [
-  { name: 'Entry', price: '$14.99', annualPrice: '$149.99', desc: 'Designed for regular engagement across live Campaigns & Partner Offers.', features: ['40 Campaign Credits allocated every month', 'Explore the Partner Offers Hub (50% access)', 'Stay updated on new Campaigns & offers', '10% InScape merchandise discount (Coming Soon)'], highlight: false },
-  { name: 'Premium', price: '$19.99', annualPrice: '$199.99', desc: 'More flexibility, more opportunities, more access.', features: ['120 Campaign Credits every month', 'Expanded selection to the Partner Offers Hub (75% access)', 'Higher-value Campaign opportunities', 'Priority Member support', 'Campaign updates & new opportunities', '15% InScape merchandise discount (Coming Soon)'], highlight: true },
-  { name: 'Elite', price: '$24.99', annualPrice: '$249.99', desc: 'Maximum access across the InScape ecosystem.', features: ['250 Campaign Credits every month', 'Higher monthly Campaign Credit allocation', 'Complete selection to all Partner Offers (100% access)', 'Access to exclusive Elite opportunities', 'Highest priority Member support', 'Early access to exclusive Campaigns and opportunities', '20% InScape merchandise discount (Coming Soon)'], highlight: false },
+  { name: 'Entry', price: '$14.99', annualPrice: '$149.99', credits: 40, annualCredits: 480, desc: 'Designed for regular engagement across live Campaigns and Partner Offers.', features: ['Explore the Partner Offers Hub (50% access)', 'Stay updated on new Campaigns and offers', '10% InScape merchandise discount (Coming Soon)'], highlight: false },
+  { name: 'Premium', price: '$19.99', annualPrice: '$199.99', credits: 120, annualCredits: 1440, desc: 'More flexibility, more opportunities, more access.', features: ['Expanded selection in the Partner Offers Hub (75% access)', 'Higher-value Campaign opportunities', 'Priority Member support', '15% InScape merchandise discount (Coming Soon)'], highlight: true },
+  { name: 'Elite', price: '$24.99', annualPrice: '$249.99', credits: 250, annualCredits: 3000, desc: 'Maximum access across the InScape ecosystem.', features: ['Complete access to all Partner Offers (100% access)', 'Access to exclusive Elite opportunities', 'Highest priority Member support', 'Early access to exclusive Campaigns', '20% InScape merchandise discount (Coming Soon)'], highlight: false },
 ];
 
 const STATS = [
@@ -453,12 +446,13 @@ export default function PublicHome({ onNavigate }) {
       {/* HERO — cinematic brand film backdrop */}
       <section style={{
         position: 'relative', minHeight: '100vh', display: 'flex', alignItems: 'center', overflow: 'hidden',
-        backgroundColor: '#0c0d10',
+        backgroundColor: '#0B0B0D',
       }}>
-        {/* Ping-pong brand film. Poster = featured campaign still so first paint is never empty. */}
+        {/* Brand film backdrop. No poster still: first paint holds on the neutral
+            charcoal backdrop rather than any branded product image, so the hero
+            never leans on a specific car/brand (per client design review). */}
         <HeroVideo
           src="https://res.cloudinary.com/dcjnzvmwc/video/upload/v1783500993/inscape-ui_abzqp4.mp4"
-          poster={heroImg(HERO_CAMPAIGNS[0])}
         />
         {/* Legibility scrims + brand tint + a faint vignette — keeps white text crisp over any frame */}
         <div aria-hidden="true" style={{
@@ -481,7 +475,7 @@ export default function PublicHome({ onNavigate }) {
 
           <FadeIn start={introDone} delay={650} duration={900}>
             <p style={{ font: `400 18px/1.6 ${font.family}`, color: 'rgba(255,255,255,0.92)', margin: '26px auto 0', maxWidth: 540, textShadow: '0 1px 18px rgba(0,0,0,0.6)' }}>
-              One membership — luxury prize campaigns, members-only offers, and rewards that compound.
+              One membership: luxury prize campaigns, members-only offers, and rewards that compound.
             </p>
           </FadeIn>
 
@@ -505,7 +499,7 @@ export default function PublicHome({ onNavigate }) {
 
           <FadeIn start={introDone} delay={1050} duration={900}>
             <p style={{ font: `500 13px ${font.family}`, color: 'rgba(255,255,255,0.72)', margin: '18px 0 0', textShadow: '0 1px 12px rgba(0,0,0,0.6)' }}>
-              Start free with <strong style={{ color: '#fff', fontWeight: 700 }}>3 Credits</strong> — no card required.
+              Start free with <strong style={{ color: '#fff', fontWeight: 700 }}>3 Credits</strong>, no card required.
             </p>
           </FadeIn>
 
@@ -771,7 +765,7 @@ export default function PublicHome({ onNavigate }) {
               <div>
                 <div style={{ marginBottom: 14 }}><Eyebrow label="OFFERS HUB" /></div>
                 <h2 style={{ font: `400 clamp(32px, 4vw, 48px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: 0 }}>Membership that pays for <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>itself.</span></h2>
-                <p style={{ font: `400 16px/1.6 ${font.family}`, color: light.body, margin: '12px 0 0', maxWidth: 500 }}>Members unlock exclusive offers from leading brands - real savings and more value.</p>
+                <p style={{ font: `400 16px/1.6 ${font.family}`, color: light.body, margin: '12px 0 0', maxWidth: 500 }}>Members unlock exclusive offers from leading brands. Real savings and more value.</p>
               </div>
               <GhostCTA onClick={() => onNavigate('signup')} size="md">All offers <Icon name="arrowRight" size={15} color={light.ink} /></GhostCTA>
             </div>
@@ -862,7 +856,7 @@ export default function PublicHome({ onNavigate }) {
             <div style={{ textAlign: 'center', marginBottom: 56 }}>
               <div style={{ marginBottom: 14, display: 'flex', justifyContent: 'center' }}><Eyebrow label="MEMBERSHIP" /></div>
               <h2 style={{ font: `400 clamp(34px, 4.4vw, 52px)/1.04 ${font.family}`, letterSpacing: '-0.03em', color: light.ink, margin: '0 0 14px' }}>Choose your <span style={{ fontFamily: font.display, fontStyle: 'italic', fontWeight: 600, color: colors.accent }}>tier.</span></h2>
-              <p style={{ font: `400 16px/1.6 ${font.family}`, color: light.body, maxWidth: 460, margin: '0 auto' }}>Monthly Credits, Momentum bonuses and exclusive access — scaled to your ambition.</p>
+              <p style={{ font: `400 16px/1.6 ${font.family}`, color: light.body, maxWidth: 460, margin: '0 auto' }}>Monthly Credits, Momentum bonuses and exclusive access, scaled to your ambition.</p>
             </div>
           </Reveal>
           <Reveal>
@@ -900,6 +894,7 @@ export default function PublicHome({ onNavigate }) {
                       <span style={{ font: `400 14px ${font.family}`, color: light.dim }}>{annual ? '/yr' : '/mo'}</span>
                     )}
                   </div>
+                  <div style={{ font: `500 13px ${font.family}`, color: colors.accent, marginBottom: 8 }}>{annual ? `${p.annualCredits.toLocaleString()} Campaign Credits per year` : `${p.credits} Campaign Credits per month`}</div>
                   <div style={{ font: `400 13px/1.5 ${font.family}`, color: light.body, marginBottom: 26, minHeight: 40 }}>{p.desc}</div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 30, flex: 1 }}>
                     {p.features.map(f => (
